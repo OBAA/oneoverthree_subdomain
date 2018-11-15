@@ -1,0 +1,179 @@
+{% extends "accounts/home.html" %}
+{% load static %}
+
+
+{% block panel %}
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="address-book-tab" data-toggle="tab" href="#address-book" role="tab" aria-controls="address-book" aria-selected="false">Address Book</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="address-book" role="tabpanel" aria-labelledby="address-book-tab">
+            <div class="row m-b-250">
+
+                <!--Address List-->
+                <div class="col-12 col-md-6 mt-4 mx-auto">
+
+                    <!--Default Address-->
+                    {% for object in address_default %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="s-text18">
+                                Shipping Address:
+                            </h5>
+
+                            <div class="row mx-auto">
+                                <div class="col-9">
+                                    <p>{{ object.get_address | linebreaks }}</p>
+                                    <span class="txt2 mb-5">This is your default shipping address</span>
+                                </div>
+                                <div class="col-3">
+                                    <form method="POST" action="{% url 'address:delete' %}">
+                                        {% csrf_token %}
+                                        <input type='hidden' name='address_id' value='{{ object.id }}' />
+                                        <button class="btn btn-white btn-md mb-2" type="submit"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% empty %}
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h5 class="s-text18">
+                                Shipping Address:
+                            </h5>
+                            <div class="row mx-auto">
+                                <div class="col-12">
+                                    <p>You have no saved address.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endfor %}
+
+                    <!--Other Addresses-->
+                    {% for object in address_list %}
+                    <div class="card mb-4">
+                        <div class="card-body">
+
+                            <h5 class="s-text18">
+                                Shipping Address:
+                            </h5>
+                            <div class="row mx-auto">
+                                <div class="col-9">
+                                    <p>{{ object.get_address | linebreaks }}</p>
+                                </div>
+                                <div class="col-3">
+                                    <form method="POST" action="{% url 'address:delete' %}">
+                                        {% csrf_token %}
+                                        <input type='hidden' name='address_id' value='{{ object.id }}' />
+                                        <button class="btn btn-white btn-md mb-2" type="submit"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!--New Address-->
+                <div class="col-12 col-md-6 mt-4 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'address:create' %}">
+                                {% csrf_token %}
+
+                                <h5 class="s-text18">Update Address</h5>
+                                <p>{{ form.non_field_errors.as_text }}</p>
+                                {% for hidden_field in form.hidden_fields %}
+                                {{ hidden_field.errors }}
+                                {{ hidden_field }}
+                                {% endfor %}
+
+                                <!--Address Line-->
+                                <span><p>Address line:</p></span>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="address_line_1" placeholder="Address line" maxlength="120" required="" id="id_address_line_1">-->
+                                    {{ form.address_line_1 }}
+                                </div>
+
+                                <!--City-->
+                                <span><p>City:</p></span>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="city" placeholder="City" maxlength="120" required="" id="id_city">-->
+                                    {{ form.city }}
+                                </div>
+
+                                <!--State-->
+                                <span><p>State:</p></span>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="state" placeholder="State" maxlength="120" required="" id="id_state">-->
+                                    {{ form.state }}
+                                </div>
+
+                                <!--Country-->
+                                <span><p>Country:</p></span>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    {{ form.country }}
+                                    <!--<select class="sizefull s-text7 p-l-15 p-r-15" name="country" id="id_country">-->
+                                        <!--<option value="foo" selected="">Country</option>-->
+
+                                        <!--<option value="NG">Nigeria</option>-->
+
+                                        <!--<option value="GH">Ghana</option>-->
+
+                                        <!--<option value="CA">Canada</option>-->
+
+                                        <!--<option value="US">United States</option>-->
+
+                                    <!--</select>-->
+                                </div>
+
+                                <!--Postal Code-->
+                                <span><p>Postal code:</p></span>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    {{ form.postal_code }}
+                                    <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="postal_code" placeholder="Postal code" maxlength="120" required="" id="id_postal_code">-->
+                                </div>
+
+                                <!--Mobile number-->
+                                <span class="s-text10"><p>Mobile number:</p></span>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    {{ form.mobile_number }}
+                                </div>
+
+                                <!--Set as default-->
+                                <label class="col-12 mt-4 m-b-12 custom-control custom-checkbox">
+                                    <p>Set as default: </p>
+                                    <input class="custom-control-input" type="checkbox" name="default">
+                                    <span class="custom-control-indicator"></span>
+                                </label>
+
+                                <!-- Button -->
+                                <div class="size10 trans-0-2 m-t-10 m-b-10 mx-auto">
+                                    <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                                        Update
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+

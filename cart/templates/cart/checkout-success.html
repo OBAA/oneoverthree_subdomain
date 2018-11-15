@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<section class="banner2 bg5 p-t-55 p-b-55 m-b-50">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-10 col-md-8 col-lg-6 m-l-r-auto p-t-15 p-b-15">
+        <div class=" py-3">
+          <h3 class="m-text5 t-center">
+            Thank you for your order!
+          </h3>
+          <p class="t-center w-size4 mx-auto">
+            Your order is currently being processed.<br/>
+            You can view your invoice below.
+            Also note that a copy of your invoice has been sent to your registered email.
+            Thank you once again for choosing <b><a href="{{ home_url }}">1OVER3</a></b>
+          </p>
+          <form class="size10 trans-0-2 m-t-10 m-b-10 mx-auto" method="POST" action="{% url 'cart:invoice' %}">
+            {% csrf_token %}
+            <!-- Button -->
+            <input type="hidden" name="order_id" value="{{ object.id }}">
+            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+              Invoice
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-sm-10 col-md-8 col-lg-6 m-l-r-auto p-t-15 p-b-15">
+        <div class="bgwhite py-3">
+          <h4 class="m-text4 t-center"> Hey There, </h4>
+          <p class="t-center w-size4 mx-auto">
+            It makes us happy when you spread the word. --- We want it to make you happy too! <br/>
+            *** Follow us on instagram
+            <a href="https://www.instagram.com/oneoverthree.store/" class="fs-18 color1 p-r-20 fa fa-instagram"></a> <br/>
+            <a href="https://www.instagram.com/oneoverthree.store/">@oneoverthree.store</a>
+            <i class="fa fa-hand-o-left"></i>
+            <br/>
+            *** Tag us wearing any of our outfits <i class="fa fa-tshirt"></i> <br/>
+            *** Get your post featured on our page and get <b>20%</b> of your next order.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Shipping -->
+{% include 'base/shipping.html' %}
+
+
+
+
+{% endblock %}

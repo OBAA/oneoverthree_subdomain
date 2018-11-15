@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class='row'>
+    <div class="col-12 text-center m-t-20 m-b-250">
+        {% if key %}
+        <h1 class='my-5 py-5'>Activation error! Please try again.</h1>
+        {% else %}
+        <h1 class='my-5 py-5'>Re-activate your email below.</h1>
+        {% endif %}
+        <form method='POST' action="">
+            {% csrf_token %}
+            <p>{{ form.non_field_errors.as_text }}</p>
+
+            {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+            {% endfor %}
+
+            <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                <input class="sizefull s-text7 p-l-15 p-r-15" type="email" name="email" placeholder=" Email" maxlength="120" required="" id="id_email">
+            </div>
+            <div class="size14 trans-0-4 m-b-10 mx-auto">
+                <!-- Button -->
+                <input class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit" value="Resend Activation">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+s

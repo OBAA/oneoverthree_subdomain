@@ -1,0 +1,27 @@
+{% if address_book.exists %}
+<form method="POST" action="{% url 'address:checkout-re-use' %}">
+    {% csrf_token %}
+
+    <!--Address Lookup-->
+    {% for address in address_book %}
+    <label for='address-{{ address.id }}'>
+        <input id='address-{{ address.id }}' type='radio' name='shipping_address' required="" value='{{ address.id }}' />
+        {{ address.get_short_address | linebreaks }}
+    </label><br/>
+    {% endfor %}
+
+    <!--Cart Total-->
+    <input type='hidden' name='cart_total' value='{{ cart.get_total }}' />
+    <div class="size10 trans-0-2 m-t-10 m-b-10 mx-auto py-1">
+        <!-- Button -->
+        <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+            CONTINUE
+        </button>
+    </div>
+</form>
+
+{% else %}
+    <p class="s-text8 p-b-23">
+        There are no shipping methods available. Please login or enter your address.
+    </p>
+{% endif %}

@@ -1,0 +1,59 @@
+<!-- Block2 -->
+<div class="block2">
+    {% if instance.new_in %}
+    <!--New label-->
+    <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+    {% elif instance.on_sale %}
+    <!--Sale label-->
+    <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelsale">
+    {% else %}
+    <div class="block2-img wrap-pic-w hov-img-zoom of-hidden pos-relative">
+        {% endif %}
+        <a href="{{ instance.get_absolute_url }}">
+            <img src="{{ instance.image_a.url }}" alt="IMG-PRODUCT">
+        </a>
+        <div class="block2-overlay trans-0-4">
+            <!--WishList-->
+            <!--<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">-->
+            <!--<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>-->
+            <!--<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>-->
+            <!--</a>-->
+
+            {% if product.has_variants is False %}
+            <form class="form-product-ajax block2-btn-addcart w-size1 trans-0-4" method='POST' action="{% url 'cart:add' %}" data-endpoint="{% url 'cart:add' %}">
+                {% csrf_token %}
+                <input type="hidden" name="product_id" value="{{ instance.id }}" />
+                <!-- Button -->
+                <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                    Add to Cart
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="block2-txt p-t-20">
+        <!--<div class="row mx-auto">-->
+        <a href="{{ instance.get_absolute_url }}" class="block2-name dis-block s-text3 p-b-5">
+            {{ instance.title }}
+        </a>
+        <div class="row">
+            <div class="col-6 col-sm-6">
+                {% if instance.on_sale %}
+                <!--<span class="block2-price m-text7 p-r-5">₦{{ instance.base_price }}</span>-->
+                <span class="block2-price m-text8 p-r-5">₦{{ instance.price }}</span>
+                {% else %}
+                <span class="block2-price m-text6 p-r-5">₦{{ instance.price }}</span>
+                {% endif %}
+            </div>
+            <div class="col-6 col-sm-6 col-md-6 ml-auto">
+                <form method="get" action="{{ instance.get_absolute_url }}">
+                    <button class="flex-c-m size4 bg8 bo-rad-23 hov1 s-text1 trans-0-4">
+                        View
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,87 @@
+<!-- NAVIGATION -->
+<div id="navigation">
+    <!-- container -->
+    <div class="container">
+        <!--<div id="responsive-nav">-->
+        <ul class="main-menu" id="responsive-nav">
+            <li class="item-topbar-mobile p-l-20 p-t-25 p-b-8">
+                <div class="topbar-child2-mobile">
+                    <span class="topbar-email">
+                        {% if user.is_authenticated %}
+                        Hello, {{ user.first_name }}
+                        {% endif %}
+                    </span>
+                </div>
+            </li>
+            <li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
+                <span class="topbar-child1">
+                    Free shipping within Lagos for standard order over ₦12,000
+				</span>
+            </li>
+
+            <li class="item-topbar-mobile p-l-20 p-t-8 p-b-8">
+                <span class="topbar-child1">
+                    Free shipping within Nigeria for standard order over ₦20,000
+				</span>
+            </li>
+
+            <li class="item-topbar-mobile p-l-10">
+                <div class="topbar-social-mobile">
+                    <a href="https://www.instagram.com/oneoverthree.store/" class="topbar-social-item fa fa-instagram"></a>
+                    <a href="#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
+                    <a href="#" class="fs-18 color1 p-r-20 fa fa-twitter-square"></a>
+                    <a href="#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
+                    <a href="#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
+                </div>
+            </li>
+
+            <!-- menu nav -->
+            <div class="menu-nav">
+                <span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+                <ul class="menu-list">
+                    <li class="item-menu-mobile {% if request.path == store_url %}active{% endif %}">
+                        <a href="{{ home_url }}">Home</a>
+                    </li>
+
+                    <li class="item-menu-mobile {% if request.path == store_url %}active{% endif %}">
+                        <a href="{{ store_url }}">Outlet</a>
+                    </li>
+
+                    <!--<li class="item-menu-mobile">-->
+                    <!--<a href="product.html">Sale</a>-->
+                    <!--</li>-->
+
+                    <li class="item-menu-mobile {% if request.path == blog_url %}active{% endif %}">
+                        <a href="#">Blog</a>
+                    </li>
+
+                    <li class="item-menu-mobile {% if request.path == about_url %}active{% endif %}">
+                        <a href="#">About</a>
+                    </li>
+
+                    <li class="item-menu-mobile {% if request.path == contact_url %}active{% endif %}">
+                        <a href="{{ contact_url }}">Contact</a>
+                    </li>
+
+                    <li class="item-menu-mobile {% if request.path == marketplace_url %}active{% endif %}">
+                        <a href="{{ marketplace_url }}">Marketplace</a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- category nav -->
+            <div class="category-nav">
+                <span class="category-header">Categories <i class="fa fa-list"></i></span>
+                <ul class="category-list">
+                    <li><a href="#">Women’s Clothing</a></li>
+                    <li><a href="#">Men’s Clothing</a></li>
+                    <li><a href="#">Jewelry & Watches</a></li>
+                    <li><a href="#">Bags & Shoes</a></li>
+                    <li><a href="#">View All</a></li>
+                </ul>
+            </div>
+
+        </ul>
+    </div>
+</div>
+<!-- /container -->

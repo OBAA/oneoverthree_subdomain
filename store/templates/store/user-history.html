@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% if object.background_image_b %}
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({{ object.background_image_b.url }});">
+{% else %}
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({% static 'img/men.jpg' %});">
+{% endif %}
+	<h2 class="l-text2 t-center">
+		View History
+	</h2>
+	<p class="m-text13 t-center">
+		Products
+	</p>
+</section>
+
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="row">
+			<!-- Product -->
+			<div class="row">
+				{% for obj in object_list %}
+				<!--<div class="col-11 col-sm-6 col-md-6 col-lg-4 p-b-50 mx-auto">-->
+				<div class="col-5 col-sm-6 col-md-4 col-lg-4 p-b-50 mx-auto">
+					{% include 'store/snippets/card.html' with instance=obj.content_object %}
+				</div>
+				{% endfor %}
+			</div>
+
+			<!-- Pagination -->
+			{% if is_paginated %}
+				<div class="pagination flex-m flex-w p-t-26">
+					<!--<a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">1</a>-->
+					<!--<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>-->
+					{% for i in page_obj.paginator.page_range %}
+					{% if page_obj.number == i %}
+					<a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">{{ i }}</a>
+					{% else %}
+					<a href="?page={{ i }}" class="item-pagination flex-c-m trans-0-4">{{ i }}</a>
+					{% endif %}
+					{% endfor %}
+				</div>
+				{% endif %}
+		</div>
+	</div>
+</section>
+
+{% endblock %}
+

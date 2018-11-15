@@ -1,0 +1,72 @@
+<form method="POST" action="{% url 'address:checkout-create' %}">
+    {% csrf_token %}
+    <!--{% if next_url %}-->
+    <!--<input type='hidden' name='next' value='{{ next_url }}' />-->
+    <!--{% endif %}-->
+
+    <!--Form-->
+    <p>{{ form.non_field_errors.as_text }}</p>
+    {% for hidden_field in form.hidden_fields %}
+    {{ hidden_field.errors }}
+    {{ hidden_field }}
+    {% endfor %}
+
+
+    <span class="text-left"><p>Name: </p></span>
+    <div class="col-12 size13 bo4 m-b-12 ml-auto">
+        {{ form.name }}
+    </div>
+    {{ form.name.errors }}
+
+    <span class="text-left"><p>Address line: </p></span>
+    <div class="col-12 size13 bo4 m-b-12 ml-auto">
+        {{ form.address_line_1 }}
+    </div>
+    {{ form.address_line_1.errors }}
+
+    <span class="text-left"><p>City: </p></span>
+    <div class="col-12 size13 bo4 m-b-12 ml-auto">
+        {{ form.city }}
+    </div>
+    {{ form.city.errors }}
+
+    <span class="text-left"><p>State: </p></span>
+    <div class="col-12 size13 bo4 m-b-12 ml-auto">
+        {{ form.state }}
+    </div>
+    {{ form.state.errors }}
+
+    <span class="text-left"><p>Country: </p></span>
+    <div class="col-12 size13 bo4 m-b-12 ml-auto">
+        {{ form.country }}
+    </div>
+
+    <span class="text-left"><p>Postal Code: </p></span>
+    <div class="col-12 size13 bo4 m-b-12 ml-auto">
+        {{ form.postal_code }}
+    </div>
+    {{ form.postal_code.errors }}
+
+    <span class="text-left"><p>Mobile Number: </p></span>
+    <div class="col-12 size13 bo4 m-b-12 ml-auto">
+        {{ form.mobile_number }}
+    </div>
+    {{ form.mobile_number.errors }}
+
+    <label class="col-12 mt-4 m-b-12 custom-control custom-checkbox">
+        <p>Set as default: </p>
+        <input class="custom-control-input" type="checkbox" name="default">
+        <span class="custom-control-indicator"></span>
+    </label>
+
+    <div class="size10 trans-0-2 m-t-10 m-b-10 mx-auto py-1">
+        <input type='hidden' name='cart_total' value='{{ cart.get_total }}' />
+        <!-- Button -->
+        <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+            Add
+        </button>
+    </div>
+
+</form>
+
+

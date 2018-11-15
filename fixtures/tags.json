@@ -1,0 +1,106 @@
+[
+{
+    "model": "tags.tag",
+    "pk": 1,
+    "fields": {
+        "title": "Trousers",
+        "slug": "trousers",
+        "background_image": "tags/74663177328816/74663177328816.jpg",
+        "timestamp": "2018-09-05T11:26:21.996Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": true
+    }
+},
+{
+    "model": "tags.tag",
+    "pk": 2,
+    "fields": {
+        "title": "T-shirt",
+        "slug": "t-shirt",
+        "background_image": "tags/59938048868027/59938048868027.jpg",
+        "timestamp": "2018-09-05T11:28:53.496Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": true
+    }
+},
+{
+    "model": "tags.tag",
+    "pk": 3,
+    "fields": {
+        "title": "black",
+        "slug": "black",
+        "background_image": "",
+        "timestamp": "2018-09-05T11:30:09.499Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": false
+    }
+},
+{
+    "model": "tags.tag",
+    "pk": 4,
+    "fields": {
+        "title": "Shoe",
+        "slug": "shoe",
+        "background_image": "tags/68826314897221/68826314897221.PNG",
+        "timestamp": "2018-09-18T22:48:05.867Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": true
+    }
+},
+{
+    "model": "tags.tag",
+    "pk": 5,
+    "fields": {
+        "title": "brown",
+        "slug": "brown",
+        "background_image": "",
+        "timestamp": "2018-09-18T22:49:56.309Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": false
+    }
+},
+{
+    "model": "tags.tag",
+    "pk": 7,
+    "fields": {
+        "title": "blue",
+        "slug": "blue",
+        "background_image": "",
+        "timestamp": "2018-09-18T23:00:43.653Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": false
+    }
+},
+{
+    "model": "tags.tag",
+    "pk": 8,
+    "fields": {
+        "title": "hoodie",
+        "slug": "hoodie",
+        "background_image": "",
+        "timestamp": "2018-10-09T14:56:32.485Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": false
+    }
+},
+{
+    "model": "tags.tag",
+    "pk": 9,
+    "fields": {
+        "title": "Wine",
+        "slug": "wine",
+        "background_image": "",
+        "timestamp": "2018-10-12T06:52:39.448Z",
+        "ordering": 20,
+        "is_active": true,
+        "is_banner": false
+    }
+}
+]

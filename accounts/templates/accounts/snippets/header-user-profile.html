@@ -1,0 +1,59 @@
+				<!-- DROP DOWN MENU -->
+
+                <div class="header-profile header-dropdown">
+                    <!-- USER PICTURE -->
+                    <!--<div class="profile-userpic">-->
+                        <!--<img src="" class="img-responsive" alt="">-->
+                    <!--</div>-->
+
+                    <!-- USER INFO -->
+                    <div class="header-profile-user"> <!--header-profile-user-->
+                        <div class="header-profile-name">
+                            {{ user.full_name }}
+                        </div>
+                        <div class="header-profile-item-info">
+                            {{ user.email }}
+                        </div>
+					</div>
+
+                    <ul class="header-profile-wrapitem">
+						{% if user.has_store %}
+						<li class="header-profile-item">
+							<a class="header-profile-item-name" href="{{ dashboard_url }}">
+							<i class="fa fa-home"></i>
+							Dashboard </a>
+						</li>
+						{% endif %}
+						<li>
+							<a class="header-profile-item-name" href="{{ account_url }}">
+							<i class="fa fa-user"></i>
+							My Account </a>
+						</li>
+                        <li class="header-profile-item">
+                            {% if user.is_authenticated %}
+							<a class="header-profile-item-name" href="{{ logout_url }}">
+							<i class="fa fa-sign-out"></i>
+							Sign out </a>
+                            {% else %}
+                           <a class="header-profile-item-name" href="{{ login_url }}">
+							<i class="fa fa-sign-in"></i>
+							Sign in </a>
+                            {% endif %}
+						</li>
+						<li class="header-profile-item">
+							<a class="header-profile-item-name" href="{{ register_url }}">
+							<i class="fa fa-user-plus"></i>
+							Register </a>
+						</li>
+					</ul>
+
+                    <!-- BUTTONS -->
+                    {% if user.admin %}
+                    <div class=" header-profile-wrapitem text-center">
+                    <!--<div class="profile-userbuttons">-->
+                        <!--<button type="button" class="btn btn-success btn-sm">Follow</button>-->
+                        <a href="{{ admin_url }}" type="button" class="btn btn-danger btn-sm">
+                            <i class="fa fa-tachometer"></i> Dashboard</a>
+                    </div>
+                    {% endif %}
+				</div>

@@ -1,0 +1,15 @@
+Hello {{ first_name }},
+
+Please activate your account for {{ email }} by clicking on the link below:
+
+
+
+{{ path }}
+
+
+
+Activate and begin shopping from your favorites brands!
+
+Thank you,
+
+1OVER3 Store.

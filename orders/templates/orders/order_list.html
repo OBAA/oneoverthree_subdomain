@@ -1,0 +1,64 @@
+{% extends "accounts/home.html" %}
+{% load static %}
+
+
+{% block panel %}
+
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Orders</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <!--Pending Orders-->
+            <div class="col-12 m-t-45 m-b-200">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Order Id</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for object in object_list %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td><a href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>
+                        <!--<td>{{ object.order_id }}</td>-->
+                        <td>
+                            {% if object.status == "shipped" %}
+                            <span class="badge badge-warning">{{ object.status }}</span>
+                            {% elif object.status == "completed" %}
+                            <span class="badge badge-success">{{ object.status }}</span>
+                            {% elif object.status == "refunded" %}
+                            <span class="badge badge-danger">{{ object.status }}</span>
+                            {% else %}
+                            <span class="badge badge-info">{{ object.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ object.total }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td colspan="3"><p >No orders yet. Head over to the <a href="{{ store_url }}">store</a> now! </p></td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+

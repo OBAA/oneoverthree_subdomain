@@ -1,0 +1,32 @@
+{% load static %}
+
+<div class="wrap_header fixed-header2 trans-0-4">
+    <!-- Logo -->
+    <a href="{{ home_url }}" class="logo">
+        <img src="{% static 'img/icons/logo.png' %}" alt="IMG-LOGO">
+    </a>
+
+    <!-- Menu -->
+    <div class="wrap_menu">
+        {% include 'base/snippets/main-menu-navbar.html' %}
+    </div>
+
+    <!-- Header Icon -->
+    <div class="header-icons">
+        <div class="header-wrapicon1 dis-block">
+            <img src="{% static 'img/icons/icon-header-01.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+            {% include 'accounts/snippets/header-user-profile.html' %}
+        </div>
+
+        <span class="linedivide1"></span>
+        {% with cart_count=cart|length %}
+        <div class="header-wrapicon2">
+            <img src="{% static 'img/icons/icon-header-02.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+            <span class="header-icons-noti navbar-cart-count">{{ cart_count }}</span>
+            <!-- Header cart noti -->
+            {% include 'cart/snippets/header-cart.html' %}
+        </div>
+        {% endwith %}
+    </div>
+</div>
+

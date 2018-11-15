@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+
+<div class="container">
+
+        <!-- Account Menu Header -->
+        <!--<div class="col-12 col-md-5 col-lg-4 mt-4"  style="height: 500px">-->
+        <div class="row">
+            <div class="col-12 col-md-5 col-lg-4 mt-4">
+                <div>
+                    <h4 class="m-text23">
+                        Account Overview
+                    </h4>
+                </div>
+            </div>
+
+            <!-- Account User Info -->
+            <div class="col-12 col-md-7 col-lg-8 mt-4 mx-auto">
+                <div class="row">
+                    <!--SELLER DASHBOARD-->
+                    {% if user.has_store %}
+                    <div class="col-5 mr-auto">
+                        <div class="size10 trans-0-2 m-t-10 ">
+                            <!-- Link -->
+                            <a class="flex-c-m sizefull bo-rad-23 hov1 s-text1 trans-0-4 {% if request.path == '/account/dashboard/' %}bg5{% else %}bg1{% endif %}" href="{% url 'account:dashboard:home' %}">
+                                Dashboard <span class="pl-2"><i class="fa fa-dashboard"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="col-5 text-center ml-auto">
+                        <div class="header-profile-name">
+                            {{ user.full_name }}
+                        </div>
+                        <div class="header-profile-item-info">
+                            {{ request.user }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Account Menu Navigation -->
+            <div class="col-12 col-md-4 mt-5 mt-md-0" >
+                <div class="col-12 col-md-9 mr-auto">
+                    <ul class="mt-0 mt-md-5">
+                        <!--Account Details-->
+                        <li class="p-t-6 p-b-8 bo6">
+                            <a href="{% url 'account:details' %}" class="s-text13 p-t-5 p-b-5 {% if request.path == '/account/details/' %}active{% endif %}">
+                                Personal Information
+                            </a>
+                        </li>
+
+                        <!--Address Book-->
+                        <li class="p-t-6 p-b-8 bo7">
+                            <a href="{% url 'address:book' %}" class="s-text13 p-t-5 p-b-5 {% if request.path == '/account/address-book/' %}active{% endif %}">
+                                Address Book
+                            </a>
+                        </li>
+
+                        <!--Orders-->
+                        <li class="p-t-6 p-b-8 bo7">
+                            <a href="{% url 'account:orders' %}" class="s-text13 p-t-5 p-b-5 {% if request.path == '/account/orders/' %}active{% endif %}">
+                                Orders
+                            </a>
+                        </li>
+
+                        <!--Settings-->
+                        <li class="p-t-6 p-b-8 bo7">
+                            <a href="/account/settings/" class="s-text13 p-t-5 p-b-5 {% if request.path == '/account/settings/' %}active{% endif %}">
+                                Settings
+                            </a>
+                        </li>
+
+                        <!--Support-->
+                        <li class="p-t-6 p-b-8 bo7">
+                            <a href="/contact/" class="s-text13 p-t-5 p-b-5 {% if request.path == '/account/support/' %}active{% endif %}">
+                                Support
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!--MAIN CONTENT-->
+            <div class="col-12 col-md-8 mt-5 mt-md-4">
+                <div class="d-none d-md-block">
+                    <hr class="mt-md-4">
+                </div>
+                {% block panel %}
+                <!--content-->
+                {% endblock %}
+            </div>
+        </div>
+
+        {% block flannel %} {% endblock %}
+
+
+    <!--</div>-->
+</div>
+
+
+<!--<section class="relateproduct bgwhite p-t-45 p-b-138">-->
+	<!--<div class="container">-->
+		<!--<div class="sec-title p-b-60">-->
+			<!--<h3 class="m-text5 t-center">-->
+                <!--Account Analytics-->
+            <!--</h3>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash; Card &ndash;&gt;-->
+        <!--<div class="col-12 col-md-5 mx-auto">-->
+            <!--<div class="card">-->
+                <!--<div class="card-body">-->
+                    <!--<h4 class="card-title">Viewed History</h4>-->
+                    <!--<div class="list-group">-->
+                        <!--<a class="list-group-item" href="{% url 'account:user-product-history' %}">Product</a>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</section>-->
+
+
+
+
+
+
+{% endblock %}
+
+

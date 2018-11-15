@@ -1,0 +1,431 @@
+{% extends "accounts/home.html" %}
+{% load static %}
+
+
+{% block panel %}
+
+    <!--Add Product Tab-->
+    <div class="row">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'account:dashboard:add-product' %}" id="productFormUpload">
+            {% csrf_token %}
+
+            <!--Add Product Form-->
+            <div class="col-12 mt-4 mb-5 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <!--Product Details-->
+                            <div class="col-12 col-lg-7">
+                                <h5 class="s-text18">Add Products</h5>
+
+                                {% with form=add_product %}
+                                <p>{{ form.non_field_errors.as_text }}</p>
+
+                                {% for hidden_field in form.hidden_fields %}
+                                <p>{{ hidden_field.errors.as_text }}</p>
+                                {{ hidden_field }}
+                                {% endfor %}
+
+                                <!--store-->
+                                <input type="hidden" name="store" value="{{ dashboard.store.id }}">
+
+                                <!--title-->
+                                <div class="row m-b-12 mx-auto">
+                                    <label class="col-3"><p>Title: </p></label>
+                                    <div class="col-8 size13 bo4 ">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.title.errors }}</span>
+                                        {{ form.title }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.title.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--price-->
+                                <div class="row m-b-18 mx-auto">
+                                    <label class="col-3"><p>Price: </p></label>
+                                    <div class="col-8 size13 bo4 ">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.price.errors }}</span>
+                                        {{ form.price }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.price.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--product_type-->
+                                <div class="row m-b-12 mx-auto">
+                                    <label class="col-4"><p>Type: </p></label>
+                                    <div class="col-8">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.product_type.errors }}</span>
+                                        {{ form.product_type }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.product_type.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--category-->
+                                <div class="row m-b-12 mx-auto">
+                                    <label class="col-4"><p>Category: </p></label>
+                                    <div class="col-8">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.category.errors }}</span>
+                                        {{ form.category }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.category.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--brand-->
+                                {% if dashboard.store.seller_type == 'brand' %}
+                                <input type="hidden" name="brand" value="{{ dashboard.store.title }}">
+                                {% else %}
+                                <div class="row m-b-12 mx-auto">
+                                    <label class="col-3"><p>Brand: </p></label>
+                                    <div class="col-8 size13 bo4 ">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.brand.errors }}</span>
+                                        {{ form.brand }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.brand.help_text }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <!--description-->
+                                <div class="row m-b-18 mx-auto">
+                                    <div class="col-12">
+                                        <span class="p-t-5 p-b-5"><p>Description: </p></span>
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.description.errors }}</span>
+                                        {{ form.description }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.description.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--extra_description-->
+                                <div class="row m-b-18 mx-auto">
+                                    <div class="col-12">
+                                        <span class="p-t-5 p-b-5"><p>Extra Description: </p></span>
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.extra_description.errors }}</span>
+                                        {{ form.extra_description }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.extra_description.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--tags-->
+                                <div class="row m-b-18 mx-auto">
+                                    <div class="col-12">
+                                        <span class="p-t-5 p-b-5"><p>Tags: </p></span>
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.tags.errors }}</span>
+                                        {{ form.tags }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.tags.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--image_a-->
+                                <div class="row m-b-45 mx-auto">
+                                    <span class="col-4"><p>Image A: </p></span>
+                                    <div class="col-11 size13 bo4 mx-auto">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_a.errors }}</span>
+                                        {{ form.image_a }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_a.help_text }}</span>
+                                    </div>
+                                    {{ image_a.x_1 }}
+                                    {{ image_a.y_1 }}
+                                    {{ image_a.height_1 }}
+                                    {{ image_a.width_1 }}
+                                </div>
+
+                                <!--image_b-->
+                                <div class="row m-b-45 mx-auto">
+                                    <span class="col-4"><p>Image B: </p></span>
+                                    <div class="col-11 size13 bo4 mx-auto">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_b.errors }}</span>
+                                        {{ form.image_b }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_b.help_text }}</span>
+                                    </div>
+                                    {{ image_b.x_2 }}
+                                    {{ image_b.y_2 }}
+                                    {{ image_b.height_2 }}
+                                    {{ image_b.width_2 }}
+                                </div>
+
+                                <!--image_c-->
+                                <div class="row m-b-45 mx-auto">
+                                    <span class="col-4"><p>Image C: </p></span>
+                                    <div class="col-11 size13 bo4 mx-auto">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_c.errors }}</span>
+                                        {{ form.image_c }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_c.help_text }}</span>
+                                    </div>
+                                    {{ image_c.x_3 }}
+                                    {{ image_c.y_3 }}
+                                    {{ image_c.height_3 }}
+                                    {{ image_c.width_3 }}
+                                </div>
+
+                                <!--stock-->
+                                <div class="row m-b-45 mx-auto">
+                                    <label class="col-3"><p>Stock: </p></label>
+                                    <div class="col-8 size13 bo4 ">
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.stock.errors }}</span>
+                                        {{ form.stock }}
+                                        <span class="s-text8 p-t-5 p-b-5">{{ form.stock.help_text }}</span>
+                                    </div>
+                                </div>
+
+                                <!--featured-->
+                                <div class="col-12 m-b-18 mx-auto">
+                                    <label><p>Set as featured: </p></label>
+                                    {{ form.featured }}
+                                </div>
+                                {{ form.featured.errors }}
+                                {% endwith %}
+                            </div>
+
+                            <!--Product Variations-->
+                            <div class="col-11 col-lg-5 mx-auto">
+                                {{ variations.management_form }}
+
+                                {% for variation in variations %}
+                                <div class="card m-b-35 form-row">
+                                    <div class="card-body">
+                                        <h5 class="s-text18">Add Variant</h5>
+
+                                        <div class="row m-b-12 mx-auto">
+                                            <p class="col-6">Size: </p>
+                                            <div class="col-12">
+                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.size.errors }}</span>
+                                                {{ variation.size }}
+                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.size.help_text }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row m-b-12 mx-auto">
+                                            <p class="col-6">Stock: </p>
+                                            <div class="col-12">
+                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.quantity.errors }}</span>
+                                                {{ variation.quantity }}
+                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.quantity.help_text }}</span>
+                                            </div>
+                                        </div>
+                                        <!--<div class="input-group-append">-->
+                                        <!--<button class="btn btn-success add-form-row">+</button>-->
+                                        <!--</div>-->
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="size10 trans-0-2 m-t-10 m-b-10 mx-auto">
+                            <!-- Button -->
+                            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block flannel %}
+    <!-- MODAL TO CROP THE IMAGE -->
+    <div class="modal fade" id="modalCrop" style="height: 100%;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Crop image</h4>
+                </div>
+                <div class="modal-body">
+                    <img src="" id="image" style="max-width: 75%; max-height: 75%;">
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group pull-left" role="group">
+                        <button type="button" class="btn btn-default js-zoom-in">
+                            <span class="glyphicon glyphicon-zoom-in"></span>
+                        </button>
+                        <button type="button" class="btn btn-default js-zoom-out">
+                            <span class="glyphicon glyphicon-zoom-out"></span>
+                        </button>
+                    </div>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" id="js-crop" class="btn btn-primary">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+<!--Block JS-->
+{% block js %}
+    <!--Crop Product Image-->
+    <script>
+        $(function () {
+            /* SCRIPT TO OPEN THE MODAL WITH THE PREVIEW */
+
+            // Opens modal for image file A
+            $(document).on('change','#id_image_a', function() {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#image").attr("src", e.target.result);
+                        $("#js-crop").attr("class", "btn btn-primary js-crop-image-a");
+                        // $( "#js-crop" ).toggleClass( "js-crop-image-a" )
+                        $("#modalCrop").modal("show");
+
+                    };
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Opens modal for image file B
+            $(document).on('change','#id_image_b', function() {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#image").attr("src", e.target.result);
+                        $("#js-crop").attr("class", "btn btn-primary js-crop-image-b");
+                        $("#modalCrop").modal("show");
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Opens modal for image file C
+            $(document).on('change','#id_image_c', function() {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // $("#js-crop").toggleClass( "js-crop-image-c" )
+                        $("#image").attr("src", e.target.result);
+                        $("#js-crop").attr("class", "btn btn-primary js-crop-image-c");
+                        $("#modalCrop").modal("show");
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+            // Opens modal for image file
+            $(document).on('change','#id_file', function() {
+                if (this.files && this.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        $("#image").attr("src", e.target.result);
+                        $("#js-crop").attr("class", "btn btn-primary js-crop-image");
+                        $("#modalCrop").modal("show");
+                    }
+                    reader.readAsDataURL(this.files[0]);
+                }
+            });
+
+
+            /* SCRIPTS TO HANDLE THE CROPPER BOX */
+            var $image = $("#image");
+            var cropBoxData;
+            var canvasData;
+            $("#modalCrop").on("shown.bs.modal", function () {
+                $image.cropper({
+                    viewMode: 1,
+                    aspectRatio: 2/3,
+                    minCropBoxWidth: 120,
+                    minCropBoxHeight: 180,
+                    ready: function () {
+                        $image.cropper("setCanvasData", canvasData);
+                        $image.cropper("setCropBoxData", cropBoxData);
+                    }
+                });
+            }).on("hidden.bs.modal", function () {
+                cropBoxData = $image.cropper("getCropBoxData");
+                canvasData = $image.cropper("getCanvasData");
+                $image.cropper("destroy");
+            });
+
+            // Enable zoom in button
+            $(".js-zoom-in").click(function () {
+                $image.cropper("zoom", 0.1);
+            });
+
+            // Enable zoom out button
+            $(".js-zoom-out").click(function () {
+                $image.cropper("zoom", -0.1);
+            });
+
+            /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+
+            // Crops image file A
+            $(document).on('click','.js-crop-image-a', function() {
+                var cropData = $image.cropper("getData");
+                $("#id_x_1").val(cropData["x"]);
+                $("#id_y_1").val(cropData["y"]);
+                $("#id_height_1").val(cropData["height"]);
+                $("#id_width_1").val(cropData["width"]);
+
+                console.log("a");
+                console.log($(cropData));
+                console.log($(cropData["x"]));
+                console.log($(cropData["y"]));
+                console.log($(cropData["height"]));
+                console.log($(cropData["width"]));
+
+                // $("#productFormUpload").submit();
+                $("#modalCrop").modal("hide");
+            });
+
+            // Crops image file B
+            $(document).on('click','.js-crop-image-b', function() {
+                var cropData = $image.cropper("getData");
+                $("#id_x_2").val(cropData["x"]);
+                $("#id_y_2").val(cropData["y"]);
+                $("#id_height_2").val(cropData["height"]);
+                $("#id_width_2").val(cropData["width"]);
+
+                console.log("b");
+                console.log($(cropData));
+                console.log($(cropData["x"]));
+                console.log($(cropData["y"]));
+                console.log($(cropData["height"]));
+                console.log($(cropData["width"]));
+
+                // $("#productFormUpload").submit();
+                $("#modalCrop").modal("hide");
+            });
+
+            // Crops image file C
+            $(document).on('click','.js-crop-image-c', function() {
+                var cropData = $image.cropper("getData");
+                $("#id_x_3").val(cropData["x"]);
+                $("#id_y_3").val(cropData["y"]);
+                $("#id_height_3").val(cropData["height"]);
+                $("#id_width_3").val(cropData["width"]);
+
+                console.log("c");
+                console.log($(cropData));
+                console.log($(cropData["x"]));
+                console.log($(cropData["y"]));
+                console.log($(cropData["height"]));
+                console.log($(cropData["width"]));
+
+                // $("#productFormUpload").submit();
+                $("#modalCrop").modal("hide");
+            });
+
+            // Crops image file
+            $(document).on('click','.js-crop-image', function() {
+                var cropData = $image.cropper("getData");
+                $("#id_x").val(cropData["x"]);
+                $("#id_y").val(cropData["y"]);
+                $("#id_height").val(cropData["height"]);
+                $("#id_width").val(cropData["width"]);
+
+                console.log("0");
+                console.log($(cropData));
+                console.log($(cropData["x"]));
+                console.log($(cropData["y"]));
+                console.log($(cropData["height"]));
+                console.log($(cropData["width"]));
+
+                // $("#productFormUpload").submit();
+                $("#modalCrop").modal("hide");
+            });
+        });
+    </script>
+{% endblock %}

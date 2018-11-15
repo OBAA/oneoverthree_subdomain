@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{%  block content %}
+<div class="container">
+<div class="col-12 col-md-6 mx-auto m-b-200">
+    {% if title %}<h1 class="my-3">{{ title }}</h1> {% endif %}
+    <form method="POST" action="{% if action_url %}{{ action_url }}{% endif %}">
+        {% csrf_token %}
+        {% if next_url %}
+        <input type="hidden" name="next" value="{{ next_url }}">
+        {% endif %}
+        {{ form.as_p }}
+        <div class="size14 trans-0-4 m-b-10">
+            <!-- Button -->
+            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                Subscribe
+            </button>
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}

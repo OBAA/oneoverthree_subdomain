@@ -1,0 +1,92 @@
+{% extends "accounts/home.html" %}
+{% load static %}
+
+
+{% block panel %}
+
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'account:orders' %}" role="tab" aria-selected="false">Orders</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" id="{{object.order_id}}-tab" data-toggle="tab" href="#{{object.order_id}}" role="tab" aria-controls="{{object.order_id}}" aria-selected="true">{{object.order_id}}</a>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="{{object.order_id}}" role="tabpanel" aria-labelledby="{{object.order_id}}-tab">
+            <div class="col-12 m-t-45">
+            <form method="POST" action="{% url 'account:order-complete' %}">
+                {% csrf_token %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <!--<td><a href="{{ object.get_absolute_url }}">{{ object.order_id }}</a></td>-->
+                    <td>{{ object.product }}</td>
+                    <td>{{ object.quantity }}</td>
+                    <td>{{ object.total_price }}</td>
+                    <td>
+                        {% if object.status == "processing" %}
+                        <span class="badge badge-info">{{ object.status }}</span>
+                        {% elif object.status == "shipped" %}
+                        <span class="badge badge-warning">{{ object.status }}</span>
+                        {% elif object.status == "completed" %}
+                        <span class="badge badge-success">{{ object.status }}</span>
+                        {% elif object.status == "refunded" %}
+                        <span class="badge badge-danger">{{ object.status }}</span>
+                        {% else %}
+                        <span class="badge badge-secondary">{{ object.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <label class="custom-control custom-checkbox">
+                            <input class="custom-control-input"  value="{{ object.id }}" type="checkbox" name="process_ids">
+                            <span class="custom-control-indicator"></span>
+                        </label>
+                    </td>
+                </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <th scope="row">1</th>
+                    <td colspan="3"><p class="lead">No orders yet.</p></td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+             <div class="row">
+            <div class="col-3 ml-auto">
+                <div class="size10 trans-0-2 m-t-10 m-b-10 mr-1 mx-auto py-1">
+                    <!-- Button -->
+                    <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                        RECEIVED
+                    </button>
+                </div>
+            </div>
+        </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+
+

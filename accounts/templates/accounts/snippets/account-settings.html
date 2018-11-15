@@ -1,0 +1,165 @@
+{% extends "accounts/home.html" %}
+{% load static %}
+
+
+{% block panel %}
+    <div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#notifications" role="tab" aria-controls="notifications" aria-selected="true">Notifications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Address Book</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="notifications" role="tabpanel" aria-labelledby="notifications-tab">
+                <div class="col-12 col-md-6 mt-4 mx-auto">
+                    <div class="card">
+                        <div class="card-header">
+                            {% if title %}<h1>{{ title }}</h1> {% endif %}
+                        </div>
+
+                        <div class="card-body">
+                            <form method="POST" action="{% if action_url %}{{ action_url }}{% endif %}">
+                                {% csrf_token %}
+                                {% if next_url %}
+                                <input type="hidden" name="next" value="{{ next_url }}">
+                                {% endif %}
+                                {{ form.as_p }}
+                                <div class="size14 trans-0-4 m-b-10">
+                                    <!-- Button -->
+                                    <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                                        Subscribe
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 m-t-50 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            {% if title %}<h1>{{ title }}</h1> {% endif %}
+                            <form method="POST" action="{% if action_url %}{{ action_url }}{% endif %}">
+                                {% csrf_token %}
+                                {% if next_url %}
+                                <input type="hidden" name="next" value="{{ next_url }}">
+                                {% endif %}
+                                {{ form.as_p }}
+                                <div class="size14 trans-0-4 m-b-10">
+                                    <!-- Button -->
+                                    <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                                        Subscribe
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 m-t-50 m-b-200 mx-auto">
+                    {% if title %}<h1 class="my-3">{{ title }}</h1> {% endif %}
+                    <form method="POST" action="{% if action_url %}{{ action_url }}{% endif %}">
+                        {% csrf_token %}
+                        {% if next_url %}
+                        <input type="hidden" name="next" value="{{ next_url }}">
+                        {% endif %}
+
+                        {{ form.as_p }}
+                        <div class="size14 trans-0-4 m-b-10">
+                            <!-- Button -->
+                            <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                                Subscribe
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-hover ">
+                            <thead class="bg-light ">
+                            <tr>
+                                <th>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" value="">
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>Username</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Posts</th>
+                                <th>Edit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" value="">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td><a href="#"><small>Johnyahua</small></a></td>
+                                <td><small>Doe</small></td>
+                                <td><small>john@example.com</small></td>
+                                <td><small>Admin</small></td>
+                                <td><a href="#"><small>5</small></a></td>
+                                <td>
+                                    <a href="#"><i class="fa fa-pencil-square-o"></i></a>
+                                    <a href="#"><i class="fa fa-eye"></i></a>
+                                    <a href="#"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" value="">
+                                        </label>
+                                    </div>
+                                </td>
+                                <td><a href="#"><small>Johnyahua</small></a></td>
+                                <td><small>Doe</small></td>
+                                <td><small>john@example.com</small></td>
+                                <td><small>Admin</small></td>
+                                <td><a href="#"><small>5</small></a></td>
+                                <td>
+                                    <a href="#"><i class="fa fa-pencil-square-o"></i></a>
+                                    <a href="#"><i class="fa fa-eye"></i></a>
+                                    <a href="#"><i class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

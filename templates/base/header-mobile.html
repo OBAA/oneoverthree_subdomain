@@ -1,0 +1,42 @@
+{% load static %}
+
+
+<!-- Header Mobile -->
+<div class="wrap_header_mobile">
+    <!-- Logo moblie -->
+    <a href="{{ home_url }}" class="logo-mobile">
+        <img src="{% static 'img/icons/logo.png' %}" alt="IMG-LOGO">
+    </a>
+
+    <!-- Button show menu -->
+    <div class="btn-show-menu">
+        <!-- Header Icon mobile -->
+        <div class="header-icons-mobile">
+            <!--<a href="#" class="header-wrapicon1">-->
+                <!--<img src="{% static 'img/icons/icon-header-01.png' %}" class="header-icon1" alt="ICON">-->
+            <!--</a>-->
+            <div class="header-wrapicon1">
+				<img src="{% static 'img/icons/icon-header-01.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+				{% include 'accounts/snippets/header-user-profile.html' %}
+			</div>
+
+            <span class="linedivide2"></span>
+            {% with cart_count=cart|length %}
+            <div class="header-wrapicon2">
+                <img src="{% static 'img/icons/icon-header-02.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+                <span class="header-icons-noti navbar-cart-count">{{ cart_count }}</span>
+
+                <!-- Header cart noti -->
+                {% include 'cart/snippets/header-cart.html' %}
+            </div>
+            {% endwith %}
+        </div>
+
+        <div class="btn-show-menu-mobile hamburger hamburger--squeeze">
+            <span class="hamburger-box">
+				<span class="hamburger-inner"></span>
+			</span>
+        </div>
+    </div>
+</div>
+

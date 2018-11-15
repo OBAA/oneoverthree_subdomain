@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!--Header-->
+<div class="col-10 col-md-6 mx-auto py-3 text-center">
+    <h1 class="font-weight-bold display-5">CHOOSE PAYMENT MERCHANT:</h1>
+</div>
+
+<!--Stripe.FORM-->
+<div class="col-10 col-md-6 mx-auto">
+    <h2 class="font-weight-bold text-center">STRIPE</h2>
+    <div class="stripe-payment-form" data-token="{{ stripe_publish_key }}"
+         data-next-url="{% if next_url %}{{ next_url }}{% endif %}" data-btn-title='Add Payment Method'>
+    </div>
+<!--Paystack.FORM-->
+<div class="col-10 col-md-6 mx-auto py-5 text-center">
+    <h2 class="font-weight-bold">PAYSTACK</h2>
+
+    <!--Paystack.FORM Inline-->
+    <div class="text-center py-5">
+        <p1><b>INLINE:</b></p1>
+        <form>
+            <div><p1>Click <b>PAY</b> to contine</p1></div>
+            <button class="btn btn-primary my-2" type="button" onclick="payWithPaystack()"> Pay </button>
+        </form>
+    </div>
+
+    <!--Paystack.FORM Inline Embed-->
+    <div class="text-center py-5">
+        <p1><b>INLINE EMBED:</b></p1>
+        <form class="form-control">
+            <script src="https://js.paystack.co/v1/inline.js"></script>
+            <div id="paystackEmbedContainer"></div>
+        </form>
+    </div>
+
+</div>
+
+
+<!--Paystack.js Inline-->
+<script>
+  function payWithPaystack(){
+    var handler = PaystackPop.setup({
+      key: '{{ paystack_public_key }}',
+      email: 'customer@email.com',
+      amount: 10000,
+      ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+      metadata: {
+         custom_fields: [
+            {
+                display_name: "Mobile Number",
+                variable_name: "mobile_number",
+                value: "+2348012345678"
+            }
+         ]
+      },
+      callback: function(response){
+          alert('success!!! transaction ref is ' + response.reference);
+          paystackReferenceHandler(response.reference);
+      },
+      onClose: function(){
+          alert('window closed');
+      }
+    });
+    handler.openIframe();
+  }
+
+  function paystackReferenceHandler(reference) {
+
+      var paymentMethodEndpoint = '/billing/payment-method/paystack/'
+      var data = {
+          'reference': reference
+      }
+      $.ajax({
+          data: data,
+          url: paymentMethodEndpoint,
+          method: "POST",
+          success: function (data) {
+              console.log(reference)
+          },
+          error: function (error) {
+              console.log(error)
+          }
+      })
+  }
+
+</script>
+
+<!--Paystack.js Inline Embed-->
+<script>
+  PaystackPop.setup({
+   key: '{{ paystack_public_key }}',
+   email: 'customer@email.com',
+   amount: 10000,
+   container: 'paystackEmbedContainer',
+   callback: function(response){
+        alert('successfully subscribed. transaction ref is ' + response.reference);
+    },
+  });
+</script>
+
+
+{% endblock %}

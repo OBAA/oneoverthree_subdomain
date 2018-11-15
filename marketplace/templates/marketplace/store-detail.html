@@ -1,0 +1,226 @@
+{% extends "base.html" %}
+{% load static %}
+{% load mptt_tags %}
+
+{% block content %}
+{% if object.background_image_b %}
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({{ object.background_image_b.url }});">
+{% else %}
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({% static 'img/men.jpg' %});">
+{% endif %}
+	<h2 class="l-text2 t-center">
+		{{ object.title }}
+	</h2>
+	<p class="m-text13 t-center">
+		{{ object.description }}
+	</p>
+</section>
+
+
+
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="row">
+			<!--Left-Bar-->
+			<div class="col-12 col-md-2 order-12 order-md-1">
+				<!--Category-->
+				<div class="row p-b-20">
+					<!--  -->
+					<div class="col-4 col-md-12 text-center">
+						<h4 class="m-text14 p-b-7">Categories</h4>
+						<ul>
+							{% recursetree category_list %}
+							<li class="p-t-4">
+								<a href="{{ node.get_absolute_url }}" class="s-text13">
+									{{ node.title }}
+								</a>
+								{% if not node.is_leaf_node %}
+								<ul class="children">
+									<a href="{{ children.get_absolute_url }}" class="s-text13">
+										{{ children }}
+									</a>
+								</ul>
+								{% endif %}
+							</li>
+							{% endrecursetree %}
+						</ul>
+					</div>
+
+					<div class="col-4 col-md-12 mt-md-3 text-center">
+						<h4 class="m-text14 p-b-7">Brands</h4>
+						<ul>
+							{% for brand in brand_list %}
+							<li class="p-t-4">
+								<a href="{{ brand.get_absolute_url }}" class="s-text13">
+									{{ brand }}
+								</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</div>
+
+                    <div class="col-4 col-md-12 mt-md-3 text-center">
+						<h4 class="m-text14 p-b-7">Links</h4>
+						<ul>
+							<li class="p-t-4">
+								<a href="{{ home_url }}" class="s-text13">
+									Home
+								</a>
+							</li>
+                            <li class="p-t-4">
+								<a href="{{ store_url }}" class="s-text13">
+									Outlet
+								</a>
+							</li>
+                            <li class="p-t-4">
+								<a href="{{ marketplace_url }}" class="s-text13">
+									Marketplace
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<!--Right/Main section Category-->
+			<div class="col-12 col-md-10 mt-2 order-1">
+
+                {% if new_in %}
+                <!-- New Product -->
+                <section class="newproduct bgwhite m-b-100">
+                    <div class="container">
+                        <!--Section Header-->
+                        <div class="sec-title p-b-15">
+                            <h3 class="m-text5 t-center">
+                                New In
+                            </h3>
+                        </div>
+
+                        <!-- Slide2 -->
+                        <div class="col-10 col-sm-12 mx-auto">
+                            <div class="wrap-slick2">
+                                <div class="slick2">
+                                    {% for object in new_in %}
+
+                                    <div class="item-slick2 p-l-15 p-r-15">
+                                        <!-- Block2 -->
+
+                                        <div class="block2-img wrap-pic-w of-hidden pos-relative block2-labelnew">
+                                            <img src="{{ object.image_a.url }}" alt="IMG-PRODUCT">
+
+                                            <div class="block2-overlay trans-0-4">
+                                                <!--<a href="#" class="block2-btn-addwishlist hov-pointer trans-0-4">-->
+                                                <!--<i class="icon-wishlist icon_heart_alt" aria-hidden="true"></i>-->
+                                                <!--<i class="icon-wishlist icon_heart dis-none" aria-hidden="true"></i>-->
+                                                <!--</a>-->
+
+                                                {% if product.has_variants is False %}
+                                                <form class="form-product-ajax block2-btn-addcart w-size1 trans-0-4" method='POST' action="{% url 'cart:add' %}" data-endpoint="{% url 'cart:add' %}">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="product_id" value="{{ object.id }}" />
+                                                    <!-- Button -->
+                                                    <button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                        Add to Cart
+                                                    </button>
+                                                </form>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        <div class="block2-txt p-t-20">
+                                            <a href="{{ object.get_absolute_url }}" class="block2-name dis-block s-text3 p-b-5">
+                                                {{ object.title }}
+                                            </a>
+
+                                            <div class="row">
+                                                <div class="col-6 col-sm-6">
+                                                    <span class="block2-price m-text6 p-r-5">₦{{ object.price }}</span>
+                                                </div>
+                                                <div class="col-6 col-sm-6 col-md-6 ml-auto">
+                                                    <form method="get" action="{{ object.get_absolute_url }}">
+                                                        <button class="flex-c-m size4 bg8 bo-rad-23 hov1 s-text1 trans-0-4">
+                                                            View
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                {% endif %}
+
+
+				<!-- Product Section -->
+                <section class="allproduct bgwhite mb-5">
+
+                    <!--Section Header-->
+                    <div class="sec-title p-b-15">
+                        <h3 class="m-text5 t-center">
+                            All Products
+                        </h3>
+                    </div>
+
+                    <!--Search box-->
+                    <div class="search-product pos-relative bo4 mb-2 of-hidden">
+                        <form method='GET' action='{% url "search:query" %}' class="form my-2 my-lg-0 search-form">
+                            <input class="s-text7 size6 p-l-23 p-r-50" type="text" name="q" placeholder="Search Products..." value='{{ request.GET.q }}'>
+                            <button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
+                                <i class="fs-12 fa fa-search" aria-hidden="true"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Pagination Breadcrumb -->
+                    <div class="row">
+                        <span class="col-12 text-right s-text8 p-t-15 p-b-10">
+                            {% with obj=object_list %}
+                            Showing {{ obj.start_index }} – {{ obj.end_index }} of {{ paginator.count }} results
+                            {% endwith %}
+                        </span>
+                    </div>
+
+                    <!-- Product -->
+                    <div class="row">
+                        {% for object in object_list %}
+                        <div class="col-6 col-sm-6 col-md-6 col-lg-4 p-b-50">
+                        {% include 'store/snippets/card.html' with instance=object %}
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Pagination Breadcrumb -->
+                    <div class="row">
+                        <span class="col-12 text-right s-text8 p-t-15 p-b-10">
+                            {% with obj=object_list %}
+                            Showing {{ obj.start_index }} – {{ obj.end_index }} of {{ paginator.count }} results
+                            {% endwith %}
+                        </span>
+                    </div>
+                </section>
+
+				<!-- Pagination -->
+			    {% if object_list.has_other_pages %}
+				<div class="pagination flex-m flex-w p-t-26">
+					<!--<a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">1</a>-->
+					<!--<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>-->
+					{% for i in object_list.paginator.page_range %}
+					{% if object_list.number == i %}
+					<a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">{{ i }}</a>
+					{% else %}
+					<a href="?page={{ i }}" class="item-pagination flex-c-m trans-0-4">{{ i }}</a>
+					{% endif %}
+					{% endfor %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</section>
+
+{% endblock %}

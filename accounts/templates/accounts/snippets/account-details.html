@@ -1,0 +1,94 @@
+{% extends "accounts/home.html" %}
+{% load static %}
+
+
+{% block panel %}
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="account-details-tab" data-toggle="tab" href="#account-details" role="tab" aria-controls="account-details" aria-selected="true">Account Details</a>
+        </li>
+        <li class="nav-item">
+            <!--<a class="nav-link" id="address-book-tab" data-toggle="tab" href="#address-book" role="tab" aria-controls="address-book" aria-selected="false">Address Book</a>-->
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <!--ACCOUNT DETAILS TAB-->
+        <div class="tab-pane fade show active" id="account-details" role="tabpanel" aria-labelledby="account-details-tab">
+            <div class="row">
+
+                <!--User Details-->
+                <div class="col-12 col-md-5 mt-4 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Details</h5>
+                            <p>{{ user.get_user_details | linebreaks }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Update user information-->
+                <div class="col-12 col-md-7 mt-4 m-b-200 mx-auto">
+                    <div class="card">
+                        <div class="card-body">
+                            <form method="POST" action="{% url 'account:details-update' %}">
+                                {% csrf_token %}
+                                <h5 class="s-text18">Update Details</h5>
+                                <!--{{ user_form.as_p }}-->
+                                <p>{{ form.non_field_errors.as_text }}</p>
+                                {% for hidden_field in form.hidden_fields %}
+                                {{ hidden_field.errors }}
+                                {{ hidden_field }}
+                                {% endfor %}
+
+                                <div class="col-10">
+                                    <span for="id_full_name"><p>Full name:</p></span>
+                                </div>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" placeholder="First and last name." maxlength="120" id="id_full_name">
+                                </div>
+                                <div class="col-10">
+                                    <span for="id_full_name"><p>Email:</p></span>
+                                </div>
+                                <div class="col-10 size13 bo4 m-b-42 mx-auto">
+                                    <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" value="{{ request.user.email }}" disabled="disabled">
+                                    <span class="txt1">Cannot change email</span>
+                                </div>
+
+                                <div class="size10 trans-0-2 m-t-10 m-b-10 mx-auto">
+                                    <!-- Button -->
+                                    <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                                        Update
+                                    </button>
+                                </div>
+                            </form>
+
+                            <div class="col-10 m-t-50 m-b-12 mx-auto">
+                                <a class="text-center" href="{% url 'password_change' %}"><P>Password Reset?</P></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+{% block js %}
+<script>
+
+</script>
+
+<script>
+    function deleteFunction(e) {
+        if(!confirm("Are you sure you want to delete?")){
+            e.preventDefault();
+        }
+    }
+</script>
+{% endblock %}

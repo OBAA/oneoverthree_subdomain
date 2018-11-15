@@ -1,0 +1,117 @@
+headerCartBody.prepend(
+                                "<li class=\"header-cart-item\">\n" +
+                                "\t<div class=\"header-cart-item-img\">\n" +
+                                "\t\t<a href=" + value.url + ">\n" +
+                                "\t\t\t<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
+                                "\t\t</a>\n" +
+                                "\t</div>\n" +
+                                "\n" +
+                                "\t<div class=\"header-cart-item-txt\">\n" +
+                                "\t\t<h4><a href=" + value.url + " >"+ value.title + "</a></h4>\n" +
+                                "\t\t<span class=\"header-cart-item-info\">\n" +
+                                value.quantity + " x ₦ " + value.price + "\n" +
+                                "\t\t</span>\n" +
+                                "\t</div>\n" +
+                                "</li>"
+							)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function refreshCart() {
+            console.log("In current cart");
+
+            var cartTable = $(".cart-table");
+            var cartBody = cartTable.find(".cart-body");
+            var cartTotals = $(".cart-totals");
+//                cartBody.html("<h1>Changed</h1>")/
+            var productRows = cartBody.find(".cart-products");
+            var currentUrl = window.location.href
+
+            var refreshCartUrl = '/api/cart/';
+            var refreshCartMethod = "GET";
+            var data = {};
+            $.ajax({
+                url: refreshCartUrl,
+                method: refreshCartMethod,
+                data: data,
+                success: function(data){
+                    var hiddenCartItemUpdateForm = $(".cart-item-update-form");
+                    var hiddenCartItemRemoveForm = $(".cart-item-remove-form");
+                    console.log("success")
+                    console.log(data)
+                    console.log(data.products)
+                    console.log(data.products.length)
+
+
+
+                    if (data.products.length > 0){
+                        // productRows.html(" ")
+
+                        // $.each(data.products, function(index, value){
+                        //     console.log(value)
+                        // 	var newCartItemUpdate = hiddenCartItemUpdateForm.clone();
+                        //     newCartItemUpdate.css("display", "block")
+                        // 	var newCartItemRemove = hiddenCartItemRemoveForm.clone();
+                        //     newCartItemRemove.css("display", "block")
+                        // 	console.log(value.quantity)
+                        // 	newCartItemUpdate.find(".cart-item-product-id").val(value.id)
+                        // 	newCartItemUpdate.find(".cart-item-product-quantity").val(value.quantity)
+                        // 	newCartItemRemove.find(".cart-item-product-id").val(value.id)
+                        //
+                        //
+                        //     cartBody.prepend("<tr><td data-th=\"Product\">\n" +
+                        //    "	<div class=\"row\">\n" +
+                        //    "		<div  class=\"cart-img-product b-rad-4 \">\n" +
+                        //    "			<a href=\"value.get_absolute_url\">\n" +
+                        //    "				<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
+                        //    "			</a>\n" +
+                        //    "      </div>\n" +
+                        //    "      <div class=\"col-md-9 text-left mt-sm-2\">\n" +
+                        //    "			<h4><a href=" + value.url + " class=\"block2-name\" >"+ value.title + "</a></h4>\n" +
+                        //    "          <p>" + value.brand + "</p>\n" +
+                        //    "      </div>\n" +
+                        //    "  </div>\n" +
+                        //    "</td>\n" +
+                        //    "\n" +
+                        //    "<td data-th='Price'>₦ " + value.price + "</td>\n" +
+                        //    "\n" +
+                        //    "<td data-th='Quantity'>\n" + newCartItemUpdate.html() + "</td>\n" +
+                        //    "\n" +
+                        //    "<td class=\"actions\">\n" + newCartItemRemove.html() + "</td>\n" +
+                        //    "\n" +
+                        //    "</tr>")
+                        // })
+
+
+                        // Refresh Cart Totals
+                        cartTotals.find(".cart-total").text('₦' + data.cartTotal)
+                    }
+
+                    else {
+                        console.log("Didn't Work");
+                        window.location.href = currentUrl
+                    }
+                },
+                error: function(errordata){
+                    console.log("error")
+                    console.log(errordata)
+                }
+            })
+        }

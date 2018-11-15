@@ -1,0 +1,55 @@
+{% load static %}
+
+
+<div class="container-menu-header-v2 p-t-26">
+	<!--Header Desktop-->
+	<div class="topbar2">
+		<!-- Topbar social -->
+		<div class="topbar-social">
+			<a href="https://www.instagram.com/oneoverthree.store/" class="topbar-social-item fa fa-instagram"></a>
+			<a href="#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
+			<a href="#" class="fs-18 color1 p-r-20 fa fa-twitter-square"></a>
+			<a href="#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
+			<a href="#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
+		</div>
+
+		<!-- Logo2 -->
+		<a href="{{ home_url }}" class=" logo2 img-responsive">
+			<img src="{% static 'img/icons/logo.png' %}" alt="IMG-LOGO">
+		</a>
+
+		<div class="topbar-child2">
+			<span class="topbar-email">
+				<!--1over3collective@gmail.com-->
+				{% if user.is_authenticated %}
+				Hello, {{ user.first_name }}
+				{% endif %}
+			</span>
+
+			<!--Header User-->
+			<div class="header-wrapicon1 dis-block m-l-30">
+				<img src="{% static 'img/icons/icon-header-01.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+				{% include 'accounts/snippets/header-user-profile.html' %}
+			</div>
+
+			<span class="linedivide1"></span>
+
+			<!--Header Cart-->
+			{% with cart_count=cart|length %}
+			<div class="header-wrapicon2 m-r-13">
+				<img src="{% static 'img/icons/icon-header-02.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+				<span class="header-icons-noti navbar-cart-count">{{ cart_count }}</span>
+				{% include 'cart/snippets/header-cart.html' %}
+			</div>
+			{% endwith %}
+		</div>
+	</div>
+
+	<!--Menu Desktop-->
+	<div class="wrap_header">
+		<!-- Menu -->
+		<div class="wrap_menu">
+			{% include 'base/snippets/main-menu-navbar.html' %}
+		</div>
+	</div>
+</div>

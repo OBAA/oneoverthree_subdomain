@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({% static 'img/header/men.jpg' %});">
+	<h2 class="l-text2 t-center">
+		Men
+	</h2>
+	<p class="m-text13 t-center">
+		Mens Collection 2018
+	</p>
+</section>
+
+
+<!-- Content page -->
+<section class="bgwhite p-t-55 p-b-65">
+	<div class="container">
+		<div class="row">
+			<!--Left-Bar-Category-->
+			<div class="col-4 col-sm-3 col-md-4 col-lg-3">
+				<div class="row">
+					<!--  -->
+					<div class="col-3">
+						<h4 class="m-text14 p-b-7">Categories</h4>
+
+						<ul class="p-b-54">
+							<li class="p-t-4">
+								<a href="#" class="s-text13 active1">All</a>
+							</li>
+
+							<li class="p-t-4">
+								<a href="#" class="s-text13">Women</a>
+							</li>
+
+							<li class="p-t-4">
+								<a href="#" class="s-text13">Men</a>
+							</li>
+
+							<li class="p-t-4">
+								<a href="#" class="s-text13">Kids</a>
+							</li>
+
+							<li class="p-t-4">
+								<a href="#" class="s-text13">Accesories</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-8 col-sm-9 col-md-8 col-lg-9 mt-2">
+				<!--Search box-->
+				<div class="search-product pos-relative bo4 mb-5 of-hidden">
+					<form method='GET' action='{% url "search:query" %}' class="form my-2 my-lg-0 search-form">
+						<input class="s-text7 size6 p-l-23 p-r-50" type="text" name="q" placeholder="Search Products..." value='{{ request.GET.q }}'>
+						<button class="flex-c-m size5 ab-r-m color2 color0-hov trans-0-4">
+							<i class="fs-12 fa fa-search" aria-hidden="true"></i>
+						</button>
+					</form>
+				</div>
+
+				<!--Top-Bar-Query-Filter-->
+				<div class="row">
+					<!--<div class="col-10 col-md-4 col-lg-3 m-t-5 m-b-5">-->
+						<!--<select class="selection-2" name="sorting">-->
+							<!--<option>Default Sorting</option>-->
+							<!--<option>Popularity</option>-->
+							<!--<option>Price: low to high</option>-->
+							<!--<option>Price: high to low</option>-->
+						<!--</select>-->
+					<!--</div>-->
+
+					<!--<div class="col-10 col-md-4 col-lg-3 m-t-5 m-b-5">-->
+						<!--<select class="selection-2" name="sorting">-->
+							<!--<option>Price</option>-->
+							<!--<option>$0.00 - $50.00</option>-->
+							<!--<option>$50.00 - $100.00</option>-->
+							<!--<option>$100.00 - $150.00</option>-->
+							<!--<option>$150.00 - $200.00</option>-->
+							<!--<option>$200.00+</option>-->
+						<!--</select>-->
+					<!--</div>-->
+				</div>
+			</div>
+
+			<!--Pagination-->
+			<span class="col-12 text-right s-text8 p-t-5 p-b-5">
+				Showing 1–12 of 16 results
+			</span>
+
+            <!-- Product -->
+            <div class="row">
+                {% for object in object_list %}
+                {% include 'store/snippets/card.html' with instance=object %}
+                {% endfor %}
+            </div>
+
+			<!-- Pagination -->
+			<div class="pagination flex-m flex-w p-t-26">
+				<a href="#" class="item-pagination flex-c-m trans-0-4 active-pagination">1</a>
+				<a href="#" class="item-pagination flex-c-m trans-0-4">2</a>
+			</div>
+		</div>
+
+	</div>
+	</div>
+</section>
+
+{% endblock %}
+

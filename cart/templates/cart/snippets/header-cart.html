@@ -1,0 +1,57 @@
+<!--Header cart content-->
+{% if cart|length > 0 %}
+<div class="header-cart header-dropdown">
+	<ul class="header-cart-wrapitem">
+		{% for item in cart.get_items %}
+			{% with product=item.product %}
+				<li class="header-cart-item">
+					<div class="header-cart-item-img">
+						<img src="{{ product.image_a.url }}" alt="IMG">
+					</div>
+
+					<div class="header-cart-item-txt">
+						<a href="{{ product.get_absolute_url }}" class="header-cart-item-name">
+							{{ product.title }}
+						</a>
+
+						<span class="header-cart-item-info">
+							{{ item.quantity }} x ₦{{ product.price }}
+						</span>
+
+						<span class="header-cart-item-info">
+							{{ item.size }}
+						</span>
+					</div>
+				</li>
+			{% endwith %}
+		{% endfor %}
+	</ul>
+	<!--Cart Total-->
+	<div class="header-cart-total">
+		Total: ₦{{ cart.get_total }}
+	</div>
+
+	<div class="header-cart-buttons">
+		<div class="header-cart-wrapbtn">
+			<!-- Button -->
+			<a href="{{ cart_url }}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+				View Cart
+			</a>
+		</div>
+
+		<div class="header-cart-wrapbtn">
+			<!-- Button -->
+			<a href="{{ checkout_url }}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+				Checkout
+			</a>
+		</div>
+	</div>
+</div>
+
+{% else %}
+<div class="header-cart header-dropdown">
+	<ul class="header-cart-wrapitem">
+		<p class="lead">Cart is empty</p>
+	</ul>
+</div>
+{% endif %}

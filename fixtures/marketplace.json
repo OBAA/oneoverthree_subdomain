@@ -1,0 +1,102 @@
+[
+{
+    "model": "marketplace.store",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "title": "1O3",
+        "slug": "1o3",
+        "seller_type": "brand",
+        "description": "Urban Clothing Brand",
+        "instagram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "background_image_a": "store/1270197006931/1270197006931.png",
+        "background_image_b": "store/84974104047749/84974104047749.png",
+        "ordering": 1,
+        "timestamp": "2018-09-22T17:02:50.433Z",
+        "is_active": true,
+        "featured": true,
+        "parent": 3,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "marketplace.store",
+    "pk": 2,
+    "fields": {
+        "user": 7,
+        "title": "WALKR",
+        "slug": "walkr",
+        "seller_type": "brand",
+        "description": "Young & Beautiful Collection",
+        "instagram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "background_image_a": "store/56398200924144/56398200924144.jpg",
+        "background_image_b": "store/30894142007307/30894142007307.jpg",
+        "ordering": 2,
+        "timestamp": "2018-09-22T17:51:02.226Z",
+        "is_active": true,
+        "featured": true,
+        "parent": 3,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "marketplace.store",
+    "pk": 3,
+    "fields": {
+        "user": 2,
+        "title": "Marketplace",
+        "slug": "marketplace",
+        "seller_type": "retailer",
+        "description": "Your Favourite Stores and Brands.",
+        "instagram": "",
+        "twitter": "",
+        "whatsapp": "",
+        "background_image_a": "store/88857210602210/88857210602210.jpg",
+        "background_image_b": "store/30810940649622/30810940649622.jpg",
+        "ordering": 1,
+        "timestamp": "2018-09-22T18:17:43.338Z",
+        "is_active": true,
+        "featured": false,
+        "parent": null,
+        "lft": 1,
+        "rght": 10,
+        "tree_id": 1,
+        "level": 0
+    }
+},
+{
+    "model": "marketplace.store",
+    "pk": 4,
+    "fields": {
+        "user": 6,
+        "title": "Hemarblack",
+        "slug": "hemarblack",
+        "seller_type": "brand",
+        "description": "Redefining Bespoke",
+        "instagram": "@hemarblack",
+        "twitter": "",
+        "whatsapp": "",
+        "background_image_a": "store/10442588917738/10442588917738.jpg",
+        "background_image_b": "store/1706469692957/1706469692957.jpg",
+        "ordering": 2,
+        "timestamp": "2018-09-22T18:24:42.201Z",
+        "is_active": true,
+        "featured": true,
+        "parent": 3,
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 1,
+        "level": 1
+    }
+}
+]

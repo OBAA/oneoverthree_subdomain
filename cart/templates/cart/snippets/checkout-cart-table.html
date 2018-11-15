@@ -1,0 +1,46 @@
+<table id="cart" class="table table-condensed" >
+    {% if cart|length > 0 %}
+
+    <thead>
+    <tr>
+        <th style="width:55%">Product</th>
+        <th style="width:15%">Size</th>
+        <th style="width:15%">Price</th>
+        <th style="width:15%">Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in cart.get_items %}
+    {% with product=item.product %}
+    <tr>
+        <!--<td data-th="Product">-->
+        <td data-th="Product">
+            <div class="row">
+                <div  class="cart-img-product b-rad-4 ">  <!--class="col-md-3 text-left" -->
+                    <a href="{{ product.get_absolute_url }}">
+                        <img src="{{ product.image_a.url }}" alt="IMG-PRODUCT">
+                    </a>
+                </div>
+                <div class="col-md-9 text-left mt-sm-2">
+                    <h4><a href="{{ product.get_absolute_url }}"> {{ product.title }} </a></h4>
+                    <p>{{ product.brand }}</p>
+                </div>
+            </div>
+        </td>
+
+        <td data-th="Size"> {{ item.size }} </td>
+
+        <td data-th="Price"> ₦{{ product.price }} </td>
+
+        <td data-th="Quantity"> {{ item.quantity }} </td>
+    </tr>
+
+    {% endwith %}
+    {% endfor %}
+    </tbody>
+    {% else %}
+    <tr class="cart-store">
+        <td class="col"><p class="lead text-center">Cart is empty</p></td>
+    </tr>
+    {% endif %}
+</table>

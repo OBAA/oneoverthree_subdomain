@@ -1,0 +1,45 @@
+{% load static %}
+<div class="container-menu-header-v3">
+    <div class="wrap_header3 p-t-74">
+        <!-- Logo -->
+        <a href="{{ home_url }}" class="logo3">
+            <img src="{% static 'img/icons/logo.png' %}" alt="IMG-LOGO">
+        </a>
+
+        <!--Header User Icon-->
+        <div class="header-icons3 p-t-38 p-b-60 p-l-8">
+            <div class="header-wrapicon1 dis-block">
+                <img src="{% static 'img/icons/icon-header-01.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+                {% include 'accounts/snippets/header-user-profile.html' %}
+            </div>
+
+            <span class="linedivide1"></span>
+
+            <!--Header Cart-->
+            {% with cart_count=cart|length %}
+            <div class="header-wrapicon2">
+                <img src="{% static 'img/icons/icon-header-02.png' %}" class="header-icon1 js-show-header-dropdown" alt="ICON">
+                <span class="header-icons-noti navbar-cart-count">{{ cart_count }}</span>
+                {% include 'cart/snippets/header-cart.html' %}
+            </div>
+            {% endwith %}
+        </div>
+
+        <!-- Menu -->
+        <div class="wrap_menu">
+            {% include 'base/snippets/main-menu-navbar.html' %}
+        </div>
+    </div>
+
+
+
+    <div class="bottombar flex-col-c p-b-65">
+        <div class="bottombar-social t-center p-b-8">
+            <a href="https://www.instagram.com/oneoverthree.store/" class="topbar-social-item fa fa-instagram"></a>
+            <a href="#" class="fs-18 color1 p-r-20 fa fa-facebook"></a>
+            <a href="#" class="fs-18 color1 p-r-20 fa fa-twitter-square"></a>
+            <a href="#" class="fs-18 color1 p-r-20 fa fa-snapchat-ghost"></a>
+            <a href="#" class="fs-18 color1 p-r-20 fa fa-youtube-play"></a>
+        </div>
+    </div>
+</div>

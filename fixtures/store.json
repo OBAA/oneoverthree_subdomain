@@ -1,0 +1,811 @@
+[
+{
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+        "title": "All",
+        "slug": "all",
+        "background_image": "store/61041222027964/61041222027964.jpg",
+        "description": "All Products In Store",
+        "order": 1,
+        "is_active": true,
+        "parent": null,
+        "lft": 1,
+        "rght": 6,
+        "tree_id": 1,
+        "level": 0
+    }
+},
+{
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+        "title": "Men",
+        "slug": "men",
+        "background_image": "store/4483403076822/4483403076822.jpg",
+        "description": "Mens Collection 2018",
+        "order": 2,
+        "is_active": true,
+        "parent": 1,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+        "title": "Women",
+        "slug": "women",
+        "background_image": "store/52690263608518/52690263608518.jpg",
+        "description": "Womens Collection 2018",
+        "order": 3,
+        "is_active": true,
+        "parent": 1,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "store.brand",
+    "pk": 1,
+    "fields": {
+        "title": "1O3",
+        "slug": "1O3",
+        "description": "Urban Streetwear",
+        "background_image_a": "store/29553811306785/29553811306785.jpg",
+        "background_image_b": "store/19700975276166/19700975276166.png",
+        "order": 2,
+        "timestamp": "2018-09-18T20:57:01.718Z",
+        "is_active": true,
+        "featured": true,
+        "parent": 2,
+        "lft": 2,
+        "rght": 3,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "store.brand",
+    "pk": 2,
+    "fields": {
+        "title": "All",
+        "slug": "all",
+        "description": "All Brand Products",
+        "background_image_a": "store/48355458585463/48355458585463.jpg",
+        "background_image_b": "",
+        "order": 1,
+        "timestamp": "2018-09-18T21:04:53.831Z",
+        "is_active": true,
+        "featured": false,
+        "parent": null,
+        "lft": 1,
+        "rght": 8,
+        "tree_id": 1,
+        "level": 0
+    }
+},
+{
+    "model": "store.brand",
+    "pk": 3,
+    "fields": {
+        "title": "WALKR",
+        "slug": "walkr",
+        "description": "Young & Beautiful collection",
+        "background_image_a": "store/94428675873745/94428675873745.jpg",
+        "background_image_b": "store/89513967745141/89513967745141.jpg",
+        "order": 3,
+        "timestamp": "2018-09-18T21:56:34.479Z",
+        "is_active": true,
+        "featured": true,
+        "parent": 2,
+        "lft": 4,
+        "rght": 5,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "store.brand",
+    "pk": 4,
+    "fields": {
+        "title": "Hemarblack",
+        "slug": "hemarblack",
+        "description": "Redefining Bespoke",
+        "background_image_a": "store/49559216840153/49559216840153.jpg",
+        "background_image_b": "store/11999378514574/11999378514574.jpg",
+        "order": 4,
+        "timestamp": "2018-09-18T21:59:19.559Z",
+        "is_active": true,
+        "featured": true,
+        "parent": 2,
+        "lft": 6,
+        "rght": 7,
+        "tree_id": 1,
+        "level": 1
+    }
+},
+{
+    "model": "store.product",
+    "pk": 7,
+    "fields": {
+        "title": "Walkr side detail pants",
+        "slug": "walkr-side-detail-pants",
+        "product_type": 1,
+        "store": 2,
+        "category": 2,
+        "brand": "WALKR",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam molestie facilisis pharetra. Ut eu metus eu quam sodales posuere. Proin ipsum nisl, porttitor et ante eget, pharetra gravida quam.",
+        "extra_description": "",
+        "base_price": "8500.00",
+        "price": "8500.00",
+        "image_a": "store/89596025934091/89596025934091.jpg",
+        "image_b": "store/60051615716621/60051615716621.jpg",
+        "image_c": "store/27976656153262/27976656153262.jpg",
+        "has_variants": true,
+        "featured": true,
+        "new_in": false,
+        "on_sale": false,
+        "is_active": true,
+        "discount": 0,
+        "stock": 6,
+        "timestamp": "2018-08-25T18:18:22.922Z",
+        "tags": [
+            1
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 9,
+    "fields": {
+        "title": "Walkr branded t-shirt in black",
+        "slug": "walkr-branded-t-shirt-in-black",
+        "product_type": 1,
+        "store": 2,
+        "category": 2,
+        "brand": "WALKR",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In suscipit scelerisque dui in vestibulum. Pellentesque aliquam eros ex, ac viverra mauris porta et.",
+        "extra_description": "",
+        "base_price": "4500.00",
+        "price": "4500.00",
+        "image_a": "store/1303071029190/1303071029190.JPG",
+        "image_b": "store/90983193661452/90983193661452.JPG",
+        "image_c": "store/36564923957608/36564923957608.JPG",
+        "has_variants": true,
+        "featured": true,
+        "new_in": false,
+        "on_sale": true,
+        "is_active": true,
+        "discount": 0,
+        "stock": 4,
+        "timestamp": "2018-09-05T11:43:43.832Z",
+        "tags": [
+            2,
+            3
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 10,
+    "fields": {
+        "title": "Hemarblack brown oxford shoes",
+        "slug": "hemarblack-brown-oxford-shoes",
+        "product_type": 3,
+        "store": 4,
+        "category": 2,
+        "brand": "Hemarblack",
+        "description": "Premium quality hand made shoes proudly made in lagos.\r\nBuilt to perfection with quality brown leather.",
+        "extra_description": "Premium quality hand made shoes proudly made in lagos.\r\nBuilt to perfection with quality brown leather.",
+        "base_price": "15000.00",
+        "price": "15000.00",
+        "image_a": "store/21383441608007/21383441608007.JPG",
+        "image_b": "store/69686336005462/69686336005462.JPG",
+        "image_c": "store/97984095439243/97984095439243.JPG",
+        "has_variants": true,
+        "featured": true,
+        "new_in": false,
+        "on_sale": false,
+        "is_active": true,
+        "discount": 0,
+        "stock": 12,
+        "timestamp": "2018-09-18T22:52:12.865Z",
+        "tags": [
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 11,
+    "fields": {
+        "title": "Hemarblack brown tassel loafers",
+        "slug": "hemarblack-brown-tassel-loafers",
+        "product_type": 1,
+        "store": 4,
+        "category": 2,
+        "brand": "Hemarblack",
+        "description": "Brown tassel loafers perfect for weekend occasions.",
+        "extra_description": "",
+        "base_price": "15000.00",
+        "price": "12000.00",
+        "image_a": "store/47505712406601/47505712406601.JPG",
+        "image_b": "store/12383051737295/12383051737295.JPG",
+        "image_c": "store/18760370315176/18760370315176.JPG",
+        "has_variants": false,
+        "featured": false,
+        "new_in": false,
+        "on_sale": true,
+        "is_active": true,
+        "discount": 20,
+        "stock": 28,
+        "timestamp": "2018-09-18T22:56:40.158Z",
+        "tags": [
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 12,
+    "fields": {
+        "title": "Hemarblack blue with black suede tassel loafers",
+        "slug": "hemarblack-blue-with-black-suede-tassel-loafers",
+        "product_type": 3,
+        "store": 4,
+        "category": 2,
+        "brand": "Hemarblack",
+        "description": "Beautiful blue leather combined with  black tassels. Perfect with both casual jeans and native attires.",
+        "extra_description": "Dust regularly with damp cloath and store in a cool airy place.",
+        "base_price": "18000.00",
+        "price": "18000.00",
+        "image_a": "store/87319825896051/87319825896051.JPG",
+        "image_b": "store/98306529982505/98306529982505.JPG",
+        "image_c": "store/84633848177863/84633848177863.JPG",
+        "has_variants": true,
+        "featured": true,
+        "new_in": false,
+        "on_sale": false,
+        "is_active": true,
+        "discount": 0,
+        "stock": 34,
+        "timestamp": "2018-09-18T23:01:33.579Z",
+        "tags": [
+            7
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 14,
+    "fields": {
+        "title": "Hemarblack silver studded brown leather slippers",
+        "slug": "hemarblack-silver-studded-brown-leather-slippers",
+        "product_type": 3,
+        "store": 4,
+        "category": 2,
+        "brand": "Hemarblack",
+        "description": "Hemarblack brown leather slippers with silver studs. Fine quality made for rocksters.",
+        "extra_description": "",
+        "base_price": "12000.00",
+        "price": "12000.00",
+        "image_a": "store/88973471219462/88973471219462.JPG",
+        "image_b": "store/97918351982201/97918351982201.JPG",
+        "image_c": "store/61780176651176/61780176651176.JPG",
+        "has_variants": true,
+        "featured": false,
+        "new_in": false,
+        "on_sale": false,
+        "is_active": true,
+        "discount": 0,
+        "stock": 8,
+        "timestamp": "2018-09-18T23:13:29.057Z",
+        "tags": [
+            4,
+            5
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 28,
+    "fields": {
+        "title": "Hemarblack wine suede loafers",
+        "slug": "hemarblack-wine-suede-loafers-bzmu",
+        "product_type": 3,
+        "store": 4,
+        "category": 2,
+        "brand": "Hemarblack",
+        "description": "Made with wine quality suede... very easy wear and fashionable",
+        "extra_description": "Made with wine quality suede... very easy wear and fashionable",
+        "base_price": "23000.00",
+        "price": "23000.00",
+        "image_a": "store/57894239815317/57894239815317.jpg",
+        "image_b": "store/94849174192503/94849174192503.jpg",
+        "image_c": "store/61129367012762/61129367012762.jpg",
+        "has_variants": true,
+        "featured": false,
+        "new_in": false,
+        "on_sale": false,
+        "is_active": true,
+        "discount": 0,
+        "stock": 5,
+        "timestamp": "2018-10-13T16:48:26.763Z",
+        "tags": [
+            4
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 30,
+    "fields": {
+        "title": "1O3 orange hoodie",
+        "slug": "1o3-orange-hoodie-18qh",
+        "product_type": 5,
+        "store": 1,
+        "category": 2,
+        "brand": "1O3",
+        "description": "Orange hoodie made out of fine fabric.",
+        "extra_description": "Fabric oud.",
+        "base_price": "8500.00",
+        "price": "8500.00",
+        "image_a": "store/25308049964347/25308049964347.jpg",
+        "image_b": "store/82303191537043/82303191537043.jpg",
+        "image_c": "store/79113768496386/79113768496386.jpg",
+        "has_variants": true,
+        "featured": true,
+        "new_in": true,
+        "on_sale": false,
+        "is_active": true,
+        "discount": 0,
+        "stock": 7,
+        "timestamp": "2018-10-17T05:55:25.087Z",
+        "tags": [
+            8
+        ]
+    }
+},
+{
+    "model": "store.product",
+    "pk": 33,
+    "fields": {
+        "title": "1O3 white hoodie",
+        "slug": "1o3-white-hoodie",
+        "product_type": 5,
+        "store": 1,
+        "category": 2,
+        "brand": "1O3",
+        "description": "hoooood",
+        "extra_description": "hoooood",
+        "base_price": "8500.00",
+        "price": "6800.00",
+        "image_a": "store/47841238735918/47841238735918.jpg",
+        "image_b": "store/70671777858149/70671777858149.JPG",
+        "image_c": "store/65656472363275/65656472363275.jpg",
+        "has_variants": true,
+        "featured": true,
+        "new_in": true,
+        "on_sale": true,
+        "is_active": true,
+        "discount": 20,
+        "stock": 8,
+        "timestamp": "2018-10-17T10:01:51.522Z",
+        "tags": [
+            8
+        ]
+    }
+},
+{
+    "model": "store.productreview",
+    "pk": 5,
+    "fields": {
+        "author": 1,
+        "product": 7,
+        "content": "sp",
+        "is_active": true,
+        "is_anonymous": false,
+        "timestamp": "2018-10-22T23:31:55.392Z"
+    }
+},
+{
+    "model": "store.productreview",
+    "pk": 6,
+    "fields": {
+        "author": 1,
+        "product": 7,
+        "content": "japa",
+        "is_active": true,
+        "is_anonymous": false,
+        "timestamp": "2018-10-22T23:33:06.234Z"
+    }
+},
+{
+    "model": "store.productreview",
+    "pk": 8,
+    "fields": {
+        "author": 1,
+        "product": 7,
+        "content": "Okay pop",
+        "is_active": true,
+        "is_anonymous": false,
+        "timestamp": "2018-10-22T23:39:14.610Z"
+    }
+},
+{
+    "model": "store.productreview",
+    "pk": 9,
+    "fields": {
+        "author": 1,
+        "product": 7,
+        "content": "Anonymous test",
+        "is_active": true,
+        "is_anonymous": true,
+        "timestamp": "2018-10-22T23:41:26.382Z"
+    }
+},
+{
+    "model": "store.productreview",
+    "pk": 10,
+    "fields": {
+        "author": 1,
+        "product": 7,
+        "content": "show my face",
+        "is_active": true,
+        "is_anonymous": false,
+        "timestamp": "2018-10-22T23:41:47.074Z"
+    }
+},
+{
+    "model": "store.productreview",
+    "pk": 11,
+    "fields": {
+        "author": 1,
+        "product": 10,
+        "content": "Very high quality. amazing job. ordering soon.",
+        "is_active": true,
+        "is_anonymous": true,
+        "timestamp": "2018-10-22T23:42:41.572Z"
+    }
+},
+{
+    "model": "store.productreview",
+    "pk": 12,
+    "fields": {
+        "author": 6,
+        "product": 10,
+        "content": "I love the shoes. They are so nice. Definitely ordering soon again.",
+        "is_active": true,
+        "is_anonymous": false,
+        "timestamp": "2018-10-23T01:11:07.005Z"
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 1,
+    "fields": {
+        "size": "M",
+        "product": 7,
+        "quantity": 10,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 2,
+    "fields": {
+        "size": "S",
+        "product": 7,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 3,
+    "fields": {
+        "size": "L",
+        "product": 7,
+        "quantity": 7,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 4,
+    "fields": {
+        "size": "S",
+        "product": 9,
+        "quantity": 9,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 6,
+    "fields": {
+        "size": "M",
+        "product": 9,
+        "quantity": 11,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 7,
+    "fields": {
+        "size": "L",
+        "product": 9,
+        "quantity": 7,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 96,
+    "fields": {
+        "size": "45",
+        "product": 11,
+        "quantity": 8,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 97,
+    "fields": {
+        "size": "44",
+        "product": 11,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 98,
+    "fields": {
+        "size": "43",
+        "product": 11,
+        "quantity": 5,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 99,
+    "fields": {
+        "size": "42",
+        "product": 11,
+        "quantity": 5,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 100,
+    "fields": {
+        "size": "41",
+        "product": 11,
+        "quantity": 5,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 101,
+    "fields": {
+        "size": "41",
+        "product": 10,
+        "quantity": 7,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 102,
+    "fields": {
+        "size": "40",
+        "product": 10,
+        "quantity": 13,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 103,
+    "fields": {
+        "size": "42",
+        "product": 10,
+        "quantity": 6,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 104,
+    "fields": {
+        "size": "43",
+        "product": 10,
+        "quantity": 6,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 109,
+    "fields": {
+        "size": "45",
+        "product": 12,
+        "quantity": 8,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 110,
+    "fields": {
+        "size": "44",
+        "product": 12,
+        "quantity": 8,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 111,
+    "fields": {
+        "size": "43",
+        "product": 12,
+        "quantity": 7,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 112,
+    "fields": {
+        "size": "42",
+        "product": 12,
+        "quantity": 8,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 121,
+    "fields": {
+        "size": "44",
+        "product": 28,
+        "quantity": 5,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 122,
+    "fields": {
+        "size": "43",
+        "product": 28,
+        "quantity": 6,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 123,
+    "fields": {
+        "size": "42",
+        "product": 28,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 124,
+    "fields": {
+        "size": "45",
+        "product": 14,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 125,
+    "fields": {
+        "size": "44",
+        "product": 14,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 126,
+    "fields": {
+        "size": "43",
+        "product": 14,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 127,
+    "fields": {
+        "size": "42",
+        "product": 14,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 128,
+    "fields": {
+        "size": "S",
+        "product": 30,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 129,
+    "fields": {
+        "size": "M",
+        "product": 30,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 130,
+    "fields": {
+        "size": "L",
+        "product": 30,
+        "quantity": 3,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 131,
+    "fields": {
+        "size": "S",
+        "product": 33,
+        "quantity": 2,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 132,
+    "fields": {
+        "size": "M",
+        "product": 33,
+        "quantity": 3,
+        "is_active": true
+    }
+},
+{
+    "model": "store.variation",
+    "pk": 133,
+    "fields": {
+        "size": "L",
+        "product": 33,
+        "quantity": 3,
+        "is_active": true
+    }
+}
+]

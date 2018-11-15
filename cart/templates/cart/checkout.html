@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+<section class="cart text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="mt-5 mb-2">Your Shopping Cart</h2>
+                <p class="mb-5"><span class="primary-color">{{ cart|length }}</span> Items in your cart</p>
+
+                <!--Cart Table-->
+                {% include 'cart/snippets/checkout-cart-table.html' %}
+
+                <!--Cart Totals-->
+                <div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-b-100 m-l-auto p-lr-15-sm">
+                    <h5 class="m-text20 p-b-24">
+                        Checkout
+                    </h5>
+
+                    <!--  -->
+                    <div class="flex-w flex-sb-m p-b-12">
+                        <span class="s-text18 w-size19 w-full-sm">
+                            Cart Total:
+                        </span>
+                        <span class="m-text21 w-size20 w-full-sm">
+                            ₦{{ cart.get_total }}
+                        </span>
+                    </div>
+
+                    {% if not billing_profile %}
+                    <!-- Create Billing Profile -->
+                    <div class="flex-w flex-sb bo10 p-t-15 p-b-20">
+
+                        <span class="s-text18 w-full w-full-sm">
+                            Login
+                        </span>
+
+                        <div class="w-full w-full-sm">
+                            {% include 'accounts/snippets/login_form.html' with form=login_form next_url=request.build_absolute_uri %}
+                        </div>
+                        <span class="s-text18 w-full w-full-sm mt-5">
+                            Continue as Guest
+                        </span>
+                        <div class="w-full w-full-sm">
+                            {% url "account:guest_register" as guest_register_url %}
+                            {% include 'accounts/snippets/login_form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <!-- Add Shipping Address -->
+                    <div class="flex-w flex-sb bo10 p-t-15 p-b-20">
+                        <span class="s-text18 w-size19 w-full-sm m-t-15">
+                            Use Address:
+                        </span>
+
+                        <div class="w-full w-full-sm">
+                            {% url 'checkout_finalize' as checkout_finalize %}
+                            {% include 'addresses/checkout-saved-addresses.html' %}
+                        </div>
+                        <!--Add Address-->
+                        <span class="s-text18 w-size19 w-full-sm m-t-30 mx-auto">
+                            Add Address:
+                        </span>
+                        <div class="w-full w-full-sm">
+                            {% url 'checkout_address_create' as checkout_address_create %}
+                            {% include 'addresses/checkout-address-form.html' %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+
+{% endblock %}

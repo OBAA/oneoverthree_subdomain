@@ -1,0 +1,15 @@
+from django.conf.urls import url
+
+from . import views
+
+
+app_name = 'dashboard'
+
+urlpatterns = [
+    url(r'^$', views.DashboardHomeView.as_view(), name='home'),
+    url(r'^add-product/$', views.AddProductView.as_view(), name='add-product'),
+    url(r'^update-product/$', views.UpdateProductFormView.as_view(), name='update-product'),
+    url(r'^delete-product/$', views.DeleteProductView.as_view(), name='delete-product'),
+    url(r'^order-processing/$', views.OrderProcessingView.as_view(), name='order-processing'),
+    url(r'^order-shipped/$', views.OrderShippedView.as_view(), name='order-shipped'),
+]

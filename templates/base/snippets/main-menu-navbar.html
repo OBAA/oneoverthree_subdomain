@@ -1,0 +1,37 @@
+{% load static %}
+
+<nav class="menu">
+    <ul class="main_menu">{% with url_name=request.resolver_match.url_name %}
+        <li class="{% if request.path == home_url %}active2{% endif %}">
+            <a href="{{ home_url }}">Home</a>
+        </li>
+
+        <li class="{% if request.path == store_url %}active2{% endif %}">
+            <a href="{{ store_url }}">Outlet</a>
+        </li>
+
+        <!--Product Sales Notification-->
+        <!--<li class="sale-noti">-->
+        <!--<a href="product.html">Sale</a>-->
+        <!--</li>-->
+
+        <li class="{% if request.path == blog_url %}active{% endif %}">
+            <a href="#">Blog</a>
+        </li>
+
+        <li class="{% if request.path == about_url %}active2{% endif %}">
+            <a href="#">About</a>
+        </li>
+
+        <li class="{% if request.path == contact_url %}active1{% endif %}">
+            <a href="{{ contact_url }}">Contact</a>
+        </li>
+
+        <!--<li class="marketplace">-->
+        <li class="{% if request.path == marketplace_url %}active2{% endif %}">
+            <a href="{{ marketplace_url }}">Marketplace</a>
+        </li>
+        {% endwith %}
+    </ul>
+</nav>
+

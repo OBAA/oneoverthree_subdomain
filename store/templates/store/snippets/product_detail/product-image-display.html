@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="wrap-slick3 flex-sb flex-w">
+    <div class="wrap-slick3-dots"></div>
+
+    <div class="slick3">
+        <div class="item-slick3" data-thumb="{{ object.image_a.url }}">
+            <div class="wrap-pic-w">
+                <img src="{{ object.image_a.url }}" alt="IMG-PRODUCT">
+            </div>
+        </div>
+        {% if object.image_b %}
+        <div class="item-slick3" data-thumb="{{ object.image_b.url }}">
+            <div class="wrap-pic-w">
+                <img src="{{object.image_b.url }}" alt="IMG-PRODUCT">
+            </div>
+        </div>
+        {% endif %}
+        {% if object.image_b %}
+        <div class="item-slick3" data-thumb="{{ object.image_c.url }}">
+            <div class="wrap-pic-w">
+                <img src="{{ object.image_c.url }}" alt="IMG-PRODUCT">
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>

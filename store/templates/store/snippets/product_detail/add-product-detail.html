@@ -1,0 +1,66 @@
+
+<form class="form-product-ajax" method="POST" action="{% url 'cart:update' %}" data-endpoint="{% url 'cart:update' %}">
+    {% csrf_token %}
+    <!--{{ form }}-->
+    <div class="p-t-33 p-b-60">
+        <!--Size-->
+        {% if product.has_variants is True %}
+        <div class="flex-m flex-w p-b-10">
+            {{ sizes.non_field_errors }}
+
+            {% for hidden_field in sizes.hidden_fields %}
+            {{ hidden_field.errors }}
+            {{ hidden_field }}
+            {% endfor %}
+
+            {% for field in sizes.visible_fields %}
+            <div class="s-text15 w-size15 t-center">
+                {{ field.label_tag }}
+            </div>
+
+            {{ field.errors }}
+            <div class="w-size16">
+                <div class="form-group">
+                    {{ field }}
+                </div>
+            </div>
+
+            <div class="row">
+                <span class="col-12  s-text8 p-t-5 p-b-5">
+                    {{ field.help_text }}
+                </span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="flex-r-m flex-w p-t-10">
+            <div class="w-size16 flex-m flex-w">
+                <div class="flex-w bo5 of-hidden m-r-22 m-t-10 m-b-10">
+                    <button class="btn-num-product-down color1 flex-c-m size7 bg8 eff2">
+                        <i class="fs-12 fa fa-minus" aria-hidden="true"></i>
+                    </button>
+
+                    <input type="hidden" name="product_id" id="id_product_id"  value="{{ product.id }}" />
+                    <input class="size8 m-text18 t-center num-product" type="number" id="id_quantity" name="product_quantity" value="1"/>
+
+
+                    <button class="btn-num-product-up color1 flex-c-m size7 bg8 eff2">
+                        <i class="fs-12 fa fa-plus" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class=" product-detail-addcart size9 trans-0-4 m-t-10 m-b-10">
+                    <!-- Button -->
+                    <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Container Selection -->
+	<div id="dropDownSelect1"></div>
+	<!--<div id="dropDownSelect2"></div>-->

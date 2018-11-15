@@ -1,0 +1,433 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>1OVER3 | Online fashion retail</title>
+	<!--  Static CSS: Select 2 -->
+	{% block header %}		<!--ENTER HEADER CONTENT-->		{% endblock %}
+	<link rel="stylesheet" type="text/css" href="{% static 'css/select2.min.css' %}">
+	{% include 'base/css.html' %}
+
+</head>
+
+<body class="animsition">
+
+{% load static %}
+{% url 'about' as about_url %}
+{% url 'admin:index' as admin_url %}
+{% url 'account:home' as account_url %}
+{% url 'cart:home' as cart_url %}
+{% url 'cart:checkout' as checkout_url %}
+{% url 'contact' as contact_url %}
+{% url 'account:dashboard:home' as dashboard_url %}
+{% url 'home' as home_url %}
+{% url 'account:login' as login_url %}
+{% url 'account:logout' as logout_url %}
+{% url 'marketplace:home' as marketplace_url %}
+{% url 'account:register' as register_url %}
+{% url 'search:query' as search_url %}
+{% url 'store:home' as store_url %}
+
+
+<!-- header fixed -->
+{% include 'base/header-fixed.html' %}
+
+<!-- top notification -->
+{% if not request.path == '/outlet/' %}
+	{% include 'base/top-notification.html' %}
+{% endif %}
+
+<!--header 2: Desktop / Mobile -->
+<header class="header2">
+
+	{% if request.path == '/outlet/' %}
+
+		<!-- Store Header desktop && Menu Desktop -->
+		{% include 'base/store-header-and-menu-desktop.html' %}
+
+	{% else %}
+
+		<!--Header desktop && Menu Desktop -->
+		{% include 'base/header-and-menu-desktop.html' %}
+
+	{% endif %}
+
+	<!--Header Mobile -->
+	{% include 'base/header-mobile.html' %}
+
+	<!--Menu Mobile -->
+	{% include 'base/menu-mobile.html' %}
+
+</header>
+
+
+{% if messages %}
+	{% for message in messages %}
+		{% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+			<div class="container alert alert-success messages">
+				<span{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+				{{ message }}<br/>
+				</span>
+			</div>
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+			<div class="container alert alert-info messages">
+				<span{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+				{{ message }}<br/>
+				</span>
+			</div>
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+			<div class="container alert alert-warning messages">
+				<span{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+				{{ message }}<br/>
+				</span>
+			</div>
+		{% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+			<div class="container alert alert-danger messages">
+				<span{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+				{{ message }}<br/>
+				</span>
+			</div>
+		{% endif %}
+	{% endfor %}
+{% endif %}
+
+
+{% block content %}		<!--ENTER PAGE CONTENT-->	{% endblock %}
+
+
+<!-- Footer -->
+{% include 'base/footer.html' %}
+
+
+<!-- Back to top -->
+<div class="btn-back-to-top bg0-hov" id="myBtn">
+	<span class="symbol-btn-back-to-top">
+		<i class="fa fa-angle-double-up" aria-hidden="true"></i>
+	</span>
+</div>
+
+
+
+
+
+
+
+<!--Include JS-->
+{% include 'base/js.html' %}
+
+<!--Main.js-->
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+    $(document).ready(function(){
+        // Auto Search
+        var searchForm = $(".search-form");
+        var searchInput = searchForm.find("[name='q']"); //input
+        var typingTimer;
+        var typingInterval = 5000; // 5 sec
+        var searchBtn = searchForm.find("[type='submit']");
+
+        searchInput.keyup(function (event) {
+            // key released
+            clearTimeout(typingTimer)
+            typingTimer = setTimeout(performSearch, typingInterval)
+        })
+
+        searchInput.keydown(function (event) {
+            //key pressed
+            clearTimeout(typingTimer)
+        })
+
+        function displaySearchLoading(){
+            searchBtn.addClass("disabled")
+            searchBtn.html("<i class='fa fa-spin fa-spinner'></i>")
+        }
+
+        function performSearch(){
+            displaySearchLoading()
+            var query = searchInput.val()
+            setTimeout(function(){
+                window.location.href='/search/?q=' + query
+            }, 5000)
+        }
+
+        // Get product quantity in Cart
+        var productQuantityInput = $(".product-quantity-ajax")
+        var productQuantity = productQuantityInput.attr("value")
+
+        // Add products to cart
+        var productForm = $(".form-product-ajax")
+
+        productForm.submit(function(event){
+            event.preventDefault();
+            var thisForm =$(this)
+//                var actionEndPoint = thisForm.attr("action");
+            var actionEndPoint = thisForm.attr("data-endpoint");
+            var httpMethod = thisForm.attr("method");
+            var formData = thisForm.serialize();
+
+            var navbarCount = $(".navbar-cart-count");
+            var currentPath = window.location.href;
+
+            $.ajax({
+                url: actionEndPoint,
+                method: httpMethod,
+                data: formData,
+                success: function(data){
+                    <!-- Navbar Count-->
+                    navbarCount.text(data.cartCount);
+
+                    if (currentPath.indexOf("cart") != -1){
+                        refreshCart()
+                    }
+
+                    if (currentPath.indexOf("store") != -1){
+                        refreshHeaderCart()
+                    }
+                },
+                error: function(errorData){
+                    console.log("error")
+                    console.log(errorData)
+                }
+            })
+        })
+
+        // Refresh Header cart
+        function refreshHeaderCart() {
+            console.log("In header cart");
+
+            var headerCart = $(".header-cart");
+            var headerCartBody = headerCart.find(".header-cart-wrapitem");
+            var productRows = headerCartBody.find(".header-cart-item");
+            var headerCartEmpty = headerCartBody.find(".header-cart-empty")
+            var currentUrl = window.location.href;
+
+            var refreshCartUrl = '/api/cart/';
+            var refreshCartMethod = "GET";
+            var data = {};
+
+            $.ajax({
+                url: refreshCartUrl,
+                method: refreshCartMethod,
+                data: data,
+                success: function(data){
+
+                    // console.log("success")
+                    // console.log(data)
+                    // console.log(data.product.length)
+                    // console.log(data.cartTotal)
+
+                    // Re-Visit this code
+                    if (data.product.length > 1) {
+                        headerCartBody.html(" ");
+                        // var value = data.product;
+                        $.each(data.product, function (index, value) {
+                            headerCartBody.prepend(
+                                "<li class=\"header-cart-item\">\n" +
+                                "\t<div class=\"header-cart-item-img\">\n" +
+                                "\t\t<a href=" + value.url + ">\n" +
+                                "\t\t\t<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
+                                "\t\t</a>\n" +
+                                "\t</div>\n" +
+                                "\n" +
+                                "\t<div class=\"header-cart-item-txt\">\n" +
+                                "\t\t<h4><a href=" + value.url + " >" + value.title + "</a></h4>\n" +
+                                "\t\t<span class=\"header-cart-item-info\">\n" +
+                                value.quantity + " x ₦ " + value.price + "\n" +
+                                "\t\t</span>\n" +
+                                "\t\t<span class=\"header-cart-item-info\">\n" + value.size + "</span>\n" +
+                                "\t</div>\n" +
+                                "</li>"
+                            )
+                        })
+                    }
+
+                    // Re-Visit this code
+                    if (data.product.length === 1){
+                        headerCart.html(" ");
+
+                        $.each(data.product, function(index, value) {
+                            // console.log(value)
+                            headerCart.prepend(
+                                "<ul class=\"header-cart-wrapitem\">\n" +
+                                // headerCartBody.prepend
+
+                                "<li class=\"header-cart-item\">\n" +
+                                "\t<div class=\"header-cart-item-img\">\n" +
+                                "\t\t<a href=" + value.url + ">\n" +
+                                "\t\t\t<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
+                                "\t\t</a>\n" +
+                                "\t</div>\n" +
+                                "\n" +
+                                "\t<div class=\"header-cart-item-txt\">\n" +
+                                "\t\t<h4><a href=" + value.url + " >"+ value.title + "</a></h4>\n" +
+                                "\t\t<span class=\"header-cart-item-info\">\n" +
+                                value.quantity + " x ₦ " + value.price + "\n" +
+                                "\t\t</span>\n" +
+                                "\t\t<span class=\"header-cart-item-info\">\n" + value.size + "</span>\n" +
+                                "\t</div>\n" +
+                                "</li>\n" +
+
+                                "\t</ul>\n" +
+                                "\t<div class=\"header-cart-total\">\n" +
+                                "\t\tTotal: ₦{{ cart.get_total }}\n" +
+                                "\t</div>\n" +
+                                "\n" +
+                                "\t<div class=\"header-cart-buttons\">\n" +
+                                "\t\t<div class=\"header-cart-wrapbtn\">\n" +
+                                "\t\t\t<a href=\"{{ cart_url }}\" class=\"flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4\">\n" +
+                                "\t\t\t\tView Cart\n" +
+                                "\t\t\t</a>\n" +
+                                "\t\t</div>\n" +
+                                "\n" +
+                                "\t\t<div class=\"header-cart-wrapbtn\">\n" +
+                                "\t\t\t<!-- Button -->\n" +
+                                "\t\t\t<a href=\"{{ checkout_url }}\" class=\"flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4\">\n" +
+                                "\t\t\t\tCheckout\n" +
+                                "\t\t\t</a>\n" +
+                                "\t\t</div>\n" +
+                                "\t</div>"
+                            )
+                        })
+
+                    } else {
+                        console.log("Didn't Work");
+                        window.location.href = currentUrl
+                    }
+
+                    // Refresh Cart Totals
+                    headerCart.find(".header-cart-total").text('Total: ₦' + data.cartTotal)
+                    console.log("xp 2")
+                },
+                error: function(errordata){
+                    console.log("error")
+                    console.log(errordata)
+                }
+            })
+
+        }
+
+        // Refresh main cart
+        function refreshCart() {
+            console.log("In current cart");
+
+            var cartTable = $(".cart-table");
+            var cartBody = cartTable.find(".cart-body");
+            var cartTotals = $(".cart-totals");
+            var productRows = cartBody.find(".cart-products");
+            var currentUrl = window.location.href
+
+            var refreshCartUrl = '/api/cart/';
+            var refreshCartMethod = "GET";
+            var data = {};
+            $.ajax({
+                url: refreshCartUrl,
+                method: refreshCartMethod,
+                data: data,
+                success: function(data){
+                    console.log("success")
+                    console.log(data)
+                    console.log(data.product)
+                    console.log(data.product.length)
+
+                    if (data.product.length > 0){
+                        productRows.html(" ")
+
+                        $.each(data.product, function(index, value){
+                            console.log(value)
+
+                            cartBody.prepend(
+                                "    <tr>\n" +
+                                "        <td data-th=\"Product\">\n" +
+                                "            <div class=\"row\">\n" +
+                                "                <div  class=\"cart-img-product b-rad-4 \">  <!--class=\"col-md-3 text-left\" -->\n" +
+                                "                    <a href=" + value.url + ">\n" +
+                                "                        <img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
+                                "                    </a>\n" +
+                                "                    <!--<img src=\"{{ product.image_a.url }}\" alt=\"IMG-PRODUCT\">-->\n" +
+                                "                </div>\n" +
+                                "                <div class=\"col-md-9 text-left mt-sm-2\">\n" +
+                                "                    <h4><a href=" + value.url + "class=\"block2-name\" >" + value.title + "</a></h4>\n" +
+                                "                    <p>" + value.brand + "</p>\n" +
+                                "                </div>\n" +
+                                "            </div>\n" +
+                                "        </td>\n" +
+                                "        <td data-th=\"Size\">" + value.size + "</td>\n" +
+                                "        <td data-th=\"Price\">₦" + value.price + "</td>\n" +
+                                "        <td data-th=\"Quantity\">\n" + value.quantity + "\n" +
+                                "            <form class='form-product-ajax' method='POST' action=\"{% url 'cart:update' %}\" data-endpoint=\"{% url 'cart:update' %}\">\n" +
+                                "                {% csrf_token %}\n" +
+                                "                <input class=\"cart-item-product-id\" type=\"hidden\" name=\"product_id\" value=" + value.id + " />\n" +
+                                "                <input class=\"cart-item-product-quantity form-control\" type=\"number\" name=\"product_detail_qty\" value=" + value.quantity + "/>\n" +
+                                "                <div class=\"product-updatecart\">\n" +
+                                "                    <button class=\"btn btn-white btn-md mb-2\"><i class=\"fa fa-refresh\" aria-hidden=\"true\"></i></i></button>\n" +
+                                "                </div>\n" +
+                                "            </form>\n" +
+                                "        </td>\n" +
+                                "        <td data-th=\"actions\">\n" +
+                                "            <form class=\"form-product-ajax\" method='POST' action=\"{% url 'cart:remove' %}\" data-endpoint=\"{% url 'cart:remove' %}\">\n" +
+                                "                 {% csrf_token %}\n" +
+                                "                 <div class=\"product-removecart text-right\">\n" +
+                                "                     <input class=\"cart-item-product-id\" type=\"hidden\" name=\"product_id\" value=" + value.id + " />\n" +
+                                "                     <input class=\"cart-item-product-id\" type=\"hidden\" name=\"product_slot\" value=" + value.slot + " />\n" +
+                                "                     <button class=\"btn btn-white btn-md mb-2\" type=\"submit\"><i class=\"fa fa-trash\"></i></button>\n" +
+                                "                 </div>\n" +
+                                "            </form>\n" +
+                                "        </td>\n" +
+                                "    </tr>")
+
+                            //      "<tr><td data-th=\"Product\">\n" +
+                            // "	<div class=\"row\">\n" +
+                            // "		<div  class=\"cart-img-product b-rad-4 \">\n" +
+                            // "			<a href=\"value.get_absolute_url\">\n" +
+                            // "				<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
+                            // "			</a>\n" +
+                            // "      </div>\n" +
+                            // "      <div class=\"col-md-9 text-left mt-sm-2\">\n" +
+                            // "			<h4><a href=" + value.url + " class=\"block2-name\" >"+ value.title + "</a></h4>\n" +
+                            // "          <p>" + value.brand + "</p>\n" +
+                            // "      </div>\n" +
+                            // "  </div>\n" +
+                            // "</td>\n" +
+                            // "\n" +
+                            // "<td data-th='Price'>₦ " + value.price + "</td>\n" +
+                            // "\n" +
+                            // "<td data-th='Quantity'>\n" + newCartItemUpdate.html() + "</td>\n" +
+                            // "\n" +
+                            // "<td class=\"actions\">\n" + newCartItemRemove.html() + "</td>\n" +
+                            // "\n" +
+                            // "</tr>")
+                        })
+
+
+                        // Refresh Cart Totals
+                        cartTotals.find(".cart-total").text('₦' + data.cartTotal)
+                    }
+
+                    else {
+                        console.log("Didn't Work");
+                        window.location.href = currentUrl
+                    }
+                },
+                error: function(errordata){
+                    console.log("error")
+                    console.log(errordata)
+                }
+            })
+        }
+
+
+    })
+</script>
+
+{% block js %}  {% endblock %}
+
+</body>
+</html>
+
+
+
+

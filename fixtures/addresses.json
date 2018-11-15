@@ -1,0 +1,286 @@
+[
+{
+    "model": "addresses.address",
+    "pk": 3,
+    "fields": {
+        "billing_profile": 8,
+        "name": "ofoegbu kingsley",
+        "address_line_1": "no 14 gbekee avenue",
+        "address_line_2": "",
+        "city": "port harcourt",
+        "state": "rivers state",
+        "country": "NG",
+        "postal_code": "50001",
+        "mobile_number": "07081032420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 4,
+    "fields": {
+        "billing_profile": 9,
+        "name": "OBAA django",
+        "address_line_1": "Lagos Nigeria.",
+        "address_line_2": "",
+        "city": "Ipaja",
+        "state": "Lagos",
+        "country": "Select a country...",
+        "postal_code": "100278",
+        "mobile_number": "7081032420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 5,
+    "fields": {
+        "billing_profile": 10,
+        "name": "Churchill",
+        "address_line_1": "53, Emerald close.",
+        "address_line_2": "",
+        "city": "Ipaja",
+        "state": "Lagos",
+        "country": "Select a country...",
+        "postal_code": "100278",
+        "mobile_number": "07081032420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 6,
+    "fields": {
+        "billing_profile": 10,
+        "name": "ofoegbu kingsley",
+        "address_line_1": "no 14 gbekee avenue",
+        "address_line_2": "",
+        "city": "port harcourt",
+        "state": "rivers state",
+        "country": "NG",
+        "postal_code": "50001",
+        "mobile_number": "05930893029",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 7,
+    "fields": {
+        "billing_profile": 11,
+        "name": "Dabiri Datsby",
+        "address_line_1": "Bowen Rd",
+        "address_line_2": "",
+        "city": "Iwo",
+        "state": "Osun state",
+        "country": "NG",
+        "postal_code": "100278",
+        "mobile_number": "09023235634",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 8,
+    "fields": {
+        "billing_profile": 12,
+        "name": "Xamani Mani",
+        "address_line_1": "12 Bedshire lane",
+        "address_line_2": "",
+        "city": "Oxford county",
+        "state": "Minnesota",
+        "country": "US",
+        "postal_code": "100278",
+        "mobile_number": "07081032420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 9,
+    "fields": {
+        "billing_profile": 13,
+        "name": "OBAA Global",
+        "address_line_1": "Lagos Nigeria.",
+        "address_line_2": "",
+        "city": "Ipaja",
+        "state": "Lagos",
+        "country": "Select a country...",
+        "postal_code": "100278",
+        "mobile_number": "7081032420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 17,
+    "fields": {
+        "billing_profile": 21,
+        "name": "Master Ddjango",
+        "address_line_1": "41, Town planning, shagari",
+        "address_line_2": null,
+        "city": "Lagos-isaland",
+        "state": "Lagos",
+        "country": "GH",
+        "postal_code": "100230",
+        "mobile_number": "fhmm",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 18,
+    "fields": {
+        "billing_profile": 21,
+        "name": "Mattew Dongo",
+        "address_line_1": "23 Mezifo class",
+        "address_line_2": null,
+        "city": "London county",
+        "state": "london",
+        "country": "CA",
+        "postal_code": "129mlde2",
+        "mobile_number": "080810792420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 22,
+    "fields": {
+        "billing_profile": 22,
+        "name": "OBAA Global",
+        "address_line_1": "Lagos Nigeria.",
+        "address_line_2": null,
+        "city": "Ipaja",
+        "state": "Lagos",
+        "country": "NG",
+        "postal_code": "100278",
+        "mobile_number": "7081032420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 23,
+    "fields": {
+        "billing_profile": 23,
+        "name": "Master Ddjango",
+        "address_line_1": "walking away",
+        "address_line_2": null,
+        "city": "from young & beautiful collection",
+        "state": "lagos",
+        "country": "NG",
+        "postal_code": "100230",
+        "mobile_number": "080810792420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 26,
+    "fields": {
+        "billing_profile": 14,
+        "name": "Ajax Batton",
+        "address_line_1": "747 Akoka highway",
+        "address_line_2": null,
+        "city": "Moneyview drive",
+        "state": "Abuja",
+        "country": "NG",
+        "postal_code": "123431",
+        "mobile_number": "070934538484",
+        "default": false
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 28,
+    "fields": {
+        "billing_profile": 6,
+        "name": "OBAA AMG",
+        "address_line_1": "Lagos Nigeria.",
+        "address_line_2": null,
+        "city": "Ipaja",
+        "state": "Lagos",
+        "country": "NG",
+        "postal_code": "100278",
+        "mobile_number": "7081032420",
+        "default": true
+    }
+},
+{
+    "model": "addresses.address",
+    "pk": 47,
+    "fields": {
+        "billing_profile": 15,
+        "name": "Shifu Master",
+        "address_line_1": "DB estate",
+        "address_line_2": null,
+        "city": "Ipaja",
+        "state": "Lagos",
+        "country": "NG",
+        "postal_code": "100278",
+        "mobile_number": "7081032420",
+        "default": false
+    }
+},
+{
+    "model": "addresses.shippingrate",
+    "pk": 1,
+    "fields": {
+        "country": "NG",
+        "state": "Lagos",
+        "city": "default",
+        "per_kg": 1000
+    }
+},
+{
+    "model": "addresses.shippingrate",
+    "pk": 2,
+    "fields": {
+        "country": "NG",
+        "state": "Abuja",
+        "city": "default",
+        "per_kg": 2500
+    }
+},
+{
+    "model": "addresses.productweight",
+    "pk": 1,
+    "fields": {
+        "product_type": "Accessory",
+        "weight": "0.5"
+    }
+},
+{
+    "model": "addresses.productweight",
+    "pk": 2,
+    "fields": {
+        "product_type": "Clothing",
+        "weight": "0.7"
+    }
+},
+{
+    "model": "addresses.productweight",
+    "pk": 3,
+    "fields": {
+        "product_type": "Shoe",
+        "weight": "1.0"
+    }
+},
+{
+    "model": "addresses.productweight",
+    "pk": 4,
+    "fields": {
+        "product_type": "Bag",
+        "weight": "1.0"
+    }
+},
+{
+    "model": "addresses.productweight",
+    "pk": 5,
+    "fields": {
+        "product_type": "Hoodie",
+        "weight": "0.8"
+    }
+}
+]
