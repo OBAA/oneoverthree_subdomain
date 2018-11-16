@@ -1,5 +1,5 @@
 from .base import *
-from .secrets import secrets
+from .local_secrets import secrets
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = secrets.get('SECRET_KEY')
@@ -33,11 +33,14 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'accounts.User'
 
+BASE_URL = '127.0.0.1:8000'
+
 CART_SESSION_ID = 'cart'
 
 DEFAULT_SITE_DOMAIN = '127.0.0.1:8000'
 
 DEFAULT_FROM_EMAIL = '1OVER3 Store <1over3collective@gmail.com>'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = secrets.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = secrets.get('EMAIL_HOST_PASSWORD')
@@ -65,6 +68,15 @@ MAILCHIMP_EMAIL_LIST_ID = secrets.get('MAILCHIMP_EMAIL_LIST_ID')
 PAYSTACK_SECRET_KEY = Paystack(secret_key=secrets.get('PAYSTACK_SECRET_KEY'))
 PAYSTACK_PUB_KEY = "pk_test_c88e3b49214ea1cfec35bdbff8ffc78829c6ca70"
 
+# Database
+# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
 
 CORS_REPLACE_HTTPS_REFERER      = False
 HOST_SCHEME                     = "http://"

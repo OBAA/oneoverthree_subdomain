@@ -2679,12 +2679,12 @@ li.sale-noti > a {
 */
 .bg-index-page {
   max-width: 100%;
-  min-height: 420px;
+  min-height: 350px;
   padding-left: 15px;
   padding-right: 15px;
   background-repeat: no-repeat;
   background-position: center 0;
-  background-size: cover;
+  background-size: contain;
 }
 
 @media (max-width: 576px) {
@@ -2693,12 +2693,12 @@ li.sale-noti > a {
 }
 
 
-/*[ BG Title Page ]
+/*[ BG Title Page 239 ]
 ///////////////////////////////////////////////////////////
 */
 .bg-title-page {
   width: 100%;
-  min-height: 239px;
+  min-height: 275px;
   padding-left: 15px;
   padding-right: 15px;
   background-repeat: no-repeat;

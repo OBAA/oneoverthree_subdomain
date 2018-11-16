@@ -7,6 +7,9 @@ bin/
 include/
 pip-selfcheck.json
 
+# Project secrets
+secrets.json
+
 # Django related
 oneoverthree/settings/local.py
 

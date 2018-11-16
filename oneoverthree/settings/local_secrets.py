@@ -9,4 +9,11 @@ secrets = {
     'MAILCHIMP_EMAIL_LIST_ID': '99607fb120',
     # 'EMAIL_HOST_PASSWORD': 'Naruto2015@21',
 
+    # SENDGRID
+    # "DEFAULT_FROM_EMAIL": "1OVER3 Store <admin@1over3.store>",
+    # "EMAIL_HOST": "smtp.sendgrid.net",
+    # "EMAIL_HOST_USER": "obaa",
+    # "EMAIL_HOST_PASSWORD": "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",
+    # "EMAIL_PORT": 587,
 }
+
