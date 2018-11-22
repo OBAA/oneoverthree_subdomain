@@ -18,15 +18,24 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.views.generic import RedirectView
 
+
 from . import views
+from account.views import GuestRegisterView, LoginView, RegisterView, StoreRegisterView
 from marketing.views import MailchimpWebhookView
 
 urlpatterns = [
     url(r'^$', views.StoreHomeView.as_view(), name='home'),
     # url(r'^about/$', about_page, name='about'),
     url(r'^contact/$', views.ContactFormView.as_view(), name='contact'),
+
+    url(r'^register/store/$', StoreRegisterView.as_view(), name='store_register'),
+    url(r'^register/guest/$', GuestRegisterView.as_view(), name='guest_register'),
+    url(r'^register/$', RegisterView.as_view(), name='register'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
 
     # Accounts
     url(r'^accounts/login/$', RedirectView.as_view(url='/account')),

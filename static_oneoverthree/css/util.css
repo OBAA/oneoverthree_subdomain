@@ -4047,11 +4047,19 @@ EFFECT   EFFECT   EFFECT   EFFECT   EFFECT   EFFECT  EFFECT
 }
 
 .overlay0 {
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0,0,0,0.1);
 }
 
 
-
+@media only screen
+and (min-device-width : 320px)
+and (max-device-width : 1024px)  {
+    .parallax0 {
+        background-attachment: unset !important;
+        background-position: center top !important;
+        /*background-size: contain;*/
+    }
+}
 
 
 

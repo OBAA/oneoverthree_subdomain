@@ -58,7 +58,7 @@ class AccountEmailActivateView(FormMixin, View):
                         Congratulations, Your email has been confirmed. Please login.
                                             """
                 messages.success(request, msg)
-                return redirect("account:login")
+                return redirect("login")
             else:
                 activated_qs = qs.filter(activated=True)
                 if activated_qs.exists():
@@ -67,7 +67,7 @@ class AccountEmailActivateView(FormMixin, View):
                     Do you need to <a href="{link}">reset your password?</a>?    
                     """.format(link=reset_link)
                     messages.success(request, mark_safe(msg))
-                    return redirect("account:login")
+                    return redirect("login")
         context = {'form': self.get_form(), 'key': key}
         return render(request, 'registration/activation-error.html', context)
 
