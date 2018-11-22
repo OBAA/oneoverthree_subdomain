@@ -12,6 +12,7 @@ secrets.json
 
 # Django related
 oneoverthree/settings/local.py
+oneoverthree/settings/__pycache__/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
