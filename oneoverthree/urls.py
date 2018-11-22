@@ -23,7 +23,7 @@ from django.views.generic import RedirectView
 
 
 from . import views
-from account.views import GuestRegisterView, LoginView, RegisterView, StoreRegisterView
+from accounts.views import GuestRegisterView, LoginView, RegisterView, StoreRegisterView
 from marketing.views import MailchimpWebhookView
 
 urlpatterns = [
