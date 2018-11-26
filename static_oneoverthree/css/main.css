@@ -2247,7 +2247,7 @@ li.sale-noti > a {
   }
 
   .item-slick1 {
-    height: 370px;
+    min-height: 370px;
   }
 }
 
@@ -2679,7 +2679,7 @@ li.sale-noti > a {
 */
 .bg-index-page {
   max-width: 100%;
-  min-height: 400px;
+  min-height: 500px;
   padding-left: 15px;
   padding-right: 15px;
   background-repeat: no-repeat;
@@ -2691,6 +2691,10 @@ li.sale-noti > a {
   .bg-index-page .l-text2 {font-size: 35px;}
   .bg-index-page .m-text13 {font-size: 16px;}
 }
+
+/*@media (max-width: 576px) {*/
+  /*.bg-index-page {min-height: 400px;}*/
+/*}*/
 
 
 /*[ BG Title Page 239 ]
