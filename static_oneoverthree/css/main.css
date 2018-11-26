@@ -2674,17 +2674,17 @@ li.sale-noti > a {
 }
 
 
-/*[ BG Title Page ]
+/*[ BG Title Page  contain]
 ///////////////////////////////////////////////////////////
 */
 .bg-index-page {
   max-width: 100%;
-  min-height: 350px;
+  min-height: 400px;
   padding-left: 15px;
   padding-right: 15px;
   background-repeat: no-repeat;
   background-position: center 0;
-  background-size: contain;
+  background-size: cover;
 }
 
 @media (max-width: 576px) {
