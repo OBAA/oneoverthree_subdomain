@@ -67,6 +67,12 @@ class AddProductForm(forms.ModelForm):
                     'class': 'form-control'
                 })
 
+    def clean(self):
+        print(self.data)
+        if self.errors:
+            print(self.errors)
+        print(self.cleaned_data)
+
     def save(self, commit=True):
         product = super(AddProductForm, self).save(commit=False)
         if commit:

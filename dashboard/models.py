@@ -77,11 +77,14 @@ class DashboardManager(models.Manager):
         dashboard.total_revenue = total_revenue
         dashboard.save()
 
-    def get_store(self, user):
-        qs = self.get_queryset().all().filter(user=user)
-        if qs.count() == 1:
-            store = qs.first()
-            return store
+    # def get_dashboard(self, user):
+    #     store = user.store
+    #     print(store)
+    #     if store:
+    #         qs = self.get_queryset().all().filter(store=store)
+    #         if qs.count() == 1:
+    #             dashboard = qs.first()
+    #             return dashboard
 
 
 class Dashboard(models.Model):
@@ -98,7 +101,7 @@ class Dashboard(models.Model):
     objects = DashboardManager()
 
     def __str__(self):
-        return self.store.title
+        return str(self.store)
 
 
 def store_post_save_receiver(sender, instance, *args, **kwargs):

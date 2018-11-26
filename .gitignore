@@ -7,6 +7,9 @@ bin/
 include/
 pip-selfcheck.json
 
+# Static Files
+/static_oneoverthree/
+
 # Project secrets
 secrets.json
 

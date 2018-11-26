@@ -26,6 +26,7 @@ class AddProductView(LoginRequiredMixin, CreateView):
     success_url = '/account/dashboard/'
 
     def get_context_data(self, *args, **kwargs):
+        request = self.request
         context = super(AddProductView, self).get_context_data(**kwargs)
         context['add_product'] = AddProductForm()
         context['image_a'] = ImageAUploadForm()
