@@ -67,12 +67,13 @@ class AddProductView(LoginRequiredMixin, CreateView):
                     product.has_variants = True
 
         # Update product stock
-        stock = 0
-        qs = Variation.objects.all().filter(product=product)
-        for variation in qs:
-            stock = stock + variation.quantity
-        product.new_in = True
-        product.stock = stock
+        if product.has_variants:
+            stock = 0
+            qs = Variation.objects.all().filter(product=product)
+            for variation in qs:
+                stock = stock + variation.quantity
+            product.new_in = True
+            product.stock = stock
         product.save()
 
         msg = "Product Added to STORE successfully"
@@ -155,18 +156,18 @@ class UpdateProductFormView(LoginRequiredMixin, UpdateView):
         product_variation_qs = Variation.objects.all().filter(product=product)
         if variation_formset.is_valid():
             cleaned_variation_formset = [v for v in variation_formset.cleaned_data if v != {}]
-            print(cleaned_variation_formset)
-            print(initial_data)
+            # print(cleaned_variation_formset)
+            # print(initial_data)
 
             """ 
             If initial data and cleaned variation data don't match,
             DELETE all variation data.             
             """
             if initial_data != cleaned_variation_formset:  # Variation has changed
-                print("variation form changed")
+                # print("variation form changed")
                 for variation in product_variation_qs:
                     variation.delete()
-                    print("deleted")
+                    # print("deleted")
 
                 e_msg = None
                 for variation_form in variation_formset:
@@ -202,7 +203,7 @@ class UpdateProductFormView(LoginRequiredMixin, UpdateView):
                 msg = "Product not updated. Nothing was changed."
 
         # Save product instance
-        if product.discount > 0:
+        if product.discount > 0 or product.discount is not None:
             product.on_sale = True
         else:
             product.on_sale = False

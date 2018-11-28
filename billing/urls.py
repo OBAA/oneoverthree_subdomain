@@ -4,6 +4,5 @@ from . import views
 app_name = 'billing'
 
 urlpatterns = [
-    url(r'^billing/payment-method/paystack/$', views.paystack_payment_method, name='pastack'),
-
+    url(r'^payment-method/paystack/$', views.paystack_payment_method, name='pastack'),
 ]

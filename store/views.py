@@ -122,6 +122,7 @@ class CategoryView(DetailView):
         context['category_list'] = Category.objects.all()
         context['object_list'] = products
         context['paginator'] = paginator
+        context['slug'] = self.kwargs.get('slug')
         return context
 
     def get_queryset(self, *args, **kwargs):

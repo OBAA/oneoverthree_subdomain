@@ -10,6 +10,9 @@
 {% include 'base/banner.html' %}
 
 
+
+
+
 <!-- Featured Product -->
 {% if featured %}
 <section class="newproduct bgwhite m-b-35">
@@ -48,13 +51,13 @@
 							<!--</a>-->
 
 							{% if object.has_variants is False %}
-							<form class="form-product-ajax block2-btn-addcart w-size1 trans-0-4" method='POST' action="{% url 'cart:add' %}" data-endpoint="{% url 'cart:add' %}">
+							<form class="form-product-ajax block2-btn-addcart w-size1 trans-0-4" method='POST' action="{% url 'cart:add-list' %}" data-endpoint="{% url 'cart:add-list' %}">
 								{% csrf_token %}
 								<input type="hidden" name="product_id" value="{{ object.id }}" />
 								<!-- Button -->
-								<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">
-									Add to Cart
-								</button>
+								<!--<button class="flex-c-m size1 bg4 bo-rad-23 hov1 s-text1 trans-0-4">-->
+									<!--Add to Cart-->
+								<!--</button>-->
 							</form>
 							{% endif %}
 						</div>

@@ -17,11 +17,12 @@ class TagListView(ListView):
         context['brand_list'] = Store.objects.brands().exclude(slug='marketplace')
         context['object_list'] = products
         context['paginator'] = paginator
+        context['slug'] = self.kwargs.get('slug')
         return context
 
     def get_queryset(self, *args, **kwargs):
         slug = self.kwargs.get('slug')
-        product_list = Product.objects.all().filter(tags__title__contains=slug)
+        product_list = Product.objects.all().filter(tags__title__contains=slug.lower())
         return product_list
 
     def get_paginated(self):

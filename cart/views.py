@@ -72,6 +72,22 @@ def add_to_cart(request):
             print("Show message to user; Product is gone")
             return redirect("cart:home")
         cart_obj = Cart(request)
+
+        # product_quantity = 1
+        # product_size_id = None
+        # size, stock = Variation.objects.get_size(product_obj, product_size_id)
+        # print(size, stock)
+        #
+        # # Take inventory
+        # msg = "Only " + str(stock) + " items in stock."
+        # check_stock = int(stock) - int(product_quantity)
+        # if check_stock < 0:
+        #     messages.error(request, msg)
+        #     return reverse("store:detail", kwargs={'slug': product_obj.slug})
+        #
+        # cart_obj.add(product=product_obj, size=size, quantity=product_quantity)
+        #
+
         cart_obj.add(product=product_obj, quantity=1)
 
         added = True
