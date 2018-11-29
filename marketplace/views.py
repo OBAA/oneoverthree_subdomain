@@ -22,7 +22,7 @@ class TagListView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         slug = self.kwargs.get('slug')
-        product_list = Product.objects.all().filter(tags__title__contains=slug.lower())
+        product_list = Product.objects.all().filter(tags__slug__contains=slug)
         return product_list
 
     def get_paginated(self):
