@@ -203,10 +203,12 @@ class UpdateProductFormView(LoginRequiredMixin, UpdateView):
                 msg = "Product not updated. Nothing was changed."
 
         # Save product instance
-        if product.discount > 0 or product.discount is not None:
-            product.on_sale = True
-        else:
-            product.on_sale = False
+        # if product.discount > 0 or product.discount is not None:
+        if product.discount is not None:
+            if product.discount > 0:
+                product.on_sale = True
+            else:
+                product.on_sale = False
         product.save()
         form.save_m2m()
         if form.has_changed():

@@ -158,10 +158,10 @@ class RegisterForm(forms.ModelForm):
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
     # User image crop Form
-    x = forms.FloatField(widget=forms.HiddenInput())
-    y = forms.FloatField(widget=forms.HiddenInput())
-    width = forms.FloatField(widget=forms.HiddenInput())
-    height = forms.FloatField(widget=forms.HiddenInput())
+    # x = forms.FloatField(widget=forms.HiddenInput())
+    # y = forms.FloatField(widget=forms.HiddenInput())
+    # width = forms.FloatField(widget=forms.HiddenInput())
+    # height = forms.FloatField(widget=forms.HiddenInput())
 
     class Meta:
         model = User
@@ -180,6 +180,8 @@ class RegisterForm(forms.ModelForm):
                 self.fields[field].widget.attrs.update({'class': 'sizefull s-text7 p-l-15 p-r-15'})
 
     def clean_password2(self):
+        print("1")
+        print(self.data)
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
