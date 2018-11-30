@@ -196,24 +196,24 @@ class RegisterForm(forms.ModelForm):
         user.is_active = False  # send confirmation email
 
         user_image = user.image
-        ext = str(user_image).split('.', 1)[1]
+        # ext = str(user_image).split('.', 1)[1]
 
         data = self.cleaned_data
-        x = float(data.get('x'))
-        y = float(data.get('y'))
-        w = float(data.get('width'))
-        h = float(data.get('height'))
+        # x = float(data.get('x'))
+        # y = float(data.get('y'))
+        # w = float(data.get('width'))
+        # h = float(data.get('height'))
 
-        if user_image:
-            buffer = BytesIO()
-            ext = 'JPEG' if ext.lower() == 'jpg' else ext.upper()
-            image = Image.open(user_image)
-            cropped_image = image.crop((x, y, w + x, h + y))
-            resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
-            resized_image.save(buffer, ext, quality=100)
-            img_content = ContentFile(buffer.getvalue(), user_image.name)
-
-            user.image.save(user_image.name, img_content, save=False)
+        # if user_image:
+        #     buffer = BytesIO()
+        #     ext = 'JPEG' if ext.lower() == 'jpg' else ext.upper()
+        #     image = Image.open(user_image)
+        #     cropped_image = image.crop((x, y, w + x, h + y))
+        #     resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+        #     resized_image.save(buffer, ext, quality=100)
+        #     img_content = ContentFile(buffer.getvalue(), user_image.name)
+        #
+        #     user.image.save(user_image.name, img_content, save=False)
 
         # obj = EmailActivation.objects.create(user=user)  # Sending Confirmation via signals
         # obj.send_activation_email()
