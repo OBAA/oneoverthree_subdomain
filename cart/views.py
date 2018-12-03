@@ -21,6 +21,7 @@ from orders.models import Order, OrderItem  # , GenerateOrderPdf
 from oneoverthree.utils import render_to_pdf
 from store.models import Product, Variation
 from .cart import Cart
+from .models import CouponCode, UsedCoupon
 from .forms import CartUpdateForm
 
 
@@ -212,11 +213,22 @@ def checkout_home(request):
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
 
+    ###
+    cart_total = request.POST.get('cart_total', None)
+    print(cart_total)
+    ###
+
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
     order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
 
     if billing_profile is not None:
         address_book = Address.objects.all().filter(billing_profile=billing_profile)
+
+
+    ###
+    if cart_total is not None:
+        order_total = Order.objects.cart_total(request, obj=order_obj)
+    ###
 
     context = {
         "billing_profile": billing_profile,
@@ -224,8 +236,59 @@ def checkout_home(request):
         "guest_form": guest_form,
         "address_book": address_book,
         "form": CheckoutAddressForm,
+        "order_obj": order_obj,
     }
     return render(request, "cart/checkout.html", context)
+
+
+def use_coupon_code(request):
+    user = request.user
+    coupon_code = request.POST.get('coupon_code', None)
+
+    if user.is_authenticated:
+        billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
+        order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
+        if coupon_code is not None:
+            coupon = CouponCode.objects.get_coupon(code=coupon_code)
+
+            if coupon is not None and coupon.first_order_coupon is True:
+                qs = Order.objects.filter_by_billing_profile(request)
+                if qs.count() > 0:
+                    messages.error(request, "Ooops, Coupon Only valid on your first order.")
+                    pass
+
+            elif coupon is not None:
+                # Check if coupon has been used by current user
+                coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
+
+                if created:
+                    cart_total = order_obj.total
+
+                    # Use Coupon
+                    discount = coupon.percentage
+                    discounted_amount = (cart_total * discount) / 100
+                    new_total = cart_total - discounted_amount
+                    if not order_obj.coupon_code:
+                        order_obj.total = new_total
+                        order_obj.coupon_code = True
+                        order_obj.discount_applied = discount
+                        order_obj.save()
+                        messages.success(request, "Coupon code applied. Proceed to checkout.")
+                    else:
+                        messages.error(request, "Sorry, Only one coupon code per order.")
+                    print("Total")
+                    print(order_obj.total)
+
+                    coupon.usage += 1
+                    coupon.save()
+
+                else:
+                    messages.error(request, "This coupon has already been used by you.")
+
+            else:
+                messages.error(request, "Invalid. Check your code and try again.")
+
+        return redirect('cart:checkout')
 
 
 def checkout_finalize(request):

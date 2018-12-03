@@ -2,6 +2,10 @@ import math
 import json
 from decimal import Decimal
 from django.core.urlresolvers import reverse
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.conf import settings
+from django.template.loader import get_template
 from django.db import models
 from django.db.models.signals import pre_save
 
@@ -92,9 +96,20 @@ class OrderManager(models.Manager):
     #     print(shipping_per_kg)
     #     return shipping_per_kg
 
-    def order_total(self, request, obj):
+    def cart_total(self, request, obj):
         total = request.POST.get("cart_total")
         cart_total = Decimal(total)
+        # shipping_total = obj.shipping_total
+        # new_total = math.fsum([cart_total, shipping_total])
+        # formatted_total = format(new_total, ".2f")
+        # obj.total = formatted_total
+        obj.total = cart_total
+        obj.save()
+        return cart_total
+
+    def order_total(self, request, obj):
+        # total = request.POST.get("cart_total")
+        cart_total = obj.total
         shipping_total = obj.shipping_total
         new_total = math.fsum([cart_total, shipping_total])
         formatted_total = format(new_total, ".2f")
@@ -110,11 +125,12 @@ class OrderManager(models.Manager):
 class Order(models.Model):
     billing_profile = models.ForeignKey(BillingProfile, null=True, blank=True) # Get from checkout view
     shipping_address = models.ForeignKey(Address, related_name='shipping_address', null=True, blank=True)  # Get from checkout view
-    # cart_json = models.TextField(blank=True)  # JSON-serialized (text) version of your list
     order_id = models.CharField(max_length=120, blank=True)  # Get from signal
     status = models.CharField(max_length=500, default='created', choices=ORDER_STATUS_CHOICES)  # Default
     shipping_total = models.DecimalField(default=1000, max_digits=12, decimal_places=2)  # Figure it out
     total = models.DecimalField(default=0.00, max_digits=12, decimal_places=2)  # Calculated in checkout view
+    coupon_code = models.BooleanField(default=False)
+    discount_applied = models.IntegerField(blank=True, null=True)
     is_active = models.BooleanField(default=True)  # Default
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -139,6 +155,54 @@ class Order(models.Model):
         else:
             self.status = 'completed'
         return
+
+    # def send_order_invoice(self):
+    #     if self.pdf:
+    #         context = {
+    #             'first_name': self.billing_profile.user.first_name,
+    #             'order_id': self.order_id,
+    #         }
+    #         txt_ = get_template("registration/emails/verify.txt").render(context)
+    #         html_ = get_template("registration/emails/verify.html").render(context)
+    #         subject = "It is ordered!"
+    #         from_email = settings.DEFAULT_FROM_EMAIL
+    #         recipient_list = [self.billing_profile.email]
+    #         # sent_mail = send_mail(
+    #         #     subject,
+    #         #     txt_,
+    #         #     from_email,
+    #         #     recipient_list,
+    #         #     html_message=html_,
+    #         #     fail_silently=False,
+    #         # )
+    #
+    #         email = EmailMessage(
+    #             subject,
+    #             txt_,
+    #             from_email,
+    #             recipient_list,
+    #             html_message=html_,
+    #             fail_silently=False,
+    #         )
+    #         # return sent_mail
+    #
+    #         # from django.core.mail import EmailMultiAlternatives
+    #
+    #         # subject, from_email, to = 'hello', 'from@example.com', 'to@example.com'
+    #         # text_content = 'This is an important message.'
+    #         # html_content = '<p>This is an <strong>important</strong> message.</p>'
+    #         msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
+    #         msg.attach_alternative(html_content, "text/html")
+    #         msg.send()
+    #
+    #
+    #         email = EmailMessage(
+    #             'Subject here',
+    #             'Here is the message.',
+    #             'from@me.com',
+    #             ['email@to.com'])
+    #         email.attach_file('Document.pdf')
+    #         email.send()
 
 
 def pre_save_create_order_id(sender, instance, *args, **kwargs):

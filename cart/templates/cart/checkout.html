@@ -14,6 +14,35 @@
                 <!--Cart Table-->
                 {% include 'cart/snippets/checkout-cart-table.html' %}
 
+                <!--Coupon code-->
+                <div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-b-100 m-l-auto p-lr-15-sm">
+                    <form method="POST" action="{% url 'cart:coupon' %}">
+                        {% csrf_token %}
+                        <div class="flex-w flex-m w-full-sm">
+                            <div class="size15 bo4 m-r-10">
+                                <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="coupon_code" placeholder="Coupon Code">
+                            </div>
+
+                            <div class="size12 trans-0-4 m-t-10 m-b-10 m-r-10">
+                                <!-- Button -->
+                                <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4">
+                                    Apply coupon
+                                </button>
+                            </div>
+                        </div>
+                        <!--Cart Total-->
+                        <input type='hidden' name='cart_total' value='{{ cart.get_total }}' />
+                    </form>
+                    {% if order_obj.coupon_code %}
+                    <div class="flex-w flex-sb-m p-t-12">
+                        <span class="s-text18 w-full">
+                            Coupon Code Applied <i class="fa fa-check"></i>
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+
+
                 <!--Cart Totals-->
                 <div class="bo9 w-size18 p-l-40 p-r-40 p-t-30 p-b-38 m-t-30 m-r-0 m-b-100 m-l-auto p-lr-15-sm">
                     <h5 class="m-text20 p-b-24">

@@ -31,7 +31,17 @@
                             <p>(Excluding Delivery)</p>
                         </span>
                     </div>
-                    <div class="flex-w flex-sb-m  p-t-12 p-b-12">
+                    {% if object.coupon_code %}
+                    <div class="flex-w flex-sb-m p-t-12 p-b-12">
+                        <span class="s-text18 w-size19 w-full-sm">
+                            Discount <br>Applied:
+                        </span>
+                        <span class="m-text21 w-size20 w-full-sm">
+                            {{ object.discount_applied }}%
+                        </span>
+                    </div>
+                    {% endif %}
+                    <div class="flex-w flex-sb-m bo10 p-t-12 p-b-12">
                         <span class="s-text18 w-size19 w-full-sm">
                             Shipping Address:
                         </span>
@@ -39,7 +49,7 @@
                             <p>{{ object.shipping_address.get_address | linebreaks }}</p>
                         </span>
                     </div>
-                    <div class="flex-w flex-sb-m bo10 p-t-12 p-b-12">
+                    <div class="flex-w flex-sb-m p-t-12 p-b-12">
                         <span class="s-text18 w-size19 w-full-sm">
                             Shipping <br>Total:
                         </span>
@@ -47,7 +57,7 @@
                             ₦{{ object.shipping_total }}
                         </span>
                     </div>
-                    <div class="flex-w flex-sb-m p-t-12 p-b-15">
+                    <div class="flex-w flex-sb-m bo10 mb-5 p-t-12 p-b-15">
                         <span class="s-text18 w-size19 w-full-sm">
                             Order Total:
                         </span>

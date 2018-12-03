@@ -220,7 +220,7 @@ class EmailActivation(models.Model):
         if not self.activated and not self.forced_expired:
             if self.key:
                 # base_url = getattr(settings, 'BASE_URL', '127.0.0.1:8000')
-                base_url = getattr(settings, 'BASE_URL', 'https://oneoverthree.herokuapp.com')
+                base_url = getattr(settings, 'BASE_URL', 'https://www.1over3.store')
                 key_path = reverse("account:email-activate", kwargs={'key': self.key})  # Use reverse
                 path = "{base}{path}".format(base=base_url, path=key_path)
                 context = {
