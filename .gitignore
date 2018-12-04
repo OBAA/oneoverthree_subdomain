@@ -1,5 +1,8 @@
 .DS_Store
 
+# SQLite3
+db.sqlite3
+
 store/fixtures/
 
 # Virtualenv related
