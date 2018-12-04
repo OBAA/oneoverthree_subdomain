@@ -1,0 +1,13 @@
+Hi {{ first_name }},
+
+Thanks for your order, we hope you enjoyed shopping with us.
+
+Your order would be with you in 5-7 business days.
+
+Attached is a copy of your invoice.
+
+Order number: {{ order_id }}
+
+Thank you,
+
+1OVER3 Store.
