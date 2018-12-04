@@ -55,6 +55,7 @@ class UsedCouponManager(models.Manager):
 class UsedCoupon(models.Model):
     coupon = models.ForeignKey(CouponCode)
     billing_profile = models.ForeignKey(BillingProfile)
+    coupon_used = models.BooleanField(default=False)
 
     objects = UsedCouponManager()
 

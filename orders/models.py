@@ -1,5 +1,6 @@
 import math
 import json
+from io import BytesIO
 from decimal import Decimal
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail
@@ -129,6 +130,7 @@ class Order(models.Model):
     status = models.CharField(max_length=500, default='created', choices=ORDER_STATUS_CHOICES)  # Default
     shipping_total = models.DecimalField(default=1000, max_digits=12, decimal_places=2)  # Figure it out
     total = models.DecimalField(default=0.00, max_digits=12, decimal_places=2)  # Calculated in checkout view
+    coupon = models.CharField(max_length=25, blank=True, null=True)
     coupon_code = models.BooleanField(default=False)
     discount_applied = models.IntegerField(blank=True, null=True)
     pdf = models.FileField(upload_to='pdfs/', null=True, blank=True)
@@ -185,15 +187,15 @@ def post_order_complete_send_order_invoice(sender, instance, *args, **kwargs):
             recipient_list,
         )
         pdf_file = instance.pdf
-        filename = pdf_file.name
-        print(pdf_file)
-        print(filename)
+        # filename = pdf_file.name
+        # print(pdf_file)
 
-        # email.attach_file(self.pdf)
+        email.attach_file(instance.pdf)
 
-        file = open(pdf_file.path)
-        email.attach(filename=filename, mimetype="application/pdf", content=file.read())
-        file.close()
+        # file = open(pdf_file.path)
+        # email.attach(filename=filename, mimetype="application/pdf", content=file.read())
+        # file.close()
+
         email.send()
         instance.pdf_sent = True
 

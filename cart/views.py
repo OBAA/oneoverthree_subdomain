@@ -270,7 +270,10 @@ def use_coupon_code(request):
                     new_total = cart_total - discounted_amount
                     if not order_obj.coupon_code:
                         order_obj.total = new_total
-                        order_obj.coupon_code = True
+                        # order_obj.coupon_code = True
+
+                        order_obj.coupon = coupon_code
+
                         order_obj.discount_applied = discount
                         order_obj.save()
                         messages.success(request, "Coupon code applied. Proceed to checkout.")
@@ -282,8 +285,14 @@ def use_coupon_code(request):
                     coupon.usage += 1
                     coupon.save()
 
-                else:
+                elif coupon_obj.coupon_used:
                     messages.error(request, "This coupon has already been used by you.")
+
+                else:
+                    link = reverse('contact')
+                    support = """<a href="{support_link}">support</a>""".format(support_link=link)
+                    msg = "Unable to process coupon, please contact " + support
+                    messages.error(request, msg, extra_tags='safe')
 
             else:
                 messages.error(request, "Invalid. Check your code and try again.")
@@ -352,6 +361,17 @@ def checkout_success(request):
         'customer_name': customer,
         'invoice_id': obj.order_id,
     }
+
+    try:
+        coupon = obj.coupon
+        billing_profile = obj.billing_profile
+        if coupon:
+            coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
+            coupon_obj.coupon_used = True
+
+    except:
+        pass
+
     obj.is_active = False
     obj.status = 'processing'
     if not obj.pdf:

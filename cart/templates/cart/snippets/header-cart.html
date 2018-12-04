@@ -39,12 +39,22 @@
 			</a>
 		</div>
 
-		<div class="header-cart-wrapbtn">
+		<!--<div class="header-cart-wrapbtn">-->
+			<!--&lt;!&ndash; Button &ndash;&gt;-->
+			<!--<a href="{{ checkout_url }}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">-->
+				<!--Checkout-->
+			<!--</a>-->
+		<!--</div>-->
+
+		<form class="header-cart-wrapbtn" method="POST" action="{{ checkout_url }}">
+			{% csrf_token %}
+			<input type='hidden' name='cart_weight' value='{{ cart_weight }}' />
+			<input type='hidden' name='cart_total' value='{{ cart.get_total }}' />
 			<!-- Button -->
-			<a href="{{ checkout_url }}" class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
+			<button class="flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4">
 				Checkout
-			</a>
-		</div>
+			</button>
+		</form>
 	</div>
 </div>
 
