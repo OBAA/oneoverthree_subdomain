@@ -7,40 +7,15 @@
 <div class="container1-page">
     {% include 'base/top-notification.html' %}
 
-    <!-- Slider -->
-    {% comment %}
-   {% include 'base/slider.html' %}
-    {% endcomment %}
+    <section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({% static 'img/header-00.jpg' %});">
+        <h2 class="l-text2 t-center">
+            1OVER3 Store
+        </h2>
+        <p class="m-text13 t-center">
+            Urban Clothing Retail
+        </p>
+    </section>
 
-    <section class="slide1">
-		<div class="wrap-slick1">
-			<div class="slick1">
-                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-01.jpg' %});">
-					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-
-					</div>
-				</div>
-
-                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-02.jpg' %});">
-					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-
-					</div>
-				</div>
-
-                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-03.jpg' %});">
-					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-
-					</div>
-				</div>
-
-                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-04.jpg' %});">
-					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
-
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
 
     <!-- Content page -->
     <section class="bgwhite p-t-25 p-b-65">
@@ -184,6 +159,41 @@
                         {% endfor %}
                     </div>
                     {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Slider -->
+    {% comment %}
+    {% include 'base/slider.html' %}
+    {% endcomment %}
+
+    <section class="slide1">
+        <div class="wrap-slick1">
+            <div class="slick1">
+                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-01.jpg' %});">
+                    <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+                    </div>
+                </div>
+
+                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-02.jpg' %});">
+                    <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+                    </div>
+                </div>
+
+                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-03.jpg' %});">
+                    <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+                    </div>
+                </div>
+
+                <div class="item-slick1 item1-slick1" style="background-image: url({% static 'img/slider/slider-04.jpg' %});">
+                    <div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
+
+                    </div>
                 </div>
             </div>
         </div>
