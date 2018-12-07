@@ -15,7 +15,6 @@ class CouponCodeManager(models.Manager):
         return CouponCodeQuerySet(self.model, using=self._db)
 
     def get_coupon(self, code):
-        print(2)
         qs = self.get_queryset().all().filter(code=code)
         print(qs)
         if qs.count() == 1:
@@ -43,13 +42,39 @@ class CouponCode(models.Model):
         return self.description
 
 
+class UsedCouponQuerySet(models.query.QuerySet):
+    def xp(self):
+        return self.filter(is_active=True)
+
+
 class UsedCouponManager(models.Manager):
+    def get_queryset(self):
+        return UsedCouponQuerySet(self.model, using=self._db)
+
     def new_or_get(self, coupon, billing_profile):
         obj, created = self.model.objects.get_or_create(
             coupon=coupon,
             billing_profile=billing_profile
         )
         return obj, created
+
+    def get_valid_coupon(self, coupon, billing_profile):
+        print("A")
+        coupon = CouponCode.objects.get_coupon(coupon)
+        # obj = self.model.objects.get(
+        #     coupon=coupon,
+        #     billing_profile=billing_profile
+        # )
+        qs = self.get_queryset().filter(
+            coupon=coupon,
+            billing_profile=billing_profile
+        )
+        print("B")
+        if qs.count() == 1:
+            obj = qs.first()
+
+            print(obj)
+            return obj
 
 
 class UsedCoupon(models.Model):

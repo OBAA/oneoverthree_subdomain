@@ -1,11 +1,11 @@
 import datetime
-from decimal import Decimal
 from io import BytesIO
 from django.core.files import File
 from django.http import Http404
 from django.utils.http import is_safe_url
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.urlresolvers import reverse
+from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.contrib import messages
@@ -73,21 +73,6 @@ def add_to_cart(request):
             print("Show message to user; Product is gone")
             return redirect("cart:home")
         cart_obj = Cart(request)
-
-        # product_quantity = 1
-        # product_size_id = None
-        # size, stock = Variation.objects.get_size(product_obj, product_size_id)
-        # print(size, stock)
-        #
-        # # Take inventory
-        # msg = "Only " + str(stock) + " items in stock."
-        # check_stock = int(stock) - int(product_quantity)
-        # if check_stock < 0:
-        #     messages.error(request, msg)
-        #     return reverse("store:detail", kwargs={'slug': product_obj.slug})
-        #
-        # cart_obj.add(product=product_obj, size=size, quantity=product_quantity)
-        #
 
         cart_obj.add(product=product_obj, quantity=1)
 
@@ -224,11 +209,35 @@ def checkout_home(request):
     if billing_profile is not None:
         address_book = Address.objects.all().filter(billing_profile=billing_profile)
 
-
-    ###
     if cart_total is not None:
-        order_total = Order.objects.cart_total(request, obj=order_obj)
-    ###
+        # Calculate totals
+        Order.objects.cart_total(request, obj=order_obj)
+
+        # Remove Applied Coupon if any.
+        print("APC")
+        if order_obj.coupon_code is True:
+            try:
+                coupon = order_obj.coupon
+                if coupon:
+                    print("PDP")
+
+                    coupon_obj = UsedCoupon.objects.get_valid_coupon(coupon, billing_profile)
+                    print(coupon_obj)
+                    if coupon_obj and coupon_obj.coupon_used is False:
+                        coupon_obj.delete()
+                        order_obj.coupon_code = False
+                        order_obj.coupon = None
+                        order_obj.discount_applied = None
+                        order_obj.save()
+                        print("AD")
+            except:
+                print("Sowore")
+                pass
+
+    # Pass coupon to the template
+    coupon = None
+    if order_obj.coupon:
+        coupon = order_obj.coupon
 
     context = {
         "billing_profile": billing_profile,
@@ -237,6 +246,7 @@ def checkout_home(request):
         "address_book": address_book,
         "form": CheckoutAddressForm,
         "order_obj": order_obj,
+        "coupon": coupon
     }
     return render(request, "cart/checkout.html", context)
 
@@ -311,6 +321,9 @@ def checkout_finalize(request):
 
     shipping_address_id = request.session.get("shipping_address_id", None)
 
+    if order_obj.coupon:
+        order_obj.coupon_code = True
+
     if shipping_address_id:
         qs = address_book.filter(id=shipping_address_id)
         if qs.count() == 1:
@@ -362,16 +375,13 @@ def checkout_success(request):
         'invoice_id': obj.order_id,
     }
 
-    try:
-        coupon = obj.coupon
+    if obj.coupon:
         billing_profile = obj.billing_profile
-        if coupon:
-            coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
-            coupon_obj.coupon_used = True
+        coupon = CouponCode.objects.get_coupon(obj.coupon)
+        coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
+        coupon_obj.coupon_used = True
 
-    except:
-        pass
-
+    cart.clear()  # Clear Cart
     obj.is_active = False
     obj.status = 'processing'
     if not obj.pdf:
@@ -380,9 +390,33 @@ def checkout_success(request):
         if pdf:
             filename = "Invoice_%s.pdf" % obj.order_id
             obj.pdf.save(filename, File(BytesIO(pdf.content)))
+
+            # Send PDF File
+            if obj.pdf_sent is False:
+                context = {
+                    'first_name': obj.billing_profile.user.first_name,
+                    'order_id': obj.order_id,
+                }
+                subject = "It is ordered!"
+                txt_ = get_template("emails/order_invoice.txt").render(context)
+                # html_ = get_template("emails/order_invoice.html").render(context)
+                from_email = settings.DEFAULT_FROM_EMAIL
+                recipient_list = [obj.billing_profile.email]
+
+                email = EmailMessage(
+                    subject,
+                    txt_,
+                    from_email,
+                    recipient_list,
+                )
+                filename = obj.pdf.name
+                # email.attach_file(File(BytesIO(pdf.content)))
+                email.attach(filename=filename, mimetype="application/pdf", content=pdf.content)
+                email.send()
+                obj.pdf_sent = True
     else:
         obj.save()
-    cart.clear()
+
     return render(request, "cart/checkout-success.html", {'object': obj})
 
 

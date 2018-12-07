@@ -1,12 +1,7 @@
 import math
 import json
-from io import BytesIO
 from decimal import Decimal
 from django.core.urlresolvers import reverse
-from django.core.mail import send_mail
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.template.loader import get_template
 from django.db import models
 from django.db.models.signals import pre_save
 
@@ -168,39 +163,39 @@ def pre_save_create_order_id(sender, instance, *args, **kwargs):
 pre_save.connect(pre_save_create_order_id, sender=Order)
 
 
-def post_order_complete_send_order_invoice(sender, instance, *args, **kwargs):
-    if instance.pdf and instance.pdf_sent is False:
-        context = {
-            'first_name': instance.billing_profile.user.first_name,
-            'order_id': instance.order_id,
-        }
-        txt_ = get_template("emails/order_invoice.txt").render(context)
-        # html_ = get_template("emails/order_invoice.html").render(context)
-        subject = "It is ordered!"
-        from_email = settings.DEFAULT_FROM_EMAIL
-        recipient_list = [instance.billing_profile.email]
-
-        email = EmailMessage(
-            subject,
-            txt_,
-            from_email,
-            recipient_list,
-        )
-        pdf_file = instance.pdf
-        # filename = pdf_file.name
-        # print(pdf_file)
-
-        email.attach_file(instance.pdf)
-
-        # file = open(pdf_file.path)
-        # email.attach(filename=filename, mimetype="application/pdf", content=file.read())
-        # file.close()
-
-        email.send()
-        instance.pdf_sent = True
-
-
-pre_save.connect(post_order_complete_send_order_invoice, sender=Order)
+# def post_order_complete_send_order_invoice(sender, instance, *args, **kwargs):
+#     if instance.pdf and instance.pdf_sent is False:
+#         context = {
+#             'first_name': instance.billing_profile.user.first_name,
+#             'order_id': instance.order_id,
+#         }
+#         txt_ = get_template("emails/order_invoice.txt").render(context)
+#         # html_ = get_template("emails/order_invoice.html").render(context)
+#         subject = "It is ordered!"
+#         from_email = settings.DEFAULT_FROM_EMAIL
+#         recipient_list = [instance.billing_profile.email]
+#
+#         email = EmailMessage(
+#             subject,
+#             txt_,
+#             from_email,
+#             recipient_list,
+#         )
+#         pdf_file = instance.pdf
+#         # filename = pdf_file.name
+#         # print(pdf_file)
+#
+#         email.attach_file(instance.pdf)
+#
+#         # file = open(pdf_file.path)
+#         # email.attach(filename=filename, mimetype="application/pdf", content=file.read())
+#         # file.close()
+#
+#         email.send()
+#         instance.pdf_sent = True
+#
+#
+# pre_save.connect(post_order_complete_send_order_invoice, sender=Order)
 
 
 class OrderItemQuerySet(models.query.QuerySet):
