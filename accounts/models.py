@@ -31,7 +31,7 @@ def upload_image_path(instance, filename):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, full_name=None, password=None, is_active=False, is_admin=False, is_staff=False):
+    def create_user(self, email, first_name=None, last_name=None, password=None, is_active=False, is_admin=False, is_staff=False):
         if not email:
             raise ValueError("Must be a valid email address")
         if not password:
@@ -39,7 +39,9 @@ class UserManager(BaseUserManager):
 
         user_obj = self.model(
             email=self.normalize_email(email),
-            full_name=full_name
+            # full_name=full_name,
+            first_name=first_name,
+            last_name=last_name,
         )
         user_obj.set_password(password)
         user_obj.staff = is_staff
@@ -48,19 +50,21 @@ class UserManager(BaseUserManager):
         user_obj.save(using=self._db)
         return user_obj
 
-    def create_staffuser(self, email, full_name=None, password=None):
+    def create_staffuser(self, email, first_name=None, last_name=None, password=None):
         user = self.create_user(
             email,
-            full_name=full_name,
+            first_name=first_name,
+            last_name=last_name,
             password=password,
             is_staff=True
         )
         return user
 
-    def create_superuser(self, email, full_name=None, password=None):
+    def create_superuser(self, email, first_name=None, last_name=None, password=None):
         user = self.create_user(
             email,
-            full_name=full_name,
+            first_name=first_name,
+            last_name=last_name,
             password=password,
             is_staff=True,
             is_admin=True
@@ -70,8 +74,9 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email           = models.EmailField(max_length=120, unique=True)
-    mobile_num      = models.TextField(max_length=12, unique=True, blank=True, null=True)
-    full_name       = models.CharField(max_length=120, blank=True, null=True)
+    mobile_number   = models.CharField(max_length=17, unique=True)
+    first_name      = models.CharField(max_length=120, blank=True, null=True)
+    last_name       = models.CharField(max_length=120, blank=True, null=True)
     image           = models.ImageField(upload_to=upload_image_path, blank=True,
                                         help_text='Field is optional.')
     is_active       = models.BooleanField(default=True)     # user can login
@@ -87,7 +92,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     # USERNAME_FIELD and password are required by default.
-    REQUIRED_FIELDS = ['full_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name']
 
     objects = UserManager()
 
@@ -102,15 +107,21 @@ class User(AbstractBaseUser):
     def get_short_name(self):
         return self.email
 
-    def first_name(self):
-        full_name = self.full_name
-        first_name = str(full_name).split(' ', 1)[0]
-        return first_name
+    def full_name(self):
+        first_name = self.first_name
+        last_name = self.last_name
+        full_name = str(first_name + " " + last_name)
+        return full_name
 
-    def last_name(self):
-        full_name = self.full_name
-        last_name = str(full_name).split(' ', 1)[1]
-        return last_name
+    # def first_name(self):
+    #     full_name = self.full_name
+    #     first_name = str(full_name).split(' ', 1)[0]
+    #     return first_name
+    #
+    # def last_name(self):
+    #     full_name = self.full_name
+    #     last_name = str(full_name).split(' ', 1)[1]
+    #     return last_name
 
     def has_perm(self, perm, obj=None):
         return True

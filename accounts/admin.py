@@ -26,7 +26,7 @@ class UserAdmin(BaseUserAdmin):
     list_editable = ('is_active', 'has_store')
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
-        ('Personal info', {'fields': ('full_name',)}),
+        ('Personal info', {'fields': ('first_name', 'last_name',)}),
         ('Permissions', {'fields': ('admin', 'staff', 'is_active', 'has_store')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin

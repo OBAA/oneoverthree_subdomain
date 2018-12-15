@@ -36,6 +36,11 @@ class BillingProfileManager(models.Manager):
 class BillingProfile(models.Model):
     user                    = models.OneToOneField(User, blank=True, null=True)
     email                   = models.EmailField()
+
+    mobile_number           = models.TextField(max_length=12, unique=True, blank=True, null=True)
+    first_name              = models.CharField(max_length=120, blank=True, null=True)
+    last_name               = models.CharField(max_length=120, blank=True, null=True)
+
     active                  = models.BooleanField(default=True)
     update                  = models.DateTimeField(auto_now=True)
     timestamp               = models.DateTimeField(auto_now_add=True)
@@ -55,19 +60,19 @@ def billing_profile_created_receiver_paystack(sender, instance, *args, **kwargs)
     if not instance.customer_id_paystack and instance.email:
         print("API request and send to Paystack")
         customer = instance.paystack_customer().create(
-            email=instance.email
-            # first_name='first_name',
-            # last_name='last_name',
-            # phone='phone'
+            email=instance.email,
+            first_name=instance.first_name,
+            last_name=instance.last_name,
+            phone=instance.mobile_number,
 
             # to collect above info; pass arguements through 'user_created_receiver'
         )
-        print(customer)
         customer_api_data = customer['data']
-        print(customer_api_data)
         customer_id = customer_api_data.get('customer_code')
-        print(customer_id)
         instance.customer_id_paystack = customer_id
+        # print(customer)
+        print(customer['message'])
+        print(customer_id)
 
 
 pre_save.connect(billing_profile_created_receiver_paystack, sender=BillingProfile)
@@ -75,7 +80,13 @@ pre_save.connect(billing_profile_created_receiver_paystack, sender=BillingProfil
 
 def user_created_receiver(sender, instance, created, *args, **kwargs):
     if created and instance.email:
-        BillingProfile.objects.get_or_create(user=instance, email=instance.email)
+        BillingProfile.objects.get_or_create(
+            user=instance,
+            email=instance.email,
+            mobile_number=instance.mobile_number,
+            first_name=instance.first_name,
+            last_name=instance.last_name,
+        )
 
 
 post_save.connect(user_created_receiver, sender=User)

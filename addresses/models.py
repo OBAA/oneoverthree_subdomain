@@ -175,9 +175,9 @@ def address_pre_delete_receiver(sender, instance, *args, **kwargs):
     billing_profile = instance.billing_profile
     if instance.default is True:
         qs = Address.objects.get_queryset().by_billing_profile(billing_profile)
-        print(qs)
-        print(qs.count())
-        print(qs[0], qs[1], qs[2])
+        # print(qs)
+        # print(qs.count())
+        # print(qs[0], qs[1], qs[2])
         if qs.count() > 1:
             next_address = qs[1]
             next_address.set_default_address(billing_profile)

@@ -3,7 +3,7 @@
 # SQLite3
 db.sqlite3
 
-store/fixtures/
+fixtures/
 
 # Virtualenv related
 bin/

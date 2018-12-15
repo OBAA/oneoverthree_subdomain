@@ -1,4 +1,8 @@
+import phonenumbers
+from phonenumbers import PhoneNumberFormat
 from io import BytesIO
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row, Column
 from django import forms
 from django.contrib import messages
 from django.core.files.base import ContentFile
@@ -18,7 +22,12 @@ User = get_user_model()
 class ReactivateEmailForm(forms.Form):
     email = forms.EmailField()
 
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super(ReactivateEmailForm, self).__init__(*args, **kwargs)
+
     def clean_email(self):
+        request = self.request
         email   = self.cleaned_data.get('email')
         qs      = EmailActivation.objects.email_exists(email)
         if not qs.exists():
@@ -26,8 +35,7 @@ class ReactivateEmailForm(forms.Form):
             msg = """This email does not exists, would you 
             like to <a href="{link}">register</a>?  
              """.format(link=register_link)
-            # messages.success(request, mark_safe(msg))
-            raise forms.ValidationError(mark_safe(msg))
+            messages.success(request, mark_safe(msg))
         return email
 
 
@@ -39,7 +47,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'full_name')
+        fields = ('email', 'first_name', 'last_name')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -61,7 +69,7 @@ class UserAdminCreationForm(forms.ModelForm):
 class UserDetailChangeForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['full_name']
+        fields = ['first_name', 'last_name']  # , 'mobile_num']
 
 
 class UserAdminChangeForm(forms.ModelForm):
@@ -73,7 +81,7 @@ class UserAdminChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'full_name', 'password', 'is_active', 'admin')
+        fields = ('email', 'first_name', 'last_name', 'password', 'is_active', 'admin')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -132,9 +140,11 @@ class LoginForm(forms.Form):
                 confirm_email = EmailActivation.objects.filter(email=email)
                 is_confirmable = confirm_email.confirmable().exists()
                 if is_confirmable:
-                    raise forms.ValidationError(mark_safe(msg1))
+                    messages.success(request, mark_safe(msg1))
+                    raise forms.ValidationError("Email confirmation required")
                 email_confirm_exists = EmailActivation.objects.email_exists(email).exists()
                 if email_confirm_exists:
+                    messages.success(request, mark_safe(msg))
                     raise forms.ValidationError(mark_safe(msg2))
                 if not is_confirmable or not email_confirm_exists:
                     raise forms.ValidationError("This user is inactive.")
@@ -165,12 +175,14 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'full_name', 'image')
+        fields = ('first_name', 'last_name', 'email', 'mobile_number', 'image')
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs.update({'placeholder': " Email"})
-        self.fields['full_name'].widget.attrs.update({'placeholder': " Full name"})
+        self.fields['mobile_number'].widget.attrs.update({'placeholder': " Phone '+123-7012345678'"})
+        self.fields['first_name'].widget.attrs.update({'placeholder': " First name"})
+        self.fields['last_name'].widget.attrs.update({'placeholder': " Last name"})
         self.fields['password1'].widget.attrs.update({'placeholder': " Password"})
         self.fields['password2'].widget.attrs.update({'placeholder': " Confirm password"})
         for field in iter(self.fields):
@@ -180,14 +192,37 @@ class RegisterForm(forms.ModelForm):
                 self.fields[field].widget.attrs.update({'class': 'sizefull s-text7 p-l-15 p-r-15'})
 
     def clean_password2(self):
-        print("1")
-        print(self.data)
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
+
+    def clean_mobile_number(self):
+
+        """
+        Ensure pattern matches "+234-7012345678"
+        Verify mobile number.
+        """
+
+        mobile_number = self.cleaned_data.get("mobile_number", None)
+        try:
+            mobile = phonenumbers.parse(mobile_number, None)
+        except phonenumbers.phonenumberutil.NumberParseException:
+            raise forms.ValidationError("Enter number in the correct format '+2347012345678")
+
+        if phonenumbers.is_possible_number(mobile) and phonenumbers.is_valid_number(mobile):
+            return phonenumbers.format_number(mobile, PhoneNumberFormat.INTERNATIONAL)
+
+        elif phonenumbers.is_possible_number(mobile) is False:
+            raise forms.ValidationError("Ensure number is entered correctly")
+
+        elif phonenumbers.is_valid_number(mobile) is False:
+            raise forms.ValidationError("This number is not valid")
+
+        else:
+            raise forms.ValidationError("Enter number in the correct format")
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -196,7 +231,6 @@ class RegisterForm(forms.ModelForm):
         user.is_active = False  # send confirmation email
 
         user_image = user.image
-        # ext = str(user_image).split('.', 1)[1]
 
         data = self.cleaned_data
         # x = float(data.get('x'))
@@ -205,15 +239,16 @@ class RegisterForm(forms.ModelForm):
         # h = float(data.get('height'))
 
         # if user_image:
-        #     buffer = BytesIO()
-        #     ext = 'JPEG' if ext.lower() == 'jpg' else ext.upper()
-        #     image = Image.open(user_image)
-        #     cropped_image = image.crop((x, y, w + x, h + y))
-        #     resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
-        #     resized_image.save(buffer, ext, quality=100)
-        #     img_content = ContentFile(buffer.getvalue(), user_image.name)
-        #
-        #     user.image.save(user_image.name, img_content, save=False)
+            # buffer = BytesIO()
+            # ext = str(user_image).split('.', 1)[1]
+            # ext = 'JPEG' if ext.lower() == 'jpg' else ext.upper()
+            # image = Image.open(user_image)
+            # cropped_image = image.crop((x, y, w + x, h + y))
+            # resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
+            # resized_image.save(buffer, ext, quality=100)
+            # img_content = ContentFile(buffer.getvalue(), user_image.name)
+            #
+            # user.image.save(user_image.name, img_content, save=False)
 
         # obj = EmailActivation.objects.create(user=user)  # Sending Confirmation via signals
         # obj.send_activation_email()
@@ -237,7 +272,7 @@ class StoreRegisterForm(forms.ModelForm):
         self.fields['title'].widget.attrs.update({'placeholder': " Store / Brand name"})
         self.fields['description'].widget.attrs.update({'placeholder': " Store / Brand slogan"})
         self.fields['instagram'].widget.attrs.update({'placeholder': " IG-@handle"})
-        self.fields['twitter'].widget.attrs.update({'placeholder': " IG-@handle"})
+        self.fields['twitter'].widget.attrs.update({'placeholder': " Twitter-@handle"})
         self.fields['whatsapp'].widget.attrs.update({'placeholder': " +234-whatsapp"})
         for field in iter(self.fields):
             if field in ('background_image_a', 'background_image_b'):

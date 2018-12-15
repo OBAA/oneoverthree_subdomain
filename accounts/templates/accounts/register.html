@@ -1,5 +1,6 @@
 {% extends 'accounts/base-auth.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -16,22 +17,49 @@
     {{ hidden_field }}
     {% endfor %}
 
-
+    <span class="s-text8 p-t-5 p-b-5">{{ form.first_name.errors }}</span>
     <div class="col-10 size13 bo4 m-b-12 mx-auto">
-        <input class="sizefull s-text7 p-l-15 p-r-15" type="email" name="email" placeholder=" Email" maxlength="120" required="" id="id_email">
+        {{ form.first_name }}
+        <span class="s-text8 p-t-5 p-b-5">{{ form.first_name.help_text }}</span>
     </div>
 
+    <span class="s-text8 p-t-5 p-b-5">{{ form.last_name.errors }}</span>
     <div class="col-10 size13 bo4 m-b-12 mx-auto">
-        <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" placeholder=" Full name" maxlength="120" id="id_full_name">
+        {{ form.last_name }}
+        <span class="s-text8 p-t-5 p-b-5">{{ form.last_name.help_text }}</span>
     </div>
 
+    <span class="txt2 s-text8 p-t-5">{{ form.email.errors }}</span>
     <div class="col-10 size13 bo4 m-b-12 mx-auto">
-        <input class="sizefull s-text7 p-l-15 p-r-15" type="password" name="password1" placeholder=" Password" required="" id="id_password1">
+        {{ form.email }}
+        <span class="s-text8 p-t-5 p-b-5">{{ form.email.help_text }}</span>
     </div>
 
-    <div class="col-10 size13 bo4 m-b-25 mx-auto">
-        <input class="sizefull s-text7 p-l-15 p-r-15" type="password" name="password2" placeholder=" Confirm password" required="" id="id_password2">
+    <span class="s-text8 p-t-5 p-b-5">{{ form.mobile_number.errors }}</span>
+    <div class="col-10 size13 bo4 m-b-12 mx-auto">
+        {{ form.mobile_number }}
+        <span class="s-text8 p-t-5 p-b-5">{{ form.mobile_number.help_text }}</span>
     </div>
+
+    <span class="s-text8 p-t-5 p-b-5">{{ form.password1.errors }}</span>
+    <div class="col-10 size13 bo4 m-b-12 mx-auto">
+        {{ form.password1 }}
+        <span class="s-text8 p-t-5 p-b-5">{{ form.password1.help_text }}</span>
+    </div>
+
+    <span class="s-text8 p-t-5 p-b-5">{{ form.password2.errors }}</span>
+    <div class="col-10 size13 bo4 m-b-12 mx-auto">
+        {{ form.password2 }}
+        <span class="s-text8 p-t-5 p-b-5">{{ form.password2.help_text }}</span>
+    </div>
+
+    <!--<div class="col-10 size13 bo4 m-b-12 mx-auto">-->
+        <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="password" name="password1" placeholder=" Password" required="" id="id_password1">-->
+    <!--</div>-->
+    <!---->
+    <!--<div class="col-10 size13 bo4 m-b-25 mx-auto">-->
+        <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="password" name="password2" placeholder=" Confirm password" required="" id="id_password2">-->
+    <!--</div>-->
 
     <!--<div class="card col-10 m-b-25 mx-auto">-->
         <!--<div class="px-2 my-2">-->
@@ -61,7 +89,6 @@
         </div>
     </div>
 
-
     <div class="w-full text-center p-t-27 p-b-239">
         <!--<a href="{% url 'store_register' %}" class="txt2">-->
             <!--Apply for a Store?-->
@@ -83,6 +110,7 @@
 </form>
 
 
+
 <!-- MODAL TO CROP THE IMAGE -->
 <div class="modal fade" id="modalCrop" style="height: 100%;">
     <div class="modal-dialog">
@@ -94,7 +122,7 @@
                 <h4 class="modal-title">Crop image</h4>
             </div>
             <div class="modal-body">
-                <img src="" id="image" style="max-width: 100%;">
+                <img src="" id="image" style="max-width: 75%; max-height: 75%;">
             </div>
             <div class="modal-footer">
                 <div class="btn-group pull-left" role="group">
@@ -129,7 +157,7 @@
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $("#image").attr("src", e.target.result);
-                    $("#js-crop").attr("class", "btn btn-primary js-crop-image-a");
+                    $("#js-crop").attr("class", "btn btn-primary js-crop-image");
                     $("#modalCrop").modal("show");
 
                 };

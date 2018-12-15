@@ -102,7 +102,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UserDetailChangeForm
     # success_url = '/account/details/'
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return self.request.user
 
     def get_success_url(self):
@@ -112,7 +112,7 @@ class UserDetailUpdateView(LoginRequiredMixin, UpdateView):
 class AccountSettingsView(DetailView):
     template_name = 'accounts/snippets/account-settings.html'
 
-    def get_object(self):
+    def get_object(self, queryset=None):
         return self.request.user
 
 

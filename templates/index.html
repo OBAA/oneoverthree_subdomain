@@ -3,13 +3,17 @@
 
 
 {% block content %}
+{% if user.is_authenticated %}
 <section class="bg-index-page flex-col-c-m" style="background-image: url({% static 'img/index-00.jpg' %});">
 </section>
+{% else %}
+<section class="bg-index-page flex-col-c-m" style="background-image: url({% static 'img/header-00.jpg' %});">
+</section>
+{% endif %}
+
 
 <!-- Banner -->
 {% include 'base/banner.html' %}
-
-
 
 
 

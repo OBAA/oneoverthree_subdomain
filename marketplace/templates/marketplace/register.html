@@ -18,6 +18,20 @@
 
     <!--USER FORM-->
     <div class="col-10 size13 bo4 m-b-12 mx-auto">
+        <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" placeholder=" First & Last name" maxlength="120" id="id_full_name">-->
+        <span class="s-text8 p-t-5 p-b-5">{{ user_form.first_name.errors }}</span>
+        {{ user_form.first_name }}
+        <span class="s-text8 p-t-5 p-b-5">{{ user_form.first_name.help_text }}</span>
+    </div>
+
+    <div class="col-10 size13 bo4 m-b-12 mx-auto">
+        <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" placeholder=" First & Last name" maxlength="120" id="id_full_name">-->
+        <span class="s-text8 p-t-5 p-b-5">{{ user_form.last_name.errors }}</span>
+        {{ user_form.last_name }}
+        <span class="s-text8 p-t-5 p-b-5">{{ user_form.last_name.help_text }}</span>
+    </div>
+
+    <div class="col-10 size13 bo4 m-b-12 mx-auto">
         <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="email" name="email" placeholder=" Email" maxlength="120" required="" id="id_email">-->
         <span class="s-text8 p-t-5 p-b-5">{{ user_form.email.errors }}</span>
         {{ user_form.email }}
@@ -25,10 +39,10 @@
     </div>
 
     <div class="col-10 size13 bo4 m-b-12 mx-auto">
-        <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" placeholder=" First & Last name" maxlength="120" id="id_full_name">-->
-        <span class="s-text8 p-t-5 p-b-5">{{ user_form.full_name.errors }}</span>
-        {{ user_form.full_name }}
-        <span class="s-text8 p-t-5 p-b-5">{{ user_form.full_name.help_text }}</span>
+        <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="email" name="email" placeholder=" Email" maxlength="120" required="" id="id_email">-->
+        <span class="s-text8 p-t-5 p-b-5">{{ user_form.mobile_number.errors }}</span>
+        {{ user_form.mobile_number }}
+        <span class="s-text8 p-t-5 p-b-5">{{ user_form.mobile_number.help_text }}</span>
     </div>
 
     <div class="col-10 size13 bo4 m-b-12 mx-auto">
@@ -53,7 +67,7 @@
                     <span class="s-text7"><p>Store Logo: </p></span>
                 </div>
                 <div class="col-12 col-sm-8 col-md-12">
-                    <div class="s-text11">{{ user_form.image }}</div>
+                    <div class="custom-file s-text11">{{ user_form.image }}</div>
                 </div>
             </div>
             <span class="s-text8 p-t-5 p-b-5">{{ user_form.image.help_text }}</span>
@@ -63,8 +77,6 @@
         {{ user_form.height }}
         {{ user_form.width }}
     </div>
-
-
 
     <!--STORE FORM-->
     <div class="col-10 size13 bo4 m-b-25 mx-auto">
@@ -162,7 +174,7 @@
         </a>
     </div>
     <div class="w-full text-center">
-        <a href="{% url 'account:login' %}" class="txt3">
+        <a href="{% url 'login' %}" class="txt3">
             Sign in
         </a>
     </div>

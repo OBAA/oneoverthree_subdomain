@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third Party
-    'mptt', 'storages',
+    'mptt', 'storages', 'dbbackup',
 
     # My APPS
     'accounts', 'addresses',
@@ -51,6 +51,9 @@ AUTH_USER_MODEL = 'accounts.User'
 BASE_URL = 'www.1over3.store'
 
 CART_SESSION_ID = 'cart'
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': '/home/oneoverthree/oneoverthree_subdomain/backups'}
 
 DEFAULT_SITE_DOMAIN = 'www.1over3.store'
 
