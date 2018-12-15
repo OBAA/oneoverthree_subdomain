@@ -47,7 +47,7 @@ class UserAdminCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name')
+        fields = ('email', 'first_name', 'last_name', 'mobile_number')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -56,6 +56,23 @@ class UserAdminCreationForm(forms.ModelForm):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("Passwords don't match")
         return password2
+
+    def clean_mobile_number(self):
+
+        """
+        Ensure pattern matches "+234-7012345678"
+        Verify mobile number.
+        """
+
+        mobile_number = self.cleaned_data.get("mobile_number", None)
+        try:
+            mobile = phonenumbers.parse(mobile_number, None)
+        except phonenumbers.phonenumberutil.NumberParseException:
+            raise forms.ValidationError("Enter number in the correct format '+2347012345678")
+        if phonenumbers.is_possible_number(mobile) and phonenumbers.is_valid_number(mobile):
+            return phonenumbers.format_number(mobile, PhoneNumberFormat.INTERNATIONAL)
+        else:
+            raise forms.ValidationError("Enter a valid number in the INTERNATIONAL format")
 
     def save(self, commit=True):
         # Save the provided password in hashed format
@@ -69,7 +86,24 @@ class UserAdminCreationForm(forms.ModelForm):
 class UserDetailChangeForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name']  # , 'mobile_num']
+        fields = ['first_name', 'last_name', 'mobile_number']
+
+    def clean_mobile_number(self):
+
+        """
+        Ensure pattern matches "+234-7012345678"
+        Verify mobile number.
+        """
+
+        mobile_number = self.cleaned_data.get("mobile_number", None)
+        try:
+            mobile = phonenumbers.parse(mobile_number, None)
+        except phonenumbers.phonenumberutil.NumberParseException:
+            raise forms.ValidationError("Enter number in the correct format '+2347012345678")
+        if phonenumbers.is_possible_number(mobile) and phonenumbers.is_valid_number(mobile):
+            return phonenumbers.format_number(mobile, PhoneNumberFormat.INTERNATIONAL)
+        else:
+            raise forms.ValidationError("Enter a valid number in the INTERNATIONAL format")
 
 
 class UserAdminChangeForm(forms.ModelForm):
@@ -81,13 +115,30 @@ class UserAdminChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', 'password', 'is_active', 'admin')
+        fields = ('email', 'mobile_number', 'first_name', 'last_name', 'password', 'is_active', 'admin')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+    def clean_mobile_number(self):
+
+        """
+        Ensure pattern matches "+234-7012345678"
+        Verify mobile number.
+        """
+
+        mobile_number = self.cleaned_data.get("mobile_number", None)
+        try:
+            mobile = phonenumbers.parse(mobile_number, None)
+        except phonenumbers.phonenumberutil.NumberParseException:
+            raise forms.ValidationError("Enter number in the correct format '+2347012345678")
+        if phonenumbers.is_possible_number(mobile) and phonenumbers.is_valid_number(mobile):
+            return phonenumbers.format_number(mobile, PhoneNumberFormat.INTERNATIONAL)
+        else:
+            raise forms.ValidationError("Enter a valid number in the INTERNATIONAL format")
 
 
 class GuestForm(forms.ModelForm):
@@ -215,14 +266,8 @@ class RegisterForm(forms.ModelForm):
         if phonenumbers.is_possible_number(mobile) and phonenumbers.is_valid_number(mobile):
             return phonenumbers.format_number(mobile, PhoneNumberFormat.INTERNATIONAL)
 
-        elif phonenumbers.is_possible_number(mobile) is False:
-            raise forms.ValidationError("Ensure number is entered correctly")
-
-        elif phonenumbers.is_valid_number(mobile) is False:
-            raise forms.ValidationError("This number is not valid")
-
         else:
-            raise forms.ValidationError("Enter number in the correct format")
+            raise forms.ValidationError("Enter a valid number in the INTERNATIONAL format")
 
     def save(self, commit=True):
         # Save the provided password in hashed format
