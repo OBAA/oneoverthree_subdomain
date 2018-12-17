@@ -92,7 +92,7 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     # USERNAME_FIELD and password are required by default.
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number']
 
     objects = UserManager()
 
