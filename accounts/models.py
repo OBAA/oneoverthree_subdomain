@@ -31,7 +31,7 @@ def upload_image_path(instance, filename):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, first_name=None, last_name=None, password=None, is_active=False, is_admin=False, is_staff=False):
+    def create_user(self, email, mobile_number, first_name=None, last_name=None, password=None, is_active=False, is_admin=False, is_staff=False):
         if not email:
             raise ValueError("Must be a valid email address")
         if not password:
@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
 
         user_obj = self.model(
             email=self.normalize_email(email),
-            # full_name=full_name,
+            mobile_number=mobile_number,
             first_name=first_name,
             last_name=last_name,
         )
@@ -50,9 +50,10 @@ class UserManager(BaseUserManager):
         user_obj.save(using=self._db)
         return user_obj
 
-    def create_staffuser(self, email, first_name=None, last_name=None, password=None):
+    def create_staffuser(self, email, mobile_number, first_name=None, last_name=None, password=None):
         user = self.create_user(
             email,
+            mobile_number=mobile_number,
             first_name=first_name,
             last_name=last_name,
             password=password,
@@ -60,9 +61,10 @@ class UserManager(BaseUserManager):
         )
         return user
 
-    def create_superuser(self, email, first_name=None, last_name=None, password=None):
+    def create_superuser(self, email, mobile_number, first_name=None, last_name=None, password=None):
         user = self.create_user(
             email,
+            mobile_number=mobile_number,
             first_name=first_name,
             last_name=last_name,
             password=password,
