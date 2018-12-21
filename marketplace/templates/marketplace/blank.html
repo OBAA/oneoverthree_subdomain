@@ -1,0 +1,67 @@
+<!--User Form-->
+<div class="card col-10 m-b-25 mx-auto">
+        <div class="px-2 my-2">
+            <span class="s-text8 p-t-5 p-b-5">{{ user_form.image.errors }}</span>
+            <div class="row">
+                <div class="col-12 col-sm-4 col-md-12">
+                    <span class="s-text7"><p>Store Logo: </p></span>
+                </div>
+                <div class="col-12 col-sm-8 col-md-12">
+                    <div class="custom-file s-text11">{{ user_form.image }}</div>
+                </div>
+            </div>
+            <span class="s-text8 p-t-5 p-b-5">{{ user_form.image.help_text }}</span>
+        </div>
+        {{ user_form.x }}
+        {{ user_form.y }}
+        {{ user_form.height }}
+        {{ user_form.width }}
+    </div>
+
+<!--Store Form-->
+ <div class="card col-10 m-b-25 mx-auto">
+        <div class="px-2 my-2">
+            <span class="s-text8 p-t-5 p-b-5">{{ form.background_image_a.errors }}</span>
+            <div class="row">
+                <div class="col-12 col-sm-4 col-md-12">
+                    <span class="s-text7"><p>Slider Image: </p></span>
+                </div>
+                <div class="col-12 col-sm-8 col-md-12">
+                    <div class="s-text11">{{ form.background_image_a }}</div>
+                </div>
+            </div>
+            <span class="s-text8 p-t-5 p-b-5">{{ form.background_image_a.help_text }}</span>
+        </div>
+        {{ store_slider_form.x_1 }}
+        {{ store_slider_form.y_1 }}
+        {{ store_slider_form.height_1 }}
+        {{ store_header_form.width_1 }}
+    </div>
+
+
+
+ <div class="card col-10 m-b-25 mx-auto">
+        <div class="px-2 my-2">
+            <span class="s-text8 p-t-5 p-b-5">{{ form.header_image.errors }}</span>
+            <div class="row">
+                <div class="col-12 col-sm-4 col-md-12">
+                    <span class="s-text7"><p>Header Image: </p></span>
+                </div>
+                <div class="col-12 col-sm-8 col-md-12">
+                    <div class="s-text11">{{ form.header_image }}</div>
+                </div>
+
+                <div class="upload-btn-wrapper">
+                    <button class="upload">Upload a file</button>
+                    <input type="file" name="myfile" />
+                </div>
+
+            </div>
+            <span class="s-text8 p-t-5 p-b-5">{{ form.header_image.help_text }}</span>
+        </div>
+        {{ store_header_form.x_2 }}
+        {{ store_header_form.y_2 }}
+        {{ store_header_form.height_2 }}
+        {{ store_header_form.width_2 }}
+    </div>
+

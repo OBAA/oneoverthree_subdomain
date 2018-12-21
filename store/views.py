@@ -13,7 +13,7 @@ from cart.cart import Cart
 from marketplace.models import Store
 from tags.models import Tag
 
-from .models import Product, ProductReview, Brand, Category
+from .models import Product, ProductReview, Category  # , Brand
 from .forms import SizeVariationForm
 
 
@@ -128,7 +128,7 @@ class CategoryView(DetailView):
     def get_queryset(self, *args, **kwargs):
         category = self.get_object()
         categories = category.get_descendants(include_self=True)  # Gets Category descendants list
-        product_list = Product.objects.all().filter(category__in=categories)
+        product_list = Product.objects.all().filter(category__in=categories, store='1OVER3')
         return product_list
 
     def get_paginated(self):
@@ -158,46 +158,46 @@ class CategoryView(DetailView):
         return instance
 
 
-class BrandDetailSlugView(DetailView):
-    template_name = "store/product-list.html"
-
-    def get_context_data(self, *args, **kwargs):
-        paginator, products = self.get_queryset()
-        context = super(BrandDetailSlugView, self).get_context_data(**kwargs)
-        context['brand_list'] = Brand.objects.all()
-        context['object_list'] = products
-        context['paginator'] = paginator
-        return context
-
-    def get_queryset(self, *args, **kwargs):
-
-        brand = self.get_object()
-        brands = brand.get_descendants(include_self=True)  # Gets Brand descendants list
-        page = self.request.GET.get('page', 1)
-        # product_list = self.get_object().products.all()
-        product_list = Product.objects.all().filter(brand__in=brands)
-
-        paginator = Paginator(product_list, 2)
-        try:
-            products = paginator.page(page)
-        except PageNotAnInteger:
-            products = paginator.page(1)
-        except EmptyPage:
-            products = paginator.page(paginator.num_pages)
-        return paginator, products
-
-    def get_object(self, *args, **kwargs):
-        slug = self.kwargs.get('slug')
-        try:
-            instance = Brand.objects.get(slug=slug)
-        except Brand.DoesNotExist:
-            raise Http404("Not Found")
-        except Brand.MultipleObjectsReturned:
-            qs = Brand.objects.filter(slug=slug)
-            instance = qs.first()
-        except:
-            raise Http404("Nothing Here. Sorry")
-        return instance
+# class BrandDetailSlugView(DetailView):
+#     template_name = "store/product-list.html"
+#
+#     def get_context_data(self, *args, **kwargs):
+#         paginator, products = self.get_queryset()
+#         context = super(BrandDetailSlugView, self).get_context_data(**kwargs)
+#         context['brand_list'] = Brand.objects.all()
+#         context['object_list'] = products
+#         context['paginator'] = paginator
+#         return context
+#
+#     def get_queryset(self, *args, **kwargs):
+#
+#         brand = self.get_object()
+#         brands = brand.get_descendants(include_self=True)  # Gets Brand descendants list
+#         page = self.request.GET.get('page', 1)
+#         # product_list = self.get_object().products.all()
+#         product_list = Product.objects.all().filter(brand__in=brands)
+#
+#         paginator = Paginator(product_list, 2)
+#         try:
+#             products = paginator.page(page)
+#         except PageNotAnInteger:
+#             products = paginator.page(1)
+#         except EmptyPage:
+#             products = paginator.page(paginator.num_pages)
+#         return paginator, products
+#
+#     def get_object(self, *args, **kwargs):
+#         slug = self.kwargs.get('slug')
+#         try:
+#             instance = Brand.objects.get(slug=slug)
+#         except Brand.DoesNotExist:
+#             raise Http404("Not Found")
+#         except Brand.MultipleObjectsReturned:
+#             qs = Brand.objects.filter(slug=slug)
+#             instance = qs.first()
+#         except:
+#             raise Http404("Nothing Here. Sorry")
+#         return instance
 
 
 class TagListView(ListView):
@@ -206,7 +206,7 @@ class TagListView(ListView):
     def get_context_data(self, *args, **kwargs):
         paginator, products = self.get_queryset()
         context = super(TagListView, self).get_context_data(**kwargs)
-        context['brand_list'] = Brand.objects.all()
+        context['brand_list'] = Store.objects.all()
         context['object_list'] = products
         context['paginator'] = paginator
         return context
@@ -214,8 +214,10 @@ class TagListView(ListView):
     def get_queryset(self, *args, **kwargs):
         slug = self.kwargs.get('slug')
         page = self.request.GET.get('page', 1)
-        product_list = Product.objects.all().filter(tags__title__contains=slug)
-
+        product_list = Product.objects.all().filter(
+            tags__title__contains=slug,
+            store='1OVER3',
+        )
         paginator = Paginator(product_list, 2)
         try:
             products = paginator.page(page)
@@ -241,7 +243,7 @@ class StoreHomeView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
-        return Product.objects.all()
+        return Product.objects.all().filter(store__title='1OVER3')
 
     def get_paginated(self):
         page = self.request.GET.get('page', 1)

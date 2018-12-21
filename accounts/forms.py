@@ -226,21 +226,18 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'email', 'mobile_number', 'image')
+        fields = ('first_name', 'last_name', 'email', 'mobile_number')
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
-        self.fields['email'].widget.attrs.update({'placeholder': " Email"})
-        self.fields['mobile_number'].widget.attrs.update({'placeholder': " Phone '+123-7012345678'"})
-        self.fields['first_name'].widget.attrs.update({'placeholder': " First name"})
-        self.fields['last_name'].widget.attrs.update({'placeholder': " Last name"})
-        self.fields['password1'].widget.attrs.update({'placeholder': " Password"})
-        self.fields['password2'].widget.attrs.update({'placeholder': " Confirm password"})
+        self.fields['email'].widget.attrs.update({'placeholder': " Email  **"})
+        self.fields['mobile_number'].widget.attrs.update({'placeholder': " Phone '+123-7012345678'  **"})
+        self.fields['first_name'].widget.attrs.update({'placeholder': " First name  **"})
+        self.fields['last_name'].widget.attrs.update({'placeholder': " Last name  **"})
+        self.fields['password1'].widget.attrs.update({'placeholder': " Password  **"})
+        self.fields['password2'].widget.attrs.update({'placeholder': " Confirm password  **"})
         for field in iter(self.fields):
-            if field == 'image':
-                self.fields[field].widget.attrs.update({'class': 'form-control'})
-            else:
-                self.fields[field].widget.attrs.update({'class': 'sizefull s-text7 p-l-15 p-r-15'})
+            self.fields[field].widget.attrs.update({'class': 'sizefull s-text7 p-l-15 p-r-15'})
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -309,19 +306,28 @@ class StoreRegisterForm(forms.ModelForm):
         fields = (
             'title', 'seller_type', 'description',
             'instagram', 'twitter', 'whatsapp',
-            'background_image_a', 'background_image_b',
+            # 'slider_image', 'header_image',
         )
 
     def __init__(self, *args, **kwargs):
         super(StoreRegisterForm, self).__init__(*args, **kwargs)
-        self.fields['title'].widget.attrs.update({'placeholder': " Store / Brand name"})
-        self.fields['description'].widget.attrs.update({'placeholder': " Store / Brand slogan"})
-        self.fields['instagram'].widget.attrs.update({'placeholder': " IG-@handle"})
+        self.fields['title'].widget.attrs.update({'placeholder': " Store / Brand name  **"})
+        self.fields['description'].widget.attrs.update({'placeholder': " Store / Brand slogan  **"})
+        self.fields['instagram'].widget.attrs.update({'placeholder': " IG-@handle  **"})
         self.fields['twitter'].widget.attrs.update({'placeholder': " Twitter-@handle"})
         self.fields['whatsapp'].widget.attrs.update({'placeholder': " +234-whatsapp"})
         for field in iter(self.fields):
-            if field in ('background_image_a', 'background_image_b'):
-                self.fields[field].widget.attrs.update({'class': 'form-control'})
+            if field is 'seller_type':
+                self.fields[field].help_text = "  Store type  **"
+                self.fields[field].widget.attrs.update({
+                    'class': 'js-example-basic-single',
+                    'style': "border: 1px solid #e6e6e6; border-radius: 10px; width: auto; height: 30px;"
+                })
+                # self.fields[field].widget.attrs.update({
+                #     'class': 'js-example-basic-single',
+                #     'style': "border: 1px solid #e6e6e6; border-radius: 2px; width: 360px; height: 40px;"
+                # })
+
             else:
                 self.fields[field].widget.attrs.update({
                     'class': 'sizefull s-text7 p-l-15 p-r-15',

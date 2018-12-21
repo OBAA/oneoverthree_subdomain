@@ -72,6 +72,7 @@ def unique_slug_generator(instance, new_slug=None):
     has a model with a slug field and a title character (char) field.
     """
     slug = slugify(instance.title)
+    new_slug = slug
     Klass = instance.__class__
     numb = 1
 

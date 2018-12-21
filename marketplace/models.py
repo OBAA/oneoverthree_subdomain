@@ -40,7 +40,7 @@ SELLER_CHOICE_FIELD = (
 
 class StoreQuerySet(models.query.QuerySet):
     def all(self):
-        return self.filter(is_active=True)
+        return self.filter(is_active=True).exclude(title="1over3")
 
     def active(self):
         return self.filter(is_active=True)
@@ -106,13 +106,13 @@ class Store(MPTTModel):
     instagram   = models.CharField(max_length=120, blank=True)  # , help_text='IG-@handle')
     twitter   = models.CharField(max_length=120, blank=True)  # , help_text='Twitter-@handle')
     whatsapp  = models.CharField(max_length=120, blank=True)  # , help_text='+234-whatsapp')
-    background_image_a = models.ImageField(upload_to=upload_image_path, null=True, blank=True,
-                                           help_text='Used if STORE is featured on the Marketplace')
-    background_image_b = models.ImageField(upload_to=upload_image_path, null=True, blank=False)
+    slider_image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    header_image = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     ordering = models.IntegerField(blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)
     featured = models.BooleanField(default=False)
+    shipping_covered = models.BooleanField(default=False)
 
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children',
                             default=None)

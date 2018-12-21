@@ -9,16 +9,28 @@
 {% block content %}
 
 <!-- breadcrumb -->
+{% if object.store is '1OVER3' %}
 <div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-30 p-l-15-sm">
     <a href="{{ home_url }}" class="s-text16">
         Home
         <i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
     </a>
 
-    <!--<a href="{{ store_url }}" class="s-text16">-->
-        <!--Store-->
-        <!--<i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>-->
-    <!--</a>-->
+    <a href="{{ store_url }}" class="s-text16">
+        Outlet
+        <i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
+    </a>
+
+    <span class="s-text17">
+        {{ object.title }}
+    </span>
+</div>
+{% else %}
+<div class="bread-crumb bgwhite flex-w p-l-52 p-r-15 p-t-30 p-l-15-sm">
+    <a href="{{ home_url }}" class="s-text16">
+        Home
+        <i class="fa fa-angle-right m-l-8 m-r-9" aria-hidden="true"></i>
+    </a>
 
     {% for crumb in breadcrumbs %}
     <a href="{{ crumb.get_absolute_url }}" class="s-text16">
@@ -28,9 +40,10 @@
     {% endfor %}
 
     <span class="s-text17">
-			{{ object.title }}
-		</span>
+        {{ object.title }}
+    </span>
 </div>
+{% endif %}
 
 <!-- Product Detail -->
 <div class="container bgwhite p-t-35 p-b-80">

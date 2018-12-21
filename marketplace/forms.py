@@ -31,9 +31,9 @@ class StoreRegisterForm(forms.ModelForm):
                     'class': 'sizefull s-text7 p-l-15 p-r-15',
                 })
 
-    def clean(self):
-        print(self.data)
-        print(self.cleaned_data)
+    # def clean(self):
+        # print(self.data)
+        # print(self.cleaned_data)
 
     def save(self, commit=False, *args, **kwargs):
         store = super(StoreRegisterForm, self).save(commit=False)

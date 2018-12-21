@@ -1,7 +1,7 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
-from .models import Product, ProductImage, ProductReview, Brand, Category, Variation
+from .models import Product, ProductImage, ProductReview, Category, Variation  # , Brand
 
 
 # Register your admins here.
@@ -51,14 +51,14 @@ class ProductReviewAdmin(admin.ModelAdmin):
 admin.site.register(ProductReview, ProductReviewAdmin)
 
 
-class BrandMPTTModelAdmin(MPTTModelAdmin):
-    # specify pixel amount for this ModelAdmin only:
-    mptt_level_indent = 20
-    list_display = ['__str__', 'description', 'featured', 'order', 'is_active']
-    list_editable = ['featured', 'order', 'is_active']
-
-
-admin.site.register(Brand, BrandMPTTModelAdmin)
+# class BrandMPTTModelAdmin(MPTTModelAdmin):
+#     # specify pixel amount for this ModelAdmin only:
+#     mptt_level_indent = 20
+#     list_display = ['__str__', 'description', 'featured', 'order', 'is_active']
+#     list_editable = ['featured', 'order', 'is_active']
+#
+#
+# admin.site.register(Brand, BrandMPTTModelAdmin)
 
 
 class CategoryMPTTModelAdmin(MPTTModelAdmin):
