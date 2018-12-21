@@ -128,7 +128,8 @@ class CategoryView(DetailView):
     def get_queryset(self, *args, **kwargs):
         category = self.get_object()
         categories = category.get_descendants(include_self=True)  # Gets Category descendants list
-        product_list = Product.objects.all().filter(category__in=categories, store='1OVER3')
+        product_list = Product.objects.all().filter(
+            category__in=categories, store__title='1OVER3')
         return product_list
 
     def get_paginated(self):
