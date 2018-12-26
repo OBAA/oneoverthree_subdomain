@@ -10,8 +10,8 @@ from paystackapi.customer import Customer
 from paystackapi.transaction import Transaction
 
 #Paystack
-paystack = getattr(settings, "PAYSTACK_SECRET_KEY")
-paystack_pk = getattr(settings, "PAYSTACK_PUB_KEY")
+paystack = getattr(settings, "PAYSTACK_SECRET_LIVE_KEY")
+paystack_pk = getattr(settings, "PAYSTACK_PUB_TEST_KEY")
 
 
 # Create your views here.
