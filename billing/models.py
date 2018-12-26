@@ -8,7 +8,7 @@ from paystackapi.paystack import Paystack, Customer
 
 
 # Paystack secret key
-paystack = getattr(settings, "PAYSTACK_SECRET_KEY")
+paystack = getattr(settings, "PAYSTACK_SECRET_LIVE_KEY")
 
 # Create your models here.
 
