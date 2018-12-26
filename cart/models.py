@@ -35,6 +35,7 @@ class CouponCode(models.Model):
     usage = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
     first_order_coupon = models.BooleanField(default=False)
+    is_one_use_only = models.BooleanField(default=False)
 
     objects = CouponCodeManager()
 

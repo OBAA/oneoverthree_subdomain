@@ -271,6 +271,11 @@ def use_coupon_code(request):
                     messages.error(request, "Ooops, Coupon Only valid on your first order.")
                     pass
 
+            if coupon is not None and coupon.is_one_use_only:
+                if coupon.usage > 0:
+                    messages.error(request, "Ooops, This coupon has been used and is no longer valid.")
+                    pass
+
             elif coupon is not None:
                 # Check if coupon has been used by current user
                 coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
