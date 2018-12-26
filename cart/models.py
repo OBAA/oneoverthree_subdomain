@@ -27,6 +27,8 @@ class CouponCodeManager(models.Manager):
             valid_till = coupon.timestamp + timedelta(days=coupon.is_valid_till)
             if valid_till > now:
                 valid = True
+            # else:
+            #     coupon.is_valid = False
         else:
             coupon = None
 
@@ -42,7 +44,7 @@ class CouponCode(models.Model):
     is_active = models.BooleanField(default=True)
     first_order_coupon = models.BooleanField(default=False)
     is_one_use_only = models.BooleanField(default=False)
-
+    is_valid = models.BooleanField(default=True)
     is_valid_till = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -50,15 +52,6 @@ class CouponCode(models.Model):
 
     def __str__(self):
         return self.description
-
-    def is_valid(self):
-        now = timezone.now()
-        valid_till = self.timestamp + timedelta(days=self.is_valid_till)
-        if valid_till > now:
-            valid = True
-        else:
-            valid = False
-        return valid
 
 
 class UsedCouponQuerySet(models.query.QuerySet):
