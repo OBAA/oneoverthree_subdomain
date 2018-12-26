@@ -27,8 +27,8 @@ class CouponCodeManager(models.Manager):
             valid_till = coupon.timestamp + timedelta(days=coupon.is_valid_till)
             if valid_till > now:
                 valid = True
-            # else:
-            #     coupon.is_valid = False
+            else:
+                coupon.is_valid = False
         else:
             coupon = None
 
