@@ -216,16 +216,15 @@ class ShippingRateManager(models.Manager):
             else:
                 shipping_per_kg = default.first()
         else:
-            shipping_per_kg = 1000
+            shipping_per_kg = 1500
 
-        print(shipping_per_kg)
         return shipping_per_kg
 
 
 class ShippingRate(models.Model):
     country         = models.CharField(max_length=120, choices=COUNTRY, default="NG")  # default="--")
     state           = models.CharField(max_length=120, choices=STATES)
-    city            = models.CharField(max_length=120, blank=True)
+    city            = models.CharField(max_length=120, default='default')
     per_kg          = models.IntegerField(default=1000)
 
     objects = ShippingRateManager()

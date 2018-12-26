@@ -202,10 +202,8 @@ def checkout_home(request):
     login_form = LoginForm(request=request)
     guest_form = GuestForm(request=request)
 
-    ###
+    # Get cart total from session
     cart_total = request.POST.get('cart_total', None)
-    print(cart_total)
-    ###
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
     order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
@@ -218,24 +216,21 @@ def checkout_home(request):
         Order.objects.cart_total(request, obj=order_obj)
 
         # Remove Applied Coupon if any.
-        print("APC")
-        if order_obj.coupon_code is True:
+        if order_obj.coupon_applied is True:
             try:
                 coupon = order_obj.coupon
                 if coupon:
-                    print("PDP")
-
+                    coupon, valid = CouponCode.objects.get_coupon(code=coupon)
                     coupon_obj = UsedCoupon.objects.get_valid_coupon(coupon, billing_profile)
-                    print(coupon_obj)
                     if coupon_obj and coupon_obj.coupon_used is False:
                         coupon_obj.delete()
-                        order_obj.coupon_code = False
+                        order_obj.coupon_applied = False
                         order_obj.coupon = None
                         order_obj.discount_applied = None
                         order_obj.save()
-                        print("AD")
+                        coupon.usage -= 1
+                        coupon.save()
             except:
-                print("Sowore")
                 pass
 
     # Pass coupon to the template
@@ -263,55 +258,59 @@ def use_coupon_code(request):
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
         order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
         if coupon_code is not None:
-            coupon = CouponCode.objects.get_coupon(code=coupon_code)
+            coupon, valid = CouponCode.objects.get_coupon(code=coupon_code)
 
-            if coupon is not None and coupon.first_order_coupon is True:
-                qs = Order.objects.filter_by_billing_profile(request)
-                if qs.count() > 0:
-                    messages.error(request, "Ooops, Coupon Only valid on your first order.")
-                    pass
+            if coupon is not None and valid is True:
+                if coupon.first_order_coupon is True:
+                    qs = Order.objects.filter_by_billing_profile(request)
+                    if qs.count() > 0:
+                        messages.error(request, "Ooops, Coupon Only valid on your first order.")
+                        return redirect('cart:checkout')
 
-            if coupon is not None and coupon.is_one_use_only:
-                if coupon.usage > 0:
-                    messages.error(request, "Ooops, This coupon has been used and is no longer valid.")
-                    pass
-
-            elif coupon is not None:
-                # Check if coupon has been used by current user
-                coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
-
-                if created:
-                    cart_total = order_obj.total
-
-                    # Use Coupon
-                    discount = coupon.percentage
-                    discounted_amount = (cart_total * discount) / 100
-                    new_total = cart_total - discounted_amount
-                    if not order_obj.coupon_code:
-                        order_obj.total = new_total
-                        # order_obj.coupon_code = True
-
-                        order_obj.coupon = coupon_code
-
-                        order_obj.discount_applied = discount
-                        order_obj.save()
-                        messages.success(request, "Coupon code applied. Proceed to checkout.")
-                    else:
-                        messages.error(request, "Sorry, Only one coupon code per order.")
-                    print("Total")
-                    print(order_obj.total)
-
-                    coupon.usage += 1
-                    coupon.save()
-
-                elif coupon_obj.coupon_used:
-                    messages.error(request, "This coupon has already been used by you.")
+                if coupon.is_one_use_only:
+                    if coupon.usage > 0:
+                        messages.error(request, "Ooops, This coupon has been used and is no longer valid.")
+                        return redirect('cart:checkout')
 
                 else:
-                    link = reverse('contact')
-                    support = """<a href="{support_link}">support</a>""".format(support_link=link)
-                    msg = "Unable to process coupon, please contact " + support
-                    messages.error(request, msg, extra_tags='safe')
+                    # Check if coupon has been used by current user
+                    coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
+
+                    if created:
+                        cart_total = order_obj.total
+
+                        # Use Coupon
+                        discount = coupon.percentage
+                        discounted_amount = (cart_total * discount) / 100
+                        new_total = cart_total - discounted_amount
+                        if not order_obj.coupon_applied:
+                            order_obj.total = new_total
+                            # order_obj.coupon_applied = True
+
+                            order_obj.coupon = coupon_code
+
+                            order_obj.discount_applied = discount
+                            order_obj.save()
+                            messages.success(request, "Coupon code applied. Proceed to checkout.")
+                        else:
+                            messages.error(request, "Sorry, Only one coupon code per order.")
+                        print("Total")
+                        print(order_obj.total)
+
+                        coupon.usage += 1
+                        coupon.save()
+
+                    elif coupon_obj.coupon_used:
+                        messages.error(request, "This coupon has already been used by you.")
+
+                    else:
+                        link = reverse('contact')
+                        support = """<a href="{support_link}">support</a>""".format(support_link=link)
+                        msg = "Unable to process coupon, please contact " + support
+                        messages.error(request, msg, extra_tags='safe')
+
+            elif coupon is not None and valid is False:
+                messages.error(request, "Sorry. This coupon is no longer valid.")
 
             else:
                 messages.error(request, "Invalid. Check your code and try again.")
@@ -331,7 +330,7 @@ def checkout_finalize(request):
     shipping_address_id = request.session.get("shipping_address_id", None)
 
     if order_obj.coupon:
-        order_obj.coupon_code = True
+        order_obj.coupon_applied = True
 
     if shipping_address_id:
         qs = address_book.filter(id=shipping_address_id)
@@ -388,7 +387,7 @@ def checkout_success(request):
 
     if obj.coupon:
         billing_profile = obj.billing_profile
-        coupon = CouponCode.objects.get_coupon(obj.coupon)
+        coupon, valid = CouponCode.objects.get_coupon(obj.coupon)
         coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
         coupon_obj.coupon_used = True
 

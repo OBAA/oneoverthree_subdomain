@@ -1,5 +1,8 @@
 from django.db import models
 from billing.models import BillingProfile
+from datetime import timedelta
+from django.utils import timezone
+
 
 #
 DISCOUNT_RATES = [(i*5, str(i*5)) for i in range(1, 16)]
@@ -15,16 +18,19 @@ class CouponCodeManager(models.Manager):
         return CouponCodeQuerySet(self.model, using=self._db)
 
     def get_coupon(self, code):
+        now = timezone.now()
         qs = self.get_queryset().all().filter(code=code)
         print(qs)
+        valid = False
         if qs.count() == 1:
             coupon = qs.first()
-            print(coupon)
-            # valid = True
+            valid_till = coupon.timestamp + timedelta(days=coupon.is_valid_till)
+            if valid_till > now:
+                valid = True
         else:
             coupon = None
-            # valid = False
-        return coupon
+
+        return coupon, valid
 
 
 class CouponCode(models.Model):
@@ -37,10 +43,22 @@ class CouponCode(models.Model):
     first_order_coupon = models.BooleanField(default=False)
     is_one_use_only = models.BooleanField(default=False)
 
+    is_valid_till = models.IntegerField(default=0)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
     objects = CouponCodeManager()
 
     def __str__(self):
         return self.description
+
+    def is_valid(self):
+        now = timezone.now()
+        valid_till = self.timestamp + timedelta(days=self.is_valid_till)
+        if valid_till > now:
+            valid = True
+        else:
+            valid = False
+        return valid
 
 
 class UsedCouponQuerySet(models.query.QuerySet):
@@ -60,7 +78,7 @@ class UsedCouponManager(models.Manager):
         return obj, created
 
     def get_valid_coupon(self, coupon, billing_profile):
-        print("A")
+        # print("A")
         coupon = CouponCode.objects.get_coupon(coupon)
         # obj = self.model.objects.get(
         #     coupon=coupon,
@@ -70,11 +88,11 @@ class UsedCouponManager(models.Manager):
             coupon=coupon,
             billing_profile=billing_profile
         )
-        print("B")
+        # print("B")
         if qs.count() == 1:
             obj = qs.first()
 
-            print(obj)
+            # print(obj)
             return obj
 
 

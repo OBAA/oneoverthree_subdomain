@@ -95,10 +95,6 @@ class OrderManager(models.Manager):
     def cart_total(self, request, obj):
         total = request.POST.get("cart_total")
         cart_total = Decimal(total)
-        # shipping_total = obj.shipping_total
-        # new_total = math.fsum([cart_total, shipping_total])
-        # formatted_total = format(new_total, ".2f")
-        # obj.total = formatted_total
         obj.total = cart_total
         obj.save()
         return cart_total
@@ -126,7 +122,7 @@ class Order(models.Model):
     shipping_total = models.DecimalField(default=1000, max_digits=12, decimal_places=2)  # Figure it out
     total = models.DecimalField(default=0.00, max_digits=12, decimal_places=2)  # Calculated in checkout view
     coupon = models.CharField(max_length=25, blank=True, null=True)
-    coupon_code = models.BooleanField(default=False)
+    coupon_applied = models.BooleanField(default=False)
     discount_applied = models.IntegerField(blank=True, null=True)
     pdf = models.FileField(upload_to='pdfs/', null=True, blank=True)
     pdf_sent = models.BooleanField(default=False)
@@ -161,41 +157,6 @@ def pre_save_create_order_id(sender, instance, *args, **kwargs):
 
 
 pre_save.connect(pre_save_create_order_id, sender=Order)
-
-
-# def post_order_complete_send_order_invoice(sender, instance, *args, **kwargs):
-#     if instance.pdf and instance.pdf_sent is False:
-#         context = {
-#             'first_name': instance.billing_profile.user.first_name,
-#             'order_id': instance.order_id,
-#         }
-#         txt_ = get_template("emails/order_invoice.txt").render(context)
-#         # html_ = get_template("emails/order_invoice.html").render(context)
-#         subject = "It is ordered!"
-#         from_email = settings.DEFAULT_FROM_EMAIL
-#         recipient_list = [instance.billing_profile.email]
-#
-#         email = EmailMessage(
-#             subject,
-#             txt_,
-#             from_email,
-#             recipient_list,
-#         )
-#         pdf_file = instance.pdf
-#         # filename = pdf_file.name
-#         # print(pdf_file)
-#
-#         email.attach_file(instance.pdf)
-#
-#         # file = open(pdf_file.path)
-#         # email.attach(filename=filename, mimetype="application/pdf", content=file.read())
-#         # file.close()
-#
-#         email.send()
-#         instance.pdf_sent = True
-#
-#
-# pre_save.connect(post_order_complete_send_order_invoice, sender=Order)
 
 
 class OrderItemQuerySet(models.query.QuerySet):
