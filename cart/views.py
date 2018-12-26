@@ -220,7 +220,7 @@ def checkout_home(request):
             try:
                 coupon = order_obj.coupon
                 if coupon:
-                    coupon, valid = CouponCode.objects.get_coupon(code=coupon)
+                    coupon = CouponCode.objects.get_coupon(code=coupon)
                     coupon_obj = UsedCoupon.objects.get_valid_coupon(coupon, billing_profile)
                     if coupon_obj and coupon_obj.coupon_used is False:
                         coupon_obj.delete()
@@ -258,9 +258,9 @@ def use_coupon_code(request):
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
         order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
         if coupon_code is not None:
-            coupon, valid = CouponCode.objects.get_coupon(code=coupon_code)
+            coupon = CouponCode.objects.get_coupon(code=coupon_code)
 
-            if coupon is not None and valid is True:
+            if coupon is not None and coupon.is_valid is True:
                 if coupon.first_order_coupon is True:
                     qs = Order.objects.filter_by_billing_profile(request)
                     if qs.count() > 0:
@@ -309,7 +309,7 @@ def use_coupon_code(request):
                         msg = "Unable to process coupon, please contact " + support
                         messages.error(request, msg, extra_tags='safe')
 
-            elif coupon is not None and valid is False:
+            elif coupon is not None and coupon.is_valid is False:
                 messages.error(request, "Sorry. This coupon is no longer valid.")
 
             else:
@@ -387,7 +387,7 @@ def checkout_success(request):
 
     if obj.coupon:
         billing_profile = obj.billing_profile
-        coupon, valid = CouponCode.objects.get_coupon(obj.coupon)
+        coupon = CouponCode.objects.get_coupon(obj.coupon)
         coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
         coupon_obj.coupon_used = True
 

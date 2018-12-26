@@ -20,19 +20,15 @@ class CouponCodeManager(models.Manager):
     def get_coupon(self, code):
         now = timezone.now()
         qs = self.get_queryset().all().filter(code=code)
-        print(qs)
-        valid = False
         if qs.count() == 1:
             coupon = qs.first()
             valid_till = coupon.timestamp + timedelta(days=coupon.is_valid_till)
-            if valid_till > now:
-                valid = True
-            else:
+            if now > valid_till:
                 coupon.is_valid = False
         else:
             coupon = None
 
-        return coupon, valid
+        return coupon
 
 
 class CouponCode(models.Model):
@@ -41,7 +37,7 @@ class CouponCode(models.Model):
     percentage = models.PositiveIntegerField(blank=True, choices=DISCOUNT_RATES)
     amount = models.IntegerField(blank=True, null=True)
     usage = models.IntegerField(default=0)
-    is_active = models.BooleanField(default=True)
+    # is_active = models.BooleanField(default=True)
     first_order_coupon = models.BooleanField(default=False)
     is_one_use_only = models.BooleanField(default=False)
     is_valid = models.BooleanField(default=True)
