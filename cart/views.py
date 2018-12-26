@@ -27,8 +27,12 @@ from .forms import CartUpdateForm
 
 
 # Paystack
-paystack = getattr(settings, "PAYSTACK_SECRET_KEY")
-paystack_pk = getattr(settings, "PAYSTACK_PUB_KEY")
+site_id = getattr(settings, "SITE_ID")
+test_paystack = getattr(settings, "PAYSTACK_SECRET_TEST_KEY")
+test_paystack_pk = getattr(settings, "PAYSTACK_PUB_TEST_KEY")
+
+live_paystack_secret = getattr(settings, "PAYSTACK_SECRET_LIVE_KEY")
+live_paystack_pk = getattr(settings, "PAYSTACK_PUB_LIVE_KEY")
 
 
 # Create your views here.
@@ -339,7 +343,9 @@ def checkout_finalize(request):
 
         context = {
             "object": order_obj,
-            "paystack_public_key": paystack_pk,
+            "paystack_test_public_key": test_paystack_pk,
+            "paystack_live_public_key": live_paystack_pk,
+            "site_id": site_id,
             "order_total": order_total,
             "billing_profile": billing_profile
         }

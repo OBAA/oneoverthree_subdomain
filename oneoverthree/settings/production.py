@@ -17,6 +17,9 @@ def get_secret_setting(setting, secrets=secrets):
         raise ImproperlyConfigured("Set the {} setting".format(setting))
 
 
+# Site Identification
+SITE_ID = 1
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_secret_setting('SECRET_KEY')
 
@@ -83,9 +86,13 @@ MAILCHIMP_API_KEY = get_secret_setting('MAILCHIMP_API_KEY')
 MAILCHIMP_DATA_CENTER = get_secret_setting('MAILCHIMP_DATA_CENTER')
 MAILCHIMP_EMAIL_LIST_ID = get_secret_setting('MAILCHIMP_EMAIL_LIST_ID')
 
-# Paystack
-PAYSTACK_SECRET_KEY = Paystack(secret_key=get_secret_setting('PAYSTACK_SECRET_KEY'))
-PAYSTACK_PUB_KEY = "pk_test_c88e3b49214ea1cfec35bdbff8ffc78829c6ca70"
+# Paystack Test
+PAYSTACK_SECRET_TEST_KEY = Paystack(secret_key=get_secret_setting('PAYSTACK_SECRET_KEY'))
+PAYSTACK_PUB_TEST_KEY = "pk_test_c88e3b49214ea1cfec35bdbff8ffc78829c6ca70"
+
+# Paystack Live
+PAYSTACK_SECRET_LIVE_KEY = Paystack(secret_key=get_secret_setting('PAYSTACK_SECRET_KEY'))
+PAYSTACK_PUB_LIVE_KEY = "pk_live_e6c6c77fa7e3b6d3bc40ff7081334197218b7166"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

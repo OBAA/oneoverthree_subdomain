@@ -43,7 +43,7 @@ class StoreQuerySet(models.query.QuerySet):
         return self.filter(is_active=True).exclude(title="1over3")
 
     def active(self):
-        return self.filter(is_active=True)
+        return self.filter(is_active=True).exclude(title="1over3")
 
     def brand(self):
         return self.filter(seller_type='brand')

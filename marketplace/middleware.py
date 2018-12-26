@@ -33,6 +33,7 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
         if domain == settings.DEFAULT_SITE_DOMAIN:
             return None
         try:
+            print("Tried")
             resolve(path, marketplace_urls)
         except Resolver404:
             try:
@@ -40,7 +41,6 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
                 resolve(u"{0}/".format(path), marketplace_urls)
             except Resolver404:
                 return redirect(redirect_path)
-
         try:
             store = Store.objects.get(title=pieces[0])
         except Store.DoesNotExist:
