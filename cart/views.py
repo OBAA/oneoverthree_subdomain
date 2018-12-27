@@ -204,6 +204,7 @@ def checkout_home(request):
 
     # Get cart total from session
     cart_total = request.POST.get('cart_total', None)
+    print(cart_total)
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
     order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
@@ -217,12 +218,16 @@ def checkout_home(request):
 
         # Remove Applied Coupon if any.
         if order_obj.coupon_applied is True:
+            print("1")
             try:
                 coupon = order_obj.coupon
+                print("2")
                 if coupon:
+                    print("3")
                     coupon = CouponCode.objects.get_coupon(code=coupon)
                     coupon_obj = UsedCoupon.objects.get_valid_coupon(coupon, billing_profile)
                     if coupon_obj and coupon_obj.coupon_used is False:
+                        print("4")
                         coupon_obj.delete()
                         order_obj.coupon_applied = False
                         order_obj.coupon = None
