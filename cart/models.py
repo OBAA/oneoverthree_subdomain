@@ -10,7 +10,7 @@ DISCOUNT_RATES = [(i*5, str(i*5)) for i in range(1, 16)]
 
 class CouponCodeQuerySet(models.query.QuerySet):
     def all(self):
-        return self.filter(is_active=True)
+        return self.filter(is_valid=True)
 
 
 class CouponCodeManager(models.Manager):

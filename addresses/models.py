@@ -198,7 +198,7 @@ class ShippingRateManager(models.Manager):
     def shipping_per_kg(self, shipping_address_id):
         address_obj = Address.objects.get_by_id(id=shipping_address_id)
         country = address_obj.country
-        state = address_obj.state.lower()
+        state = address_obj.state  # .lower()
         city = address_obj.city.lower()
 
         # shipping_rate = {'NG': {'lagos': 1000, 'abuja': 2500}, 'GH': {'lagos': 1000, 'abuja': 2500}}
