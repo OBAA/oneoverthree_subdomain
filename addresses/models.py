@@ -207,14 +207,17 @@ class ShippingRateManager(models.Manager):
         state_ = self.get_queryset().state(country, state)
         if state_.count() > 0:
             city_ = state_.filter(city=city)
-            city__ = state_.filter(city_icontains=city)
+            city__ = state_.filter(city__icontains=city)
             default = state_.filter(city='default')
             if city_.count() > 0:
-                shipping_per_kg = city_.first()
+                location = city_.first()
+                shipping_per_kg = location.per_kg
             elif city__.count() > 0:
-                shipping_per_kg = city__.first()
+                location = city__.first()
+                shipping_per_kg = location.per_kg
             else:
-                shipping_per_kg = default.first()
+                location = default.first()
+                shipping_per_kg = location.per_kg
         else:
             shipping_per_kg = 1500
 
