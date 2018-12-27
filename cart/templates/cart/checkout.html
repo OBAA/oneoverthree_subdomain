@@ -60,6 +60,17 @@
                         </span>
                     </div>
 
+                    {% if object.coupon %}
+                    <div class="flex-w flex-sb-m bo10 p-t-12 p-b-12">
+                        <span class="s-text18 w-size19 w-full-sm">
+                            Discount <br>to Apply:
+                        </span>
+                        <span class="m-text21 w-size20 w-full-sm">
+                            {{ object.discount_applied }}%
+                        </span>
+                    </div>
+                    {% endif %}
+
                     {% if not billing_profile %}
                     <!-- Create Billing Profile -->
                     <div class="flex-w flex-sb bo10 p-t-15 p-b-20">

@@ -258,6 +258,10 @@ def use_coupon_code(request):
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
         order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
         if coupon_code is not None:
+            # if order_obj.coupon_applied:
+            #     messages.error(request, "Ooops, This coupon has been used and is no longer valid.")
+            #     return redirect('cart:checkout')
+
             coupon = CouponCode.objects.get_coupon(code=coupon_code)
 
             if coupon is not None and coupon.is_valid is True:
