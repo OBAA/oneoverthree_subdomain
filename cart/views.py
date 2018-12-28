@@ -382,18 +382,18 @@ def checkout_success(request):
             quantity=item['quantity'],
         )
 
-    if request.user.is_authenticated:
-        customer = request.user.full_name
-    else:
-        customer = obj.shipping_address.name
-
-    context = {
-        'cart': cart.get_items(),
-        'date': datetime.date.today(),
-        'order_total': obj.total,
-        'customer_name': customer,
-        'invoice_id': obj.order_id,
-    }
+    # if request.user.is_authenticated:
+    #     customer = request.user.full_name
+    # else:
+    #     customer = obj.shipping_address.name
+    #
+    # context = {
+    #     'cart': cart.get_items(),
+    #     'date': datetime.date.today(),
+    #     'order_total': obj.total,
+    #     'customer_name': customer,
+    #     'invoice_id': obj.order_id,
+    # }
 
     if obj.coupon:
         billing_profile = obj.billing_profile
@@ -401,39 +401,39 @@ def checkout_success(request):
         coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
         coupon_obj.coupon_used = True
 
-    cart.clear()  # Clear Cart
-    obj.is_active = False
-    obj.status = 'processing'
-    if not obj.pdf:
-        pdf = render_to_pdf('invoice.html', context)
-        # pdf = None
-        if pdf:
-            filename = "Invoice_%s.pdf" % obj.order_id
-            obj.pdf.save(filename, File(BytesIO(pdf.content)))
-
-            # Send PDF File
-            if obj.pdf_sent is False:
-                context = {
-                    'first_name': obj.billing_profile.user.first_name,
-                    'order_id': obj.order_id,
-                }
-                subject = "It is ordered!"
-                txt_ = get_template("emails/order_invoice.txt").render(context)
-                # html_ = get_template("emails/order_invoice.html").render(context)
-                from_email = settings.DEFAULT_FROM_EMAIL
-                recipient_list = [obj.billing_profile.email]
-
-                email = EmailMessage(
-                    subject,
-                    txt_,
-                    from_email,
-                    recipient_list,
-                )
-                filename = obj.pdf.name
-                # email.attach_file(File(BytesIO(pdf.content)))
-                email.attach(filename=filename, mimetype="application/pdf", content=pdf.content)
-                email.send()
-                obj.pdf_sent = True
+    # cart.clear()  # Clear Cart
+    # obj.is_active = False
+    # obj.status = 'processing'
+    # if not obj.pdf:
+    #     pdf = render_to_pdf('invoice.html', context)
+    #     # pdf = None
+    #     if pdf:
+    #         filename = "Invoice_%s.pdf" % obj.order_id
+    #         obj.pdf.save(filename, File(BytesIO(pdf.content)))
+    #
+    #         # Send PDF File
+    #         if obj.pdf_sent is False:
+    #             context = {
+    #                 'first_name': obj.billing_profile.user.first_name,
+    #                 'order_id': obj.order_id,
+    #             }
+    #             subject = "It is ordered!"
+    #             txt_ = get_template("emails/order_invoice.txt").render(context)
+    #             # html_ = get_template("emails/order_invoice.html").render(context)
+    #             from_email = settings.DEFAULT_FROM_EMAIL
+    #             recipient_list = [obj.billing_profile.email]
+    #
+    #             email = EmailMessage(
+    #                 subject,
+    #                 txt_,
+    #                 from_email,
+    #                 recipient_list,
+    #             )
+    #             filename = obj.pdf.name
+    #             # email.attach_file(File(BytesIO(pdf.content)))
+    #             email.attach(filename=filename, mimetype="application/pdf", content=pdf.content)
+    #             email.send()
+    #             obj.pdf_sent = True
     else:
         obj.save()
 

@@ -1,6 +1,13 @@
 import math
 import json
+import datetime
+from io import BytesIO
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.core.files import File
+from django.template.loader import get_template
 from decimal import Decimal
+from django.core.mail import send_mail
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import pre_save
@@ -10,8 +17,7 @@ from cart.cart import Cart
 from addresses.models import Address, ShippingRate
 from billing.models import BillingProfile
 from marketplace.models import Store
-from oneoverthree.utils import unique_order_id_generator
-
+from oneoverthree.utils import unique_order_id_generator, render_to_pdf
 
 # Create your models here.
 
@@ -72,7 +78,7 @@ class OrderManager(models.Manager):
         cart = Cart(request)
         shipping_per_kg = ShippingRate.objects.shipping_per_kg(shipping_address_id)
         weight = cart.get_weight()
-        shipping_total = 1000
+        shipping_total = 1500
         if float(weight) < 3:
             shipping_total = 1 * int(shipping_per_kg)
         if float(weight) >= 3:
@@ -82,15 +88,89 @@ class OrderManager(models.Manager):
         print(shipping_total)
         obj.save()
 
-    # def shipping_per_kg(self, shipping_address_id):
-    #     address_obj = Address.objects.get_by_id(id=shipping_address_id)
-    #     country = address_obj.country
-    #     state = address_obj.state.lower()
-    #     print(state)
-    #     shipping_rate = {'NG': {'lagos': 1000, 'abuja': 2500}, 'GH': {'lagos': 1000, 'abuja': 2500}}
-    #     shipping_per_kg = shipping_rate[country][state]
-    #     print(shipping_per_kg)
-    #     return shipping_per_kg
+    # def send_order_email(self, request, obj, cart)
+    def finalize_checkout(self, request, obj, cart):
+        if request.user.is_authenticated:
+            customer = request.user.full_name
+        else:
+            customer = obj.shipping_address.name
+
+        context = {
+            'cart': cart.get_items(),
+            'date': datetime.date.today(),
+            'order_total': obj.total,
+            'customer_name': customer,
+            'invoice_id': obj.order_id,
+        }
+        if not obj.pdf:
+            pdf = render_to_pdf('invoice.html', context)
+            if pdf:
+                filename = "Invoice_%s.pdf" % obj.order_id
+                obj.pdf.save(filename, File(BytesIO(pdf.content)))
+
+            # Send order invoice PDF to customer
+            self.send_order_invoice(obj, pdf)
+
+            # Send pending order email to seller
+            self.send_pending_order_notice(obj)
+
+        cart.clear()  # Clear Cart
+        obj.is_active = False
+        obj.status = 'processing'
+
+    def send_pending_order_notice(self, obj):
+        order_id = obj.order_id
+        order_items = OrderItem.objects.get_by_order_id(order_id)
+        emails = set()
+        for item in order_items:
+            email = item.store.user.email
+            emails.add(email)
+        for email in emails:
+            store = Store.objects.get_by_email(email)
+            context = {
+                'seller_name': store.user.first_name,
+                'order_id': obj.order_id,
+            }
+            subject = "New pending order!"
+            txt_ = get_template("emails/new_pending_order.txt").render(context)
+            html_ = get_template("emails/new_pending_order.html").render(context)
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [email]
+
+            sent_mail = send_mail(
+                subject,
+                txt_,
+                from_email,
+                recipient_list,
+                html_message=html_,
+                fail_silently=False,
+            )
+            return sent_mail
+
+    def send_order_invoice(self, obj, pdf):
+        # Send PDF File
+        if obj.pdf_sent is False:
+            context = {
+                'first_name': obj.billing_profile.user.first_name,
+                'order_id': obj.order_id,
+            }
+            subject = "It is ordered!"
+            txt_ = get_template("emails/order_invoice.txt").render(context)
+            # html_ = get_template("emails/order_invoice.html").render(context)
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [obj.billing_profile.email]
+
+            email = EmailMessage(
+                subject,
+                txt_,
+                from_email,
+                recipient_list,
+            )
+            filename = obj.pdf.name
+            # email.attach_file(File(BytesIO(pdf.content)))
+            email.attach(filename=filename, mimetype="application/pdf", content=pdf.content)
+            email.send()
+            obj.pdf_sent = True
 
     def cart_total(self, request, obj):
         total = request.POST.get("cart_total")
@@ -174,7 +254,7 @@ class OrderItemManager(models.Manager):
     def get_by_order_id(self, order_id):
         qs = self.get_queryset().all()
         order_items = [item for item in qs if item.order.order_id == order_id]
-        print(order_items)
+        # print(order_items)
 
         return order_items
 

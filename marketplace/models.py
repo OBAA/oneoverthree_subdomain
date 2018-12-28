@@ -77,6 +77,12 @@ class StoreTreeManager(models.Manager):
             return qs.first()
         return None
 
+    def get_by_email(self, email):
+        qs = self.get_queryset().filter(user__email=email)
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
     def get_by_slug(self, slug):
         # qs = self.get_queryset().filter(slug=slug)
         # if qs.count() == 1:

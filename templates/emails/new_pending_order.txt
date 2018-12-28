@@ -1,0 +1,13 @@
+Hello {{ seller_name }},
+
+You have a new pending order!
+
+Sign in now and start processing the order.
+
+Order should be dispatched within 5 business days.
+
+Order number: {{ order_id }}
+
+Thank you,
+
+1OVER3 Store.
