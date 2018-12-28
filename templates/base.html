@@ -263,10 +263,14 @@
 
                     // Re-Visit this code
                     if (data.product.length === 1){
+                        var cartTotal = data.cartTotal;
+                        var cartWeight = data.cartWeight;
                         headerCart.html(" ");
 
                         $.each(data.product, function(index, value) {
-                            // console.log(value)
+                            // console.log(value);
+                            console.log(cartTotal);
+                            console.log(cartWeight);
                             headerCart.prepend(
                                 "<ul class=\"header-cart-wrapitem\">\n" +
                                 // headerCartBody.prepend
@@ -300,8 +304,8 @@
                                 "\t\t</div>\n" +
                                 "\n" +
                                 "\t\t<div class=\"header-cart-wrapbtn\">\n" +
-								 "\t\t\t<input type='hidden' name='cart_weight' value='{{ cart_weight }}' />\n" +
-                                "\t\t\t<input type='hidden' name='cart_total' value='{{ cart.get_total }}' />"+
+								 "\t\t\t<input type='hidden' name='cart_weight' value=" + cartWeight + " />\n" +
+                                "\t\t\t<input type='hidden' name='cart_total' value=" + cartTotal + " />\n"+
                                 "\t\t\t<!-- Button -->\n" +
                                 "\t\t\t<a href=\"{{ checkout_url }}\" class=\"flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4\">\n" +
                                 "\t\t\t\tCheckout\n" +
