@@ -78,7 +78,7 @@ class OrderManager(models.Manager):
         cart = Cart(request)
         shipping_per_kg = ShippingRate.objects.shipping_per_kg(shipping_address_id)
         weight = cart.get_weight()
-        shipping_total = 1500
+        shipping_total = int(shipping_per_kg)
         if float(weight) < 3:
             shipping_total = 1 * int(shipping_per_kg)
         if float(weight) >= 3:
