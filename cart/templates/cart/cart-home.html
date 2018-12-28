@@ -97,7 +97,7 @@
 
                         <form class="size10 trans-0-2 m-t-10 m-b-10 mx-auto" method="POST" action="{% url 'cart:checkout' %}">
                             {% csrf_token %}
-                            <input type='hidden' name='cart_weight' value='{{ cart_weight }}' />
+                            <input type='hidden' name='cart_weight' value='{{ cart.get_weight }}' />
                             <input type='hidden' name='cart_total' value='{{ cart.get_total }}' />
                             <!-- Button -->
                             <button class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
