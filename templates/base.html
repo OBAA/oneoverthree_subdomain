@@ -303,7 +303,8 @@
                                 "\t\t\t</a>\n" +
                                 "\t\t</div>\n" +
                                 "\n" +
-                                "\t\t<div class=\"header-cart-wrapbtn\">\n" +
+								 "\t\t<form class=\"header-cart-wrapbtn\" method=\"POST\" action=\"{{ checkout_url }}\">\n" +
+                                "\t\t\t{% csrf_token %}\n" +
 								 "\t\t\t<input type='hidden' name='cart_weight' value=" + cartWeight + " />\n" +
                                 "\t\t\t<input type='hidden' name='cart_total' value=" + cartTotal + " />\n"+
                                 "\t\t\t<!-- Button -->\n" +
