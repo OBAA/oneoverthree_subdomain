@@ -60,13 +60,13 @@
                         </span>
                     </div>
 
-                    {% if object.coupon %}
+                    {% if order_obj.coupon %}
                     <div class="flex-w flex-sb-m bo10 p-t-12 p-b-12">
                         <span class="s-text18 w-size19 w-full-sm">
                             Discount <br>to Apply:
                         </span>
                         <span class="m-text21 w-size20 w-full-sm">
-                            {{ object.discount_applied }}%
+                            {{ order_obj.discount_applied }}%
                         </span>
                     </div>
                     {% endif %}

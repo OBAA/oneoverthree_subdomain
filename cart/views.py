@@ -218,25 +218,26 @@ def checkout_home(request):
 
         # Remove Applied Coupon if any.
         if order_obj.coupon_applied is True:
-            print("1")
+            print("2")
+            coupon = None
             try:
                 coupon = order_obj.coupon
-                print("2")
-                if coupon:
-                    print("3")
-                    coupon = CouponCode.objects.get_coupon(code=coupon)
-                    coupon_obj = UsedCoupon.objects.get_valid_coupon(coupon, billing_profile)
-                    if coupon_obj and coupon_obj.coupon_used is False:
-                        print("4")
-                        coupon_obj.delete()
-                        order_obj.coupon_applied = False
-                        order_obj.coupon = None
-                        order_obj.discount_applied = None
-                        order_obj.save()
-                        coupon.usage -= 1
-                        coupon.save()
             except:
                 pass
+
+            if coupon:
+                print("3")
+                coupon_obj = CouponCode.objects.get_coupon(code=coupon)
+                used_coupon_obj = UsedCoupon.objects.get_valid_coupon(coupon, billing_profile)
+                if coupon_obj and used_coupon_obj.coupon_used is False:
+                    print("4")
+                    used_coupon_obj.delete()
+                    coupon_obj.usage -= 1
+                    coupon_obj.save()
+                    order_obj.coupon_applied = False
+                    order_obj.coupon = None
+                    order_obj.discount_applied = None
+                    order_obj.save()
 
     # Pass coupon to the template
     coupon = None

@@ -20,14 +20,12 @@ class CouponCodeManager(models.Manager):
     def get_coupon(self, code):
         now = timezone.now()
         qs = self.get_queryset().all().filter(code=code)
+        coupon = None
         if qs.count() == 1:
             coupon = qs.first()
             valid_till = coupon.timestamp + timedelta(days=coupon.is_valid_till)
             if now > valid_till:
                 coupon.is_valid = False
-        else:
-            coupon = None
-
         return coupon
 
 
@@ -67,21 +65,13 @@ class UsedCouponManager(models.Manager):
         return obj, created
 
     def get_valid_coupon(self, coupon, billing_profile):
-        # print("A")
         coupon = CouponCode.objects.get_coupon(coupon)
-        # obj = self.model.objects.get(
-        #     coupon=coupon,
-        #     billing_profile=billing_profile
-        # )
         qs = self.get_queryset().filter(
             coupon=coupon,
             billing_profile=billing_profile
         )
-        # print("B")
         if qs.count() == 1:
             obj = qs.first()
-
-            # print(obj)
             return obj
 
 
