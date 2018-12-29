@@ -26,44 +26,29 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
 def unique_key_generator(instance):
     size = random.randint(30, 45)
     key = random_string_generator(size=size)
-
     Klass = instance.__class__
     qs_exists = Klass.objects.filter(key=key).exists()
     if qs_exists:
-        return unique_slug_generator(instance)
+        return unique_key_generator(instance)
     return key
+
+
+def unique_sku_generator(instance):
+    sku = "%0.5d" % random.randint(0, 99999)
+    Klass = instance.__class__
+    qs_exists = Klass.objects.filter(sku=sku).exists()
+    if qs_exists:
+        return unique_key_generator(instance)
+    return sku
 
 
 def unique_order_id_generator(instance):
     order_new_id = "1O3-" + random_string_generator(size=6)
-
     Klass = instance.__class__
     qs_exists = Klass.objects.filter(order_id=order_new_id).exists()
     if qs_exists:
-        return unique_slug_generator(instance)
+        return unique_order_id_generator(instance)
     return order_new_id
-
-# Original
-
-# def unique_slug_generator(instance, new_slug=None):
-#     """
-#     This is for a Django project and it assumes your instance
-#     has a model with a slug field and a title character (char) field.
-#     """
-#     if new_slug is not None:
-#         slug = new_slug
-#     else:
-#         slug = slugify(instance.title)
-#
-#     Klass = instance.__class__
-#     qs_exists = Klass.objects.filter(slug=slug).exists()
-#     if qs_exists:
-#         new_slug = "{slug}-{randstr}".format(
-#                     slug=slug,
-#                     randstr=random_string_generator(size=4)
-#                 )
-#         return unique_slug_generator(instance, new_slug=new_slug)
-#     return slug
 
 
 def unique_slug_generator(instance, new_slug=None):
@@ -75,7 +60,6 @@ def unique_slug_generator(instance, new_slug=None):
     new_slug = slug
     Klass = instance.__class__
     numb = 1
-
     while Klass.objects.filter(slug=new_slug).exists():
         new_slug = "{slug}-{num}".format(
             slug=slug,

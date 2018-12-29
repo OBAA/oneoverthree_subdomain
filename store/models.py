@@ -10,7 +10,7 @@ from django.utils import timezone
 
 from addresses.models import ProductWeight
 from marketplace.models import Store
-from oneoverthree.utils import unique_slug_generator
+from oneoverthree.utils import unique_slug_generator, unique_sku_generator
 from tags.models import Tag
 
 from mptt.models import MPTTModel, TreeForeignKey
@@ -167,7 +167,7 @@ class ProductManager(models.Manager):
 class Product(models.Model):
     title               = models.CharField(max_length=120, )
     slug                = models.SlugField(max_length=120, blank=True, unique=True)
-    # product_type        = models.CharField(max_length=120, choices=PRODUCT_WEIGHT, default="0.7",
+    sku                 = models.CharField(max_length=120, blank=True, unique=True, default="00000")
     product_type        = models.ForeignKey(ProductWeight, default=0.7,
                                   help_text='For calculating shipping cost', null=True)
     store               = TreeForeignKey(Store, related_name='products', default=None, null=True)
@@ -214,6 +214,9 @@ class Product(models.Model):
 def product_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
+
+    if not instance.sku:
+        instance.sku = unique_sku_generator(instance)
 
     if not instance.price:
         instance.price = instance.base_price
