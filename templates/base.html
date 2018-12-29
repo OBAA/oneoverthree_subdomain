@@ -305,13 +305,13 @@
                                 "\n" +
 								 "\t\t<form class=\"header-cart-wrapbtn\" method=\"POST\" action=\"{{ checkout_url }}\">\n" +
                                 "\t\t\t{% csrf_token %}\n" +
-								 "\t\t\t<input type='hidden' name='cart_weight' value=" + cartWeight + " />\n" +
+                                "\t\t\t<input type='hidden' name='cart_weight' value=" + cartWeight + " />\n" +
                                 "\t\t\t<input type='hidden' name='cart_total' value=" + cartTotal + " />\n"+
                                 "\t\t\t<!-- Button -->\n" +
-                                "\t\t\t<a href=\"{{ checkout_url }}\" class=\"flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4\">\n" +
+                                "\t\t\t<button class=\"flex-c-m size1 bg1 bo-rad-20 hov1 s-text1 trans-0-4\">\n" +
                                 "\t\t\t\tCheckout\n" +
-                                "\t\t\t</a>\n" +
-                                "\t\t</div>\n" +
+                                "\t\t\t</button>\n" +
+                                "\t\t</form>\n" +
                                 "\t</div>"
                             )
                         })

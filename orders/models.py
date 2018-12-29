@@ -113,10 +113,12 @@ class OrderManager(models.Manager):
 
             # Send pending order email to seller
             self.send_pending_order_notice(obj)
-
+        else:
+            obj.save()
         cart.clear()  # Clear Cart
         obj.is_active = False
         obj.status = 'processing'
+        return True
 
     def send_pending_order_notice(self, obj):
         order_id = obj.order_id

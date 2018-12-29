@@ -403,6 +403,12 @@ def checkout_success(request):
         coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
         coupon_obj.coupon_used = True
 
+    # finalize_checkout = Order.objects.finalize_checkout(request, obj, cart)
+    # if finalize_checkout:
+
+    # Finalize Checkout
+    Order.objects.finalize_checkout(request, obj, cart)
+
     # cart.clear()  # Clear Cart
     # obj.is_active = False
     # obj.status = 'processing'
@@ -436,8 +442,8 @@ def checkout_success(request):
     #             email.attach(filename=filename, mimetype="application/pdf", content=pdf.content)
     #             email.send()
     #             obj.pdf_sent = True
-    else:
-        obj.save()
+    # else:
+    #     obj.save()
 
     return render(request, "cart/checkout-success.html", {'object': obj})
 
