@@ -167,7 +167,7 @@ class ProductManager(models.Manager):
 class Product(models.Model):
     title               = models.CharField(max_length=120, )
     slug                = models.SlugField(max_length=120, blank=True, unique=True)
-    sku                 = models.CharField(max_length=120, blank=True, unique=True, default="00000")
+    sku                 = models.CharField(max_length=120, blank=True, unique=True)
     product_type        = models.ForeignKey(ProductWeight, default=0.7,
                                   help_text='For calculating shipping cost', null=True)
     store               = TreeForeignKey(Store, related_name='products', default=None, null=True)
