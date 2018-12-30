@@ -180,7 +180,7 @@ def product_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
 
-    if not instance.sku:
+    if instance.sku == "":
         instance.sku = unique_sku_generator(instance)
 
     if not instance.price:
