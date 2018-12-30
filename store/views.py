@@ -202,7 +202,7 @@ class StoreHomeView(ListView):
         return Product.objects.all().filter(
             Q(store__title='1OVER3') |
             Q(store__featured=True)
-        )
+        ).order_by('?')
 
     def get_paginated(self):
         page = self.request.GET.get('page', 1)
