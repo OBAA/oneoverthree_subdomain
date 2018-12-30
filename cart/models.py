@@ -35,7 +35,7 @@ class CouponCodeManager(models.Manager):
     def apply_coupon(self, request, billing_profile, coupon_code, order_obj):
         coupon = self.get_coupon(code=coupon_code)
         if order_obj.coupon:
-            messages.error(request, "Sorry, Only one coupon code per order.")
+            messages.error(request, "Sorry, only one coupon code per order.")
             return redirect('cart:checkout')
 
         if coupon is not None and coupon.is_valid is True:
@@ -45,8 +45,7 @@ class CouponCodeManager(models.Manager):
                     messages.error(request, "Ooops, Coupon Only valid on your first order.")
                     return redirect('cart:checkout')
 
-            if coupon.is_one_use_only:
-                if coupon.usage > 0:
+            if coupon.is_one_use_only and coupon.usage > 0:
                     messages.error(request, "Ooops, This coupon has been used and is no longer valid.")
                     return redirect('cart:checkout')
 

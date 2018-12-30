@@ -284,13 +284,22 @@ def checkout_finalize(request):
         formatted_order_total = str(raw_order_total) + str('00')
         order_total = int(formatted_order_total)
 
+        # If Coupon, pass coupon_code  to the template and state if percentage discount
+        coupon = None
+        percentage_discount = False
+        if order_obj.coupon:
+            coupon = order_obj.coupon
+            percentage_discount = request.session.get("percentage_discount", False)  # from session
+
         context = {
             "object": order_obj,
             "paystack_test_public_key": test_paystack_pk,
             "paystack_live_public_key": live_paystack_pk,
             "site_id": site_id,
             "order_total": order_total,
-            "billing_profile": billing_profile
+            "billing_profile": billing_profile,
+            "coupon": coupon,
+            "percentage_discount": percentage_discount
         }
         return render(request, "cart/checkout-finalize.html", context)
 

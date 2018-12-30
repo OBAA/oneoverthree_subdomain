@@ -65,7 +65,7 @@
                         <span class="s-text18 w-size19 w-full-sm">
                             Discount <br>to Apply:
                         </span>
-                        {% if percentage_discount %}
+                        {% if not percentage_discount %}
                         <span class="m-text21 w-size20 w-full-sm">
                             {{ order_obj.discount_applied }}%
                         </span>
