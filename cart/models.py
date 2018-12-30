@@ -34,6 +34,9 @@ class CouponCodeManager(models.Manager):
 
     def apply_coupon(self, request, billing_profile, coupon_code, order_obj):
         coupon = self.get_coupon(code=coupon_code)
+        if order_obj.coupon:
+            messages.error(request, "Sorry, Only one coupon code per order.")
+            return redirect('cart:checkout')
 
         if coupon is not None and coupon.is_valid is True:
             if coupon.first_order_coupon is True:
@@ -75,12 +78,10 @@ class CouponCodeManager(models.Manager):
                         order_obj.coupon = coupon_code
                         order_obj.discount_applied = discount
                         order_obj.save()
+                        coupon.usage += 1
+                        coupon.save()
                         messages.success(request, "Coupon code applied. Proceed to checkout.")
-                    else:
-                        messages.error(request, "Sorry, Only one coupon code per order.")
-
-                    coupon.usage += 1
-                    coupon.save()
+                        return redirect('cart:checkout')
 
                 elif used_coupon_obj.coupon_used:
                     messages.error(request, "This coupon has already been used by you.")
