@@ -65,12 +65,12 @@
                         <span class="s-text18 w-size19 w-full-sm">
                             Discount <br>to Apply:
                         </span>
-                        {% if percentage_discount is True %}
-                        <span class="m-text21 w-size20 w-full-sm">
+                        {% if discount_type == 2 %}
+                        <span class="m-text21 w-size20 w-full-sm" style='color:#ff5337'>
                             {{ order_obj.discount_applied }}%
                         </span>
                         {% else %}
-                        <span class="m-text21 w-size20 w-full-sm">
+                        <span class="m-text21 w-size20 w-full-sm" style='color:#ff5337'>
                             -₦{{ order_obj.discount_applied }}
                         </span>
                         {% endif %}

@@ -225,10 +225,10 @@ def checkout_home(request):
 
     # If Coupon, pass coupon_code  to the template and state if percentage discount
     coupon = None
-    percentage_discount = False
+    discount_type = None
     if order_obj.coupon:
         coupon = order_obj.coupon
-        percentage_discount = request.session.get("percentage_discount", False)  # from session
+        discount_type = request.session.get("discount_type", None)  # from session
 
     context = {
         "billing_profile": billing_profile,
@@ -238,7 +238,7 @@ def checkout_home(request):
         "form": CheckoutAddressForm,
         "order_obj": order_obj,
         "coupon": coupon,
-        "percentage_discount": percentage_discount
+        "discount_type": discount_type
     }
     return render(request, "cart/checkout.html", context)
 
@@ -286,10 +286,10 @@ def checkout_finalize(request):
 
         # If Coupon, pass coupon_code  to the template and state if percentage discount
         coupon = None
-        percentage_discount = False
+        discount_type = None
         if order_obj.coupon:
             coupon = order_obj.coupon
-            percentage_discount = request.session.get("percentage_discount", False)  # from session
+            discount_type = request.session.get("discount_type", None)  # from session
 
         context = {
             "object": order_obj,
@@ -299,7 +299,7 @@ def checkout_finalize(request):
             "order_total": order_total,
             "billing_profile": billing_profile,
             "coupon": coupon,
-            "percentage_discount": percentage_discount
+            "discount_type": discount_type
         }
         return render(request, "cart/checkout-finalize.html", context)
 

@@ -62,15 +62,20 @@ class CouponCodeManager(models.Manager):
                         else:
                             new_total = cart_total - discount
 
+                        # Pass discount information to USER session
+                        if request.session.get("discount_type", None):
+                            del request.session['discount_type']
+                        request.session['discount_type'] = 1
+
                     else:  # If % Percentage OFF
                         discount = coupon.percentage
                         discount_amount = (cart_total * discount) / 100
                         new_total = cart_total - discount_amount
 
                         # Pass discount information to USER session
-                        if request.session.get("percentage_discount", None):
-                            del request.session['percentage_discount']
-                        request.session['percentage_discount'] = True
+                        if request.session.get("discount_type", None):
+                            del request.session['discount_type']
+                        request.session['discount_type'] = 2
 
                     if not order_obj.coupon_applied:
                         order_obj.total = new_total
