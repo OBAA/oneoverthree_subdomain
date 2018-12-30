@@ -306,8 +306,9 @@ def checkout_finalize(request):
 
 def checkout_success(request):
     cart = Cart(request)
-    obj = Order.objects.get_by_billing_profile(request)
-    if obj is None:
+    try:
+        obj = Order.objects.get_by_billing_profile(request)
+    except:
         return redirect("store:home")
 
     for item in cart.get_items():
