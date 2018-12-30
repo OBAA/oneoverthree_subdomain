@@ -37,13 +37,13 @@
                             Discount <br>Applied:
                         </span>
 
-                        {% if not percentage_discount %}
+                        {% if percentage_discount is True %}
                         <span class="m-text21 w-size20 w-full-sm">
                             {{ object.discount_applied }}%
                         </span>
                         {% else %}
                         <span class="m-text21 w-size20 w-full-sm">
-                            {{ object.discount_applied }}%
+                            -₦{{ object.discount_applied }}
                         </span>
                         {% endif %}
 
