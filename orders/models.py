@@ -110,6 +110,7 @@ class OrderManager(models.Manager):
 
             # Send order invoice PDF to customer
             self.send_order_invoice(obj, pdf)
+            obj.pdf_sent = True
 
             # Send pending order email to seller
             self.send_pending_order_notice(obj)
@@ -138,8 +139,7 @@ class OrderManager(models.Manager):
             html_ = get_template("emails/new_pending_order.html").render(context)
             from_email = settings.DEFAULT_FROM_EMAIL
             recipient_list = [email]
-
-            sent_mail = send_mail(
+            send_mail(
                 subject,
                 txt_,
                 from_email,
@@ -147,7 +147,7 @@ class OrderManager(models.Manager):
                 html_message=html_,
                 fail_silently=False,
             )
-            return sent_mail
+            # return sent_mail
 
     def send_order_invoice(self, obj, pdf):
         # Send PDF File
