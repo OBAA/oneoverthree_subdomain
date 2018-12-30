@@ -20,7 +20,7 @@
                         {% csrf_token %}
                         <div class="flex-w flex-m w-full-sm">
                             <div class="size15 bo4 m-r-10">
-                                <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="coupon_code" placeholder="Coupon Code">
+                                <input class="sizefull s-text7 p-l-22 p-r-22" type="text" name="coupon_code" placeholder="Coupon Code" required="required">
                             </div>
 
                             <div class="size12 trans-0-4 m-t-10 m-b-10 m-r-10">
@@ -65,16 +65,22 @@
                         <span class="s-text18 w-size19 w-full-sm">
                             Discount <br>to Apply:
                         </span>
+                        {% if percentage_discount %}
                         <span class="m-text21 w-size20 w-full-sm">
                             {{ order_obj.discount_applied }}%
                         </span>
+                        {% else %}
+                        <span class="m-text21 w-size20 w-full-sm">
+                            -₦{{ order_obj.discount_applied }}
+                        </span>
+                        {% endif %}
                     </div>
                     {% endif %}
 
                     {% if not billing_profile %}
+
                     <!-- Create Billing Profile -->
                     <div class="flex-w flex-sb bo10 p-t-15 p-b-20">
-
                         <span class="s-text18 w-full w-full-sm">
                             Login
                         </span>

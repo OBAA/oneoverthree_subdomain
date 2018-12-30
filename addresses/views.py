@@ -86,9 +86,11 @@ class CheckoutAddressReUseView(View):
         shipping_address_id = request.POST.get('shipping_address', None)
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
         order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
-        # order_obj = Order.objects.get_by_billing_profile(request)  # if user.is_authenticated
 
+        # Get shipping total
         Order.objects.shipping_total(request, shipping_address_id, obj=order_obj)
+
+        # Get order total
         Order.objects.order_total(request, obj=order_obj)
 
         if shipping_address_id:
