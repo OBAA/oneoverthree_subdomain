@@ -223,7 +223,7 @@ class ShippingRateManager(models.Manager):
 class ShippingRate(models.Model):
     country         = models.CharField(max_length=120, choices=COUNTRY, default="NG")  # default="--")
     state           = models.CharField(max_length=120, choices=STATES)
-    city            = models.CharField(max_length=120, default='default')
+    city            = models.CharField(max_length=120, blank=True, default='default')
     per_kg          = models.IntegerField(default=1000)
 
     objects = ShippingRateManager()
