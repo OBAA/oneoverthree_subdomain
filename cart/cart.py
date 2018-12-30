@@ -144,6 +144,7 @@ class Cart(object):
                     product = Product.objects.get_by_id(id=item['id'])
                     products.append({
                         'id': item['id'],
+                        'sku': product.sku,
                         'product': product,
                         'store': product.store,
                         'url': product.get_absolute_url(),

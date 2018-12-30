@@ -148,23 +148,23 @@
 
         searchInput.keyup(function (event) {
             // key released
-            clearTimeout(typingTimer)
+            clearTimeout(typingTimer);
             typingTimer = setTimeout(performSearch, typingInterval)
-        })
+        });
 
         searchInput.keydown(function (event) {
             //key pressed
             clearTimeout(typingTimer)
-        })
+        });
 
         function displaySearchLoading(){
-            searchBtn.addClass("disabled")
+            searchBtn.addClass("disabled");
             searchBtn.html("<i class='fa fa-spin fa-spinner'></i>")
         }
 
         function performSearch(){
-            displaySearchLoading()
-            var query = searchInput.val()
+            displaySearchLoading();
+            var query = searchInput.val();
             setTimeout(function(){
                 window.location.href='/search/?q=' + query
             }, 5000)
@@ -193,9 +193,6 @@
                 method: httpMethod,
                 data: formData,
                 success: function(data){
-                    <!-- Navbar Count-->
-                    navbarCount.text(data.cartCount);
-
                     if (currentPath.indexOf("cart") != -1){
                         refreshCart()
                     }
@@ -203,6 +200,24 @@
                     if (currentPath.indexOf("store") != -1){
                         refreshHeaderCart()
                     }
+                    // Navbar Count
+                    navbarCount.text(data.cartCount);
+
+                    // Facebook Pixel
+                    fbq('track', 'AddToCart', {
+                        // content_ids: data.productSKU,
+                        content_name: data.productName,
+                        content_type: "product",
+                        contents: [
+                            {
+                                id: data.productSKU,
+                                quantity: data.productQuantity,
+                                item_price: data.productPrice
+                            },
+                        ],
+                        currency: "NGN",
+                        value: data.contentValue
+                    });
                 },
                 error: function(errorData){
                     console.log("error")
@@ -217,8 +232,6 @@
 
             var headerCart = $(".header-cart");
             var headerCartBody = headerCart.find(".header-cart-wrapitem");
-            var productRows = headerCartBody.find(".header-cart-item");
-            var headerCartEmpty = headerCartBody.find(".header-cart-empty")
             var currentUrl = window.location.href;
 
             var refreshCartUrl = '/api/cart/';
@@ -230,16 +243,8 @@
                 method: refreshCartMethod,
                 data: data,
                 success: function(data){
-
-                    // console.log("success")
-                    // console.log(data)
-                    // console.log(data.product.length)
-                    // console.log(data.cartTotal)
-
-                    // Re-Visit this code
                     if (data.product.length > 1) {
                         headerCartBody.html(" ");
-                        // var value = data.product;
                         $.each(data.product, function (index, value) {
                             headerCartBody.prepend(
                                 "<li class=\"header-cart-item\">\n" +
@@ -261,7 +266,6 @@
                         })
                     }
 
-                    // Re-Visit this code
                     if (data.product.length === 1){
                         var cartTotal = data.cartTotal;
                         var cartWeight = data.cartWeight;
@@ -273,25 +277,22 @@
                             console.log(cartWeight);
                             headerCart.prepend(
                                 "<ul class=\"header-cart-wrapitem\">\n" +
-                                // headerCartBody.prepend
-
-                                "<li class=\"header-cart-item\">\n" +
-                                "\t<div class=\"header-cart-item-img\">\n" +
-                                "\t\t<a href=" + value.url + ">\n" +
-                                "\t\t\t<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
-                                "\t\t</a>\n" +
-                                "\t</div>\n" +
+                                "\t<li class=\"header-cart-item\">\n" +
+                                "\t\t<div class=\"header-cart-item-img\">\n" +
+                                "\t\t\t<a href=" + value.url + ">\n" +
+                                "\t\t\t\t<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
+                                "\t\t\t</a>\n" +
+                                "\t\t</div>\n" +
                                 "\n" +
-                                "\t<div class=\"header-cart-item-txt\">\n" +
-                                "\t\t<h4><a href=" + value.url + " >"+ value.title + "</a></h4>\n" +
-                                "\t\t<span class=\"header-cart-item-info\">\n" +
-                                value.quantity + " x ₦ " + value.price + "\n" +
-                                "\t\t</span>\n" +
-                                "\t\t<span class=\"header-cart-item-info\">\n" + value.size + "</span>\n" +
-                                "\t</div>\n" +
-                                "</li>\n" +
-
-                                "\t</ul>\n" +
+                                "\t\t<div class=\"header-cart-item-txt\">\n" +
+                                "\t\t\t<h4><a href=" + value.url + " >"+ value.title + "</a></h4>\n" +
+                                "\t\t\t<span class=\"header-cart-item-info\">\n" +
+                                "\t\t\t\t" + value.quantity + " x ₦ " + value.price + "\n" +
+                                "\t\t\t</span>\n" +
+                                "\t\t\t<span class=\"header-cart-item-info\">\n" + value.size + "</span>\n" +
+                                "\t\t</div>\n" +
+                                "\t</li>\n" +
+                                "</ul>\n" +
                                 "\t<div class=\"header-cart-total\">\n" +
                                 "\t\tTotal: ₦{{ cart.get_total }}\n" +
                                 "\t</div>\n" +
@@ -303,7 +304,7 @@
                                 "\t\t\t</a>\n" +
                                 "\t\t</div>\n" +
                                 "\n" +
-								 "\t\t<form class=\"header-cart-wrapbtn\" method=\"POST\" action=\"{{ checkout_url }}\">\n" +
+                                "\t\t<form class=\"header-cart-wrapbtn\" method=\"POST\" action=\"{{ checkout_url }}\">\n" +
                                 "\t\t\t{% csrf_token %}\n" +
                                 "\t\t\t<input type='hidden' name='cart_weight' value=" + cartWeight + " />\n" +
                                 "\t\t\t<input type='hidden' name='cart_total' value=" + cartTotal + " />\n"+
@@ -317,7 +318,7 @@
                         })
 
                     } else {
-                        console.log("Didn't Work");
+                        console.log("Header cart refresh didn't work");
                         window.location.href = currentUrl
                     }
 
@@ -401,29 +402,7 @@
                                 "            </form>\n" +
                                 "        </td>\n" +
                                 "    </tr>")
-
-                            //      "<tr><td data-th=\"Product\">\n" +
-                            // "	<div class=\"row\">\n" +
-                            // "		<div  class=\"cart-img-product b-rad-4 \">\n" +
-                            // "			<a href=\"value.get_absolute_url\">\n" +
-                            // "				<img src=" + value.image + " alt=\"IMG-PRODUCT\">\n" +
-                            // "			</a>\n" +
-                            // "      </div>\n" +
-                            // "      <div class=\"col-md-9 text-left mt-sm-2\">\n" +
-                            // "			<h4><a href=" + value.url + " class=\"block2-name\" >"+ value.title + "</a></h4>\n" +
-                            // "          <p>" + value.brand + "</p>\n" +
-                            // "      </div>\n" +
-                            // "  </div>\n" +
-                            // "</td>\n" +
-                            // "\n" +
-                            // "<td data-th='Price'>₦ " + value.price + "</td>\n" +
-                            // "\n" +
-                            // "<td data-th='Quantity'>\n" + newCartItemUpdate.html() + "</td>\n" +
-                            // "\n" +
-                            // "<td class=\"actions\">\n" + newCartItemRemove.html() + "</td>\n" +
-                            // "\n" +
-                            // "</tr>")
-                        })
+                        });
 
 
                         // Refresh Cart Totals

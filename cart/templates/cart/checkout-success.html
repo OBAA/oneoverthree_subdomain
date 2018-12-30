@@ -43,14 +43,58 @@
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
 <!-- Shipping -->
 {% include 'base/shipping.html' %}
 
+{% endblock %}
 
+
+
+
+{% block js %}
+
+<script>
+    $(document).ready(function(){
+        var cartUrl = '/api/cart/';
+        var apiMethod = "GET";
+        var data = {};
+
+        $.ajax({
+            url: cartUrl,
+            method: apiMethod,
+            data: data,
+            success: function(data){
+                var contents = [];
+                $.each(data.product, function (index, value) {
+                    contents.push(
+                        {
+                            id: value.sku,
+                            quantity: value.quantity,
+                            item_price: value.price
+                        }
+                    )
+                });
+
+                console.log(contents);
+
+                fbq('track', 'Purchase', {
+                    content_name: "New Pending Order",
+                    content_type: "products",
+                    contents: contents,
+                    currency: "NGN",
+                    value: data.cartTotal
+                });
+            },
+            error: function (errorData) {
+                console.log("error");
+                console.log(errorData)
+            }
+        });
+    });
+</script>
 
 
 {% endblock %}

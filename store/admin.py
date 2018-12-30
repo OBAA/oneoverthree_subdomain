@@ -28,7 +28,7 @@ admin.site.register(ProductImage, ProductImageAdmin)
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'store', 'price', 'stock', 'is_active', 'timestamp']
+    list_display = ['__str__', 'store', 'sku', 'price', 'stock', 'is_active', 'timestamp']
     list_filter = ['is_active', 'timestamp']
     list_editable = ['price', 'is_active']
 
@@ -49,16 +49,6 @@ class ProductReviewAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ProductReview, ProductReviewAdmin)
-
-
-# class BrandMPTTModelAdmin(MPTTModelAdmin):
-#     # specify pixel amount for this ModelAdmin only:
-#     mptt_level_indent = 20
-#     list_display = ['__str__', 'description', 'featured', 'order', 'is_active']
-#     list_editable = ['featured', 'order', 'is_active']
-#
-#
-# admin.site.register(Brand, BrandMPTTModelAdmin)
 
 
 class CategoryMPTTModelAdmin(MPTTModelAdmin):

@@ -67,42 +67,6 @@ def category_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(category_pre_save_receiver, sender=Category)
 
 
-# class BrandsManager(models.Manager):
-#     def get_queryset(self):
-#         return ProductQuerySet(self.model, using=self._db)
-
-
-# class Brand(MPTTModel):
-#     title = models.CharField(max_length=120,)
-#     slug = models.SlugField(max_length=120, blank=True, unique=True)
-#     description = models.CharField(max_length=120, blank=True)
-#     background_image_a = models.ImageField(upload_to=upload_image_path, null=True, blank=False)
-#     background_image_b = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
-#     order = models.IntegerField(blank=True)
-#     timestamp = models.DateTimeField(auto_now_add=True)
-#     is_active = models.BooleanField(default=True)
-#     featured = models.BooleanField(default=False)
-#
-#     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children', default=None)
-#
-#     class MPTTMeta:
-#         order_insertion_by = ['order']
-#
-#     def __str__(self):
-#         return self.title
-#
-#     def get_absolute_url(self):
-#         return reverse('store:brands', kwargs={'slug': self.slug})
-#
-#
-# def brand_pre_save_receiver(sender, instance, *args, **kwargs):
-#     if not instance.slug:
-#         instance.slug = unique_slug_generator(instance)
-#
-#
-# pre_save.connect(brand_pre_save_receiver, sender=Brand)
-
-
 PRODUCT_WEIGHT = (
     # (KG, DISPALY),
     ('0.5', 'Accessory'),
@@ -123,6 +87,7 @@ class ProductQuerySet(models.query.QuerySet):
 
     def search(self, query):
         lookups = (
+            Q(sku=query) |
             Q(title__icontains=query) |
             Q(description__icontains=query) |
             Q(tags__title__icontains=query)
@@ -162,12 +127,6 @@ class ProductManager(models.Manager):
 
     def search(self, query):
         return self.get_queryset().search(query)
-
-    def reload(self):
-        products = self.all()
-        for product in products:
-            product.squ = "1"
-            product.save()
 
 
 class Product(models.Model):

@@ -1,12 +1,10 @@
 from django.http import Http404, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.db.models import Q
 from django.contrib import messages
-from django.urls import reverse, reverse_lazy
-from django.utils.safestring import mark_safe
-from django.views.generic import ListView, DetailView, CreateView, RedirectView
-from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, RedirectView
 from analytics.mixins import ObjectViewedMixin
 from cart.forms import CartUpdateForm
 from cart.cart import Cart
@@ -159,48 +157,6 @@ class CategoryView(DetailView):
         return instance
 
 
-# class BrandDetailSlugView(DetailView):
-#     template_name = "store/product-list.html"
-#
-#     def get_context_data(self, *args, **kwargs):
-#         paginator, products = self.get_queryset()
-#         context = super(BrandDetailSlugView, self).get_context_data(**kwargs)
-#         context['brand_list'] = Brand.objects.all()
-#         context['object_list'] = products
-#         context['paginator'] = paginator
-#         return context
-#
-#     def get_queryset(self, *args, **kwargs):
-#
-#         brand = self.get_object()
-#         brands = brand.get_descendants(include_self=True)  # Gets Brand descendants list
-#         page = self.request.GET.get('page', 1)
-#         # product_list = self.get_object().products.all()
-#         product_list = Product.objects.all().filter(brand__in=brands)
-#
-#         paginator = Paginator(product_list, 2)
-#         try:
-#             products = paginator.page(page)
-#         except PageNotAnInteger:
-#             products = paginator.page(1)
-#         except EmptyPage:
-#             products = paginator.page(paginator.num_pages)
-#         return paginator, products
-#
-#     def get_object(self, *args, **kwargs):
-#         slug = self.kwargs.get('slug')
-#         try:
-#             instance = Brand.objects.get(slug=slug)
-#         except Brand.DoesNotExist:
-#             raise Http404("Not Found")
-#         except Brand.MultipleObjectsReturned:
-#             qs = Brand.objects.filter(slug=slug)
-#             instance = qs.first()
-#         except:
-#             raise Http404("Nothing Here. Sorry")
-#         return instance
-
-
 class TagListView(ListView):
     template_name = "store/product-list.html"
 
@@ -230,7 +186,6 @@ class TagListView(ListView):
 
 
 class StoreHomeView(ListView):
-    # template_name = "store/store_home.html"
     template_name = "store/home.html"
 
     def get_context_data(self, *args, **kwargs):
@@ -244,7 +199,10 @@ class StoreHomeView(ListView):
         return context
 
     def get_queryset(self, *args, **kwargs):
-        return Product.objects.all().filter(store__title='1OVER3')
+        return Product.objects.all().filter(
+            Q(store__title='1OVER3') |
+            Q(store__featured=True)
+        )
 
     def get_paginated(self):
         page = self.request.GET.get('page', 1)

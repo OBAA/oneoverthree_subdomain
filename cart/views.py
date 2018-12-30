@@ -1,29 +1,18 @@
-import datetime
-from io import BytesIO
-from django.core.files import File
-from django.http import Http404
-from django.utils.http import is_safe_url
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect  # , get_object_or_404
 from django.core.urlresolvers import reverse
-from django.core.mail import EmailMessage
 from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.contrib import messages
-from django.views.generic import FormView, View, RedirectView
-
-from django.template.loader import get_template
+from django.views.generic import RedirectView
 
 from accounts.forms import LoginForm, GuestForm
 from addresses.forms import CheckoutAddressForm
 from addresses.models import Address
 from billing.models import BillingProfile
 from orders.models import Order, OrderItem  # , GenerateOrderPdf
-from oneoverthree.utils import render_to_pdf
 from store.models import Product, Variation
 from .cart import Cart
 from .models import CouponCode, UsedCoupon
-from .forms import CartUpdateForm
-
 
 
 # Paystack
@@ -40,25 +29,26 @@ def cart_detail_api_view(request):
     cart = Cart(request)  # //
     cart_total = cart.get_total()
     cart_weight = cart.get_weight()
-    # store = cart.cart.values()
     action_update = "/cart/update/"
     action_remove = "{% url 'cart:remove' %}"
 
-    products = []
-    for item in cart.get_items():
-        products.append({
-            'id': item['id'],
-            'url': item['url'],
-            'title': item['title'],
-            'brand': item['brand'],
-            'image': item['image'],
-            'size': item['size'],
-            'quantity': item['quantity'],
-            'price': item['price'],
-            'slot': item['slot'],
-            'attribute': str(item['attribute']),
-        })
-    print(products)
+    products = cart.get_items()
+    # products = []
+    # for item in cart.get_items():
+    #     products.append({
+    #         'id': item['id'],
+    #         'sku': item['sku'],
+    #         'url': item['url'],
+    #         'title': item['title'],
+    #         'brand': item['brand'],
+    #         'image': item['image'],
+    #         'size': item['size'],
+    #         'quantity': item['quantity'],
+    #         'price': item['price'],
+    #         'slot': item['slot'],
+    #         'attribute': str(item['attribute']),
+    #     })
+    # print(products)
 
     json_data = {
         "cartTotal": cart_total,
@@ -119,19 +109,24 @@ class UpdateCartView(RedirectView):
         check_stock = int(stock) - int(product_quantity)
         if check_stock < 0:
             messages.error(request, msg)
-            return self.get_success_url(product_obj)
+            return self.get_success_url(product_obj, product_quantity)
 
         cart_obj.add(product=product_obj, size=size, quantity=product_quantity, update_quantity=True)
-        return self.get_success_url(product_obj)
+        return self.get_success_url(product_obj, product_quantity)
 
-    def get_success_url(self, product_obj):
+    def get_success_url(self, product_obj, product_quantity):
         request = self.request
         cart_obj = Cart(request)
-        # product_obj = self.get_product()
+        product_value = product_obj.price * int(product_quantity)
         cart_count = cart_obj.__len__()
         if request.is_ajax():
             json_data = {
                 "cartCount": cart_count,
+                "productSKU": product_obj.sku,
+                "productName": product_obj.title,
+                "productPrice": product_obj.price,
+                "productQuantity": product_quantity,
+                "contentValue": product_value
             }
             return JsonResponse(json_data)
         return reverse("store:detail", kwargs={'slug': product_obj.slug})
@@ -384,67 +379,14 @@ def checkout_success(request):
             quantity=item['quantity'],
         )
 
-    # if request.user.is_authenticated:
-    #     customer = request.user.full_name
-    # else:
-    #     customer = obj.shipping_address.name
-    #
-    # context = {
-    #     'cart': cart.get_items(),
-    #     'date': datetime.date.today(),
-    #     'order_total': obj.total,
-    #     'customer_name': customer,
-    #     'invoice_id': obj.order_id,
-    # }
-
     if obj.coupon:
         billing_profile = obj.billing_profile
         coupon = CouponCode.objects.get_coupon(obj.coupon)
         coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
         coupon_obj.coupon_used = True
 
-    # finalize_checkout = Order.objects.finalize_checkout(request, obj, cart)
-    # if finalize_checkout:
-
     # Finalize Checkout
     Order.objects.finalize_checkout(request, obj, cart)
-
-    # cart.clear()  # Clear Cart
-    # obj.is_active = False
-    # obj.status = 'processing'
-    # if not obj.pdf:
-    #     pdf = render_to_pdf('invoice.html', context)
-    #     # pdf = None
-    #     if pdf:
-    #         filename = "Invoice_%s.pdf" % obj.order_id
-    #         obj.pdf.save(filename, File(BytesIO(pdf.content)))
-    #
-    #         # Send PDF File
-    #         if obj.pdf_sent is False:
-    #             context = {
-    #                 'first_name': obj.billing_profile.user.first_name,
-    #                 'order_id': obj.order_id,
-    #             }
-    #             subject = "It is ordered!"
-    #             txt_ = get_template("emails/order_invoice.txt").render(context)
-    #             # html_ = get_template("emails/order_invoice.html").render(context)
-    #             from_email = settings.DEFAULT_FROM_EMAIL
-    #             recipient_list = [obj.billing_profile.email]
-    #
-    #             email = EmailMessage(
-    #                 subject,
-    #                 txt_,
-    #                 from_email,
-    #                 recipient_list,
-    #             )
-    #             filename = obj.pdf.name
-    #             # email.attach_file(File(BytesIO(pdf.content)))
-    #             email.attach(filename=filename, mimetype="application/pdf", content=pdf.content)
-    #             email.send()
-    #             obj.pdf_sent = True
-    # else:
-    #     obj.save()
-
     return render(request, "cart/checkout-success.html", {'object': obj})
 
 
