@@ -113,10 +113,9 @@ class CouponCodeManager(models.Manager):
 class CouponCode(models.Model):
     code = models.CharField(max_length=25, unique=True)
     description = models.CharField(max_length=120)
-    percentage = models.PositiveIntegerField(blank=True, choices=DISCOUNT_RATES)
+    percentage = models.PositiveIntegerField(choices=DISCOUNT_RATES, blank=True, null=True)
     amount = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
     usage = models.IntegerField(default=0)
-    # is_active = models.BooleanField(default=True)
     first_order_coupon = models.BooleanField(default=False)
     is_one_use_only = models.BooleanField(default=False)
     is_valid = models.BooleanField(default=True)
