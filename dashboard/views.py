@@ -264,7 +264,7 @@ class DashboardHomeView(LoginRequiredMixin, DetailView):
     def get_paginated(self):
         page = self.request.GET.get('page', 1)
         store = self.get_object()
-        product_list = Product.objects.all().filter(store=store)
+        product_list = Product.objects.all().filter(store=store).order_by('-timestamp')
         products_per_page = 10
         paginator = Paginator(product_list, products_per_page)
         try:
