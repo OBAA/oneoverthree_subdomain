@@ -202,7 +202,7 @@ def checkout_home(request):
     cart_total = request.POST.get('cart_total', None)
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
-    order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
+    order_obj, order_obj_created = Order.objects.new_or_get(billing_profile)
 
     if billing_profile is not None:
         address_book = Address.objects.all().filter(billing_profile=billing_profile)
