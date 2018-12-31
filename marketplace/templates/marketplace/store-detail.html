@@ -3,8 +3,8 @@
 {% load mptt_tags %}
 
 {% block content %}
-{% if object.background_image_b %}
-<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({{ object.background_image_b.url }});">
+{% if object.header_image %}
+<section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({{ object.header_image.url }});">
 {% else %}
 <section class="bg-title-page p-t-50 p-b-40 flex-col-c-m" style="background-image: url({% static 'img/header-00.jpg' %});">
 {% endif %}

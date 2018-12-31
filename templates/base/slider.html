@@ -5,7 +5,7 @@
 			<div class="slick1">
 				{% for store in marketplace %}
 				{% if store.featured %}
-				<div class="item-slick1 item1-slick1" style="background-image: url({{ store.background_image_a.url }});">
+				<div class="item-slick1 item1-slick1" style="background-image: url({{ store.slider_image.url }});">
 					<div class="wrap-content-slide1 sizefull flex-col-c-m p-l-15 p-r-15 p-t-150 p-b-170">
 						<h2 class="caption1-slide1 xl-text2 t-center p-b-6 animated visible-false m-b-22" data-appear="fadeInUp">
 							{{ store.title }}
