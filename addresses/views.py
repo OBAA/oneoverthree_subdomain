@@ -85,7 +85,7 @@ class CheckoutAddressReUseView(View):
     def post(self, request):
         shipping_address_id = request.POST.get('shipping_address', None)
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
-        order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
+        order_obj, order_obj_created = Order.objects.new_or_get(billing_profile)
 
         # Get shipping total
         Order.objects.shipping_total(request, shipping_address_id, obj=order_obj)
@@ -136,7 +136,7 @@ class CheckoutAddressCreateView(CreateView):
         instance.save()
         shipping_address_id = instance.id
         request.session["shipping_address_id"] = shipping_address_id
-        order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
+        order_obj, order_obj_created = Order.objects.new_or_get(billing_profile)
 
         Order.objects.shipping_total(request, shipping_address_id, obj=order_obj)
         Order.objects.order_total(request, obj=order_obj)
