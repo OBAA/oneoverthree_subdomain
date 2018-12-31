@@ -249,7 +249,7 @@ def use_coupon_code(request):
 
     if user.is_authenticated:
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
-        order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
+        order_obj, order_obj_created = Order.objects.new_or_get(billing_profile)
 
         if coupon_code is not None:
             CouponCode.objects.apply_coupon(request, billing_profile, coupon_code, order_obj)
@@ -263,7 +263,7 @@ def checkout_finalize(request):
         return redirect("cart:home")
 
     billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
-    order_obj, order_obj_created = Order.objects.new_or_get(request, billing_profile)
+    order_obj, order_obj_created = Order.objects.new_or_get(billing_profile)
     address_book = Address.objects.all().filter(billing_profile=billing_profile)
 
     shipping_address_id = request.session.get("shipping_address_id", None)
