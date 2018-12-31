@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.http import HttpResponseForbidden, HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, RedirectView, UpdateView
 

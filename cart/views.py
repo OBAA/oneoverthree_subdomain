@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 from django.views.generic import RedirectView
@@ -345,10 +345,10 @@ def checkout_success(request):
                 "product": products
             }
             return JsonResponse(json_data)
-        
+
         return render(request, "cart/checkout-success.html", {'object': obj})
     else:
-        redirect("store:home")
+        return HttpResponseRedirect(reverse("store:home"))
 
 
 def show_order_invoice(request, *args, **kwargs):
