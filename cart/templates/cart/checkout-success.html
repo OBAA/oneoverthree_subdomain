@@ -58,12 +58,12 @@
 
 <script>
     $(document).ready(function(){
-        var cartUrl = '/api/cart/';
+        var actionEndPoint = '/cart/checkout/success/';
         var apiMethod = "GET";
         var data = {};
 
         $.ajax({
-            url: cartUrl,
+            url: actionEndPoint,
             method: apiMethod,
             data: data,
             success: function(data){
@@ -82,7 +82,7 @@
 
                 fbq('track', 'Purchase', {
                     content_name: "New Pending Order",
-                    content_type: "products",
+                    content_type: "product_group",
                     contents: contents,
                     currency: "NGN",
                     value: data.cartTotal

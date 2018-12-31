@@ -10,7 +10,22 @@ def cart_detail_api_view(request):
     action_update = "/cart/update/"
     action_remove = "{% url 'cart:remove' %}"
 
-    products = cart.get_items()
+    products = []
+    for item in cart.get_items():
+        products.append({
+            'id': item['id'],
+            'sku': item['sku'],
+            'url': item['url'],
+            'title': item['title'],
+            'brand': item['brand'],
+            'image': item['image'],
+            'size': item['size'],
+            'quantity': item['quantity'],
+            'price': item['price'],
+            'slot': item['slot'],
+            'attribute': str(item['attribute']),
+        })
+    print(products)
 
     json_data = {
         "cartTotal": cart_total,

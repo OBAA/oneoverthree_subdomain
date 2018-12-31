@@ -61,7 +61,7 @@ class OrderManager(models.Manager):
             obj = qs.first()
             return obj
 
-    def new_or_get(self, request, billing_profile):
+    def new_or_get(self, billing_profile):
         obj, created = self.get_or_create(
             billing_profile=billing_profile,
             is_active=True,
@@ -110,15 +110,13 @@ class OrderManager(models.Manager):
 
             # Send order invoice PDF to customer
             self.send_order_invoice(obj, pdf)
-            obj.pdf_sent = True
 
             # Send pending order email to seller
             self.send_pending_order_notice(obj)
-        else:
-            obj.save()
         cart.clear()  # Clear Cart
         obj.is_active = False
         obj.status = 'processing'
+        obj.save()
         return True
 
     def send_pending_order_notice(self, obj):
@@ -139,7 +137,7 @@ class OrderManager(models.Manager):
             html_ = get_template("emails/new_pending_order.html").render(context)
             from_email = settings.DEFAULT_FROM_EMAIL
             recipient_list = [email]
-            send_mail(
+            sent_mail = send_mail(
                 subject,
                 txt_,
                 from_email,
@@ -147,7 +145,7 @@ class OrderManager(models.Manager):
                 html_message=html_,
                 fail_silently=False,
             )
-            # return sent_mail
+            return sent_mail
 
     def send_order_invoice(self, obj, pdf):
         # Send PDF File

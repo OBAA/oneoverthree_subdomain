@@ -180,7 +180,6 @@
         productForm.submit(function(event){
             event.preventDefault();
             var thisForm =$(this)
-//                var actionEndPoint = thisForm.attr("action");
             var actionEndPoint = thisForm.attr("data-endpoint");
             var httpMethod = thisForm.attr("method");
             var formData = thisForm.serialize();

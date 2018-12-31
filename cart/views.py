@@ -306,30 +306,49 @@ def checkout_finalize(request):
 
 def checkout_success(request):
     cart = Cart(request)
+    cart_total = cart.get_total()
     try:
         obj = Order.objects.get_by_billing_profile(request)
     except:
-        return redirect("store:home")
+        return
 
-    for item in cart.get_items():
-        OrderItem.objects.create(
-            order=obj,
-            product=item['product'],
-            store=item['store'],
-            size=item['size'],
-            price=item['price'],
-            quantity=item['quantity'],
-        )
+    if obj:
+        products = []
+        for item in cart.get_items():
+            OrderItem.objects.create(
+                order=obj,
+                product=item['product'],
+                store=item['store'],
+                size=item['size'],
+                price=item['price'],
+                quantity=item['quantity'],
+            )
+            products.append({
+                'sku': item['sku'],
+                'quantity': item['quantity'],
+                'price': item['price'],
+            })
 
-    if obj.coupon:
-        billing_profile = obj.billing_profile
-        coupon = CouponCode.objects.get_coupon(obj.coupon)
-        coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
-        coupon_obj.coupon_used = True
+        if obj.coupon:
+            billing_profile = obj.billing_profile
+            coupon = CouponCode.objects.get_coupon(obj.coupon)
+            coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
+            coupon_obj.coupon_used = True
 
-    # Finalize Checkout
-    Order.objects.finalize_checkout(request, obj, cart)
-    return render(request, "cart/checkout-success.html", {'object': obj})
+        # Finalize Checkout
+        Order.objects.finalize_checkout(request, obj, cart)
+
+        if request.is_ajax():
+            print("Ajax request")
+            json_data = {
+                "cartTotal": cart_total,
+                "product": products
+            }
+            return JsonResponse(json_data)
+        
+        return render(request, "cart/checkout-success.html", {'object': obj})
+    else:
+        redirect("store:home")
 
 
 def show_order_invoice(request, *args, **kwargs):
