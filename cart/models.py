@@ -69,10 +69,10 @@ class CouponCodeManager(models.Manager):
                 if qs.count() > 0:
                     messages.error(request, "Ooops, Coupon Only valid on your first order.")
                     return redirect('cart:checkout')
-
+                pass
             if coupon.is_one_use_only and coupon.usage > 0:
-                    messages.error(request, "Ooops, This coupon has been used and is no longer valid.")
-                    return redirect('cart:checkout')
+                messages.error(request, "Ooops, This coupon has been used and is no longer valid.")
+                return redirect('cart:checkout')
 
             else:  # Check if coupon has been used by current user
                 used_coupon_obj, created = UsedCoupon.objects.new_or_get(coupon, billing_profile)
