@@ -27,7 +27,7 @@ class CouponCodeManager(models.Manager):
         return CouponCodeQuerySet(self.model, using=self._db)
 
     def create_coupon(self, code, description, percentage=None, amount=None, first_order_coupon=False, is_one_use_only=False, is_valid_till=None):
-        coupon = self.model.create(
+        coupon = self.model(
             code=code,
             description=description,
         )
