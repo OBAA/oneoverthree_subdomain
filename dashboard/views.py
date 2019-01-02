@@ -307,8 +307,35 @@ class OrderShippedView(RedirectView):
     def post(self, request, *args, **kwargs):
         data = request.POST
         shipped_ids = data.getlist('process_ids', None)
+        # customers = []
         for shipped_id in shipped_ids:
             order_item = OrderItem.objects.get_by_id(id=shipped_id)
             order_item.status = 'shipped'
             order_item.save()
+        #     customers.append(order_item.order.billing_profile.user)
+        #
+        #     customer = order_item.order.billing_profile.user
+        #     customers.append({customer: order_item.product})
+        #
+        # customers = list(set(customers))
+        # for customer in customers:
+        #     context = {
+        #         'first_name': customer.first_name
+        #     }
+        #     txt_ = get_template("registration/emails/verify.txt").render(context)
+        #     html_ = get_template("registration/emails/verify.html").render(context)
+        #     subject = 'Order Shipped'
+        #     from_email = settings.DEFAULT_FROM_EMAIL
+        #     recipient_list = [customer.email]
+        #     sent_mail = send_mail(
+        #         subject,
+        #         txt_,
+        #         from_email,
+        #         recipient_list,
+        #         html_message=html_,
+        #         fail_silently=False,
+        #     )
+        #     return sent_mail
+
         return HttpResponseRedirect(reverse("account:dashboard:home"))
+

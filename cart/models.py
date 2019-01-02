@@ -1,12 +1,17 @@
+from django.conf import settings
 from datetime import timedelta
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 from django.db import models
+from django.db.models.signals import pre_save
 from django.shortcuts import render, redirect
 from django.utils import timezone
 
+from accounts.models import EmailActivation
 from billing.models import BillingProfile
 from orders.models import Order
+
+User = settings.AUTH_USER_MODEL
 
 #
 DISCOUNT_RATES = [(i*5, str(i*5)) for i in range(1, 16)]
@@ -20,6 +25,26 @@ class CouponCodeQuerySet(models.query.QuerySet):
 class CouponCodeManager(models.Manager):
     def get_queryset(self):
         return CouponCodeQuerySet(self.model, using=self._db)
+
+    def create_coupon(self, code, description, percentage=None, amount=None, first_order_coupon=False, is_one_use_only=False, is_valid_till=None):
+        coupon = self.model.create(
+            code=code,
+            description=description,
+        )
+        if first_order_coupon:
+            coupon.first_order_coupon = True
+        if is_one_use_only:
+            coupon.is_one_use_only = True
+        if is_valid_till > 0:
+            coupon.is_valid_till = is_valid_till
+            coupon.is_valid = True
+        if percentage:
+            coupon.percentage = percentage
+        if amount:
+            coupon.percentage = None
+            coupon.amount = amount
+        coupon.save()
+        return coupon
 
     def get_coupon(self, code):
         now = timezone.now()
@@ -123,7 +148,7 @@ class CouponCode(models.Model):
     usage = models.IntegerField(default=0)
     first_order_coupon = models.BooleanField(default=False)
     is_one_use_only = models.BooleanField(default=False)
-    is_valid = models.BooleanField(default=True)
+    is_valid = models.BooleanField(default=False)
     is_valid_till = models.IntegerField(default=0)
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -131,6 +156,36 @@ class CouponCode(models.Model):
 
     def __str__(self):
         return self.description
+
+
+def pre_save_email_activation(sender, instance, *args, **kwargs):
+    if instance.activated:
+        first_name = instance.user.first_name
+        proposed_code = "{base}{f_name}".format(base="1O3", f_name=first_name.upper())
+
+        # Create coupon code
+        numb = 1
+        new_code = proposed_code
+        while CouponCode.objects.filter(code=proposed_code).exists():
+            new_code = "{p_code}{num}".format(
+                p_code=proposed_code,
+                num=numb
+            )
+            numb += 1
+
+        coupon_description = "New User Signup 20% Discount"
+        coupon = CouponCode.objects.create_coupon(
+            code=new_code,
+            description=coupon_description,
+            percentage=20,
+            first_order_coupon=True,
+            is_valid_till=30
+        )
+
+        instance.coupon = coupon.code
+
+
+pre_save.connect(pre_save_email_activation, sender=EmailActivation)
 
 
 class UsedCouponQuerySet(models.query.QuerySet):
@@ -163,6 +218,7 @@ class UsedCouponManager(models.Manager):
 class UsedCoupon(models.Model):
     coupon = models.ForeignKey(CouponCode)
     billing_profile = models.ForeignKey(BillingProfile)
+    # user = models.ForeignKey(User)
     coupon_used = models.BooleanField(default=False)
 
     objects = UsedCouponManager()

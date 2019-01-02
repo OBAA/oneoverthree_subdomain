@@ -1,0 +1,19 @@
+Hello {{ first_name }},
+
+Welcome to 1OVER3
+
+Your account for {{ email }} has been successfully activated.
+
+Use discount code "{{ code }}" at checkout to get 20% off your first order.
+
+Click on the link below to begin shopping from your favorites brands!
+
+
+
+{{ path }}
+
+
+
+Thank you,
+
+1OVER3 Store.

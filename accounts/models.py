@@ -115,16 +115,6 @@ class User(AbstractBaseUser):
         full_name = str(first_name + " " + last_name)
         return full_name
 
-    # def first_name(self):
-    #     full_name = self.full_name
-    #     first_name = str(full_name).split(' ', 1)[0]
-    #     return first_name
-    #
-    # def last_name(self):
-    #     full_name = self.full_name
-    #     last_name = str(full_name).split(' ', 1)[1]
-    #     return last_name
-
     def has_perm(self, perm, obj=None):
         return True
 
@@ -149,10 +139,6 @@ class User(AbstractBaseUser):
     @property
     def is_editor(self):
         return self.editor
-
-    # @property
-    # def is_active(self):
-    #     return self.active
 
 
 class EmailActivationQueryset(models.query.QuerySet):
@@ -191,6 +177,7 @@ class EmailActivation(models.Model):
     user            = models.ForeignKey(User)
     email           = models.EmailField()
     key             = models.CharField(max_length=120, blank=True, null=True)
+    coupon          = models.CharField(max_length=120, blank=True, null=True)
     activated       = models.BooleanField(default=False)
     forced_expired  = models.BooleanField(default=False)
     expires         = models.IntegerField(default=1)  # 24hrs
@@ -232,7 +219,6 @@ class EmailActivation(models.Model):
     def send_activation_email(self):
         if not self.activated and not self.forced_expired:
             if self.key:
-                # base_url = getattr(settings, 'BASE_URL', '127.0.0.1:8000')
                 base_url = getattr(settings, 'BASE_URL', 'https://www.1over3.store')
                 key_path = reverse("account:email-activate", kwargs={'key': self.key})  # Use reverse
                 path = "{base}{path}".format(base=base_url, path=key_path)
@@ -256,6 +242,34 @@ class EmailActivation(models.Model):
                 )
                 return sent_mail
             return False
+
+    def send_activated_email(self):
+        base_url = getattr(settings, 'BASE_URL', 'https://www.1over3.store')
+        if self.activated:
+            context = {
+                'code': self.coupon,
+                'email': self.email,
+                'first_name': self.user.first_name,
+                'path': "{base}/{page}".format(base=base_url, page="outlet")
+            }
+            if self.coupon:
+                txt_    = get_template("registration/emails/verified.txt").render(context)
+                html_   = get_template("registration/emails/verified.html").render(context)
+            else:
+                txt_ = get_template("registration/emails/verified_noCoupon.txt").render(context)
+                html_ = get_template("registration/emails/verified_noCoupon.html").render(context)
+            subject = 'Welcome to 1OVER3'
+            from_email = settings.DEFAULT_FROM_EMAIL
+            recipient_list = [self.email]
+            sent_mail = send_mail(
+                subject,
+                txt_,
+                from_email,
+                recipient_list,
+                html_message=html_,
+                fail_silently=False,
+            )
+            return sent_mail
 
 
 def pre_save_email_activation(sender, instance, *args, **kwargs):
@@ -285,4 +299,3 @@ class GuestEmail(models.Model):
 
     def __str__(self):
         return self.email
-

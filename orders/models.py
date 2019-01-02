@@ -74,6 +74,12 @@ class OrderManager(models.Manager):
             return qs.first()
         return None
 
+    def get_by_order_id(self, order_id):
+        qs = self.get_queryset().filter(order_id=order_id)  # Product.objects == self.get_querset
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
     def shipping_total(self, request, shipping_address_id, obj):
         cart = Cart(request)
         shipping_per_kg = ShippingRate.objects.shipping_per_kg(shipping_address_id)
@@ -271,6 +277,7 @@ class OrderItemManager(models.Manager):
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, default=None)
     product = models.ForeignKey(Product, related_name='order_items', on_delete=models.CASCADE)
+    sku = models.CharField(max_length=120, blank=True)
     store = models.ForeignKey(Store, null=True)
     size = models.CharField(max_length=120, blank=True)  #
     price = models.DecimalField(max_digits=10, decimal_places=2)

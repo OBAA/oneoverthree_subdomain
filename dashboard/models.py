@@ -77,14 +77,7 @@ class DashboardManager(models.Manager):
         dashboard.total_revenue = total_revenue
         dashboard.save()
 
-    # def get_dashboard(self, user):
-    #     store = user.store
-    #     print(store)
-    #     if store:
-    #         qs = self.get_queryset().all().filter(store=store)
-    #         if qs.count() == 1:
-    #             dashboard = qs.first()
-    #             return dashboard
+    # def order_shipped(self, email):
 
 
 class Dashboard(models.Model):

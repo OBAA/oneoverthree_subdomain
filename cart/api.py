@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 
 from .cart import Cart
+from orders.models import Order, OrderItem
 
 
 def cart_detail_api_view(request):
@@ -35,3 +36,26 @@ def cart_detail_api_view(request):
         "action_remove": action_remove
     }
     return JsonResponse(json_data)
+
+
+def checkout_complete_api_view(request):
+    order_id = request.session.get('order_id', None)
+    if order_id:
+        del request.session['order_id']
+    order_obj = Order.objects.get_by_order_id(order_id)
+    cart_total = order_obj.total - order_obj.shipping_total
+    products = []
+    order_items = OrderItem.objects.get_items(order_obj)
+    for item in order_items:
+        products.append({
+            'sku': item['sku'],
+            'quantity': item['quantity'],
+            'price': item['price'],
+        })
+
+    json_data = {
+        "cartTotal": cart_total,
+        "product": products
+    }
+    return JsonResponse(json_data)
+
