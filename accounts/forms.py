@@ -193,7 +193,7 @@ class LoginForm(forms.Form):
                     raise forms.ValidationError("Email confirmation required")
                 email_confirm_exists = EmailActivation.objects.email_exists(email).exists()
                 if email_confirm_exists:
-                    messages.success(request, mark_safe(msg))
+                    messages.success(request, mark_safe(msg2))
                     raise forms.ValidationError(mark_safe(msg2))
                 if not is_confirmable or not email_confirm_exists:
                     raise forms.ValidationError("This user is inactive.")
