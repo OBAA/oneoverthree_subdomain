@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.conf import settings
 from django.core.urlresolvers import resolve, Resolver404
 from django.http import HttpResponseRedirect, HttpResponse
@@ -34,21 +35,42 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
 
         if domain == settings.DEFAULT_SITE_DOMAIN:
             return None
+
+        # try:
+        #     print("Tried")
+        #     resolve(path, marketplace_urls)
+        #     print("try 1")
+        # except Resolver404:
+        #     try:
+        #         # The slashes are not being appended before getting here
+        #         resolve(u"{0}/".format(path), marketplace_urls)
+        #         print("try 2")
+        #     except Resolver404:
+        #         print("break 1")
+        #         return redirect(redirect_path)
+
+        new_path = "/marketplace/{0}/".format(pieces[0])
+
+        print("--- 2nd Try block ---")
+        print(new_path)
         try:
-            print("Tried")
-            resolve(path, marketplace_urls)
-            print("try 1")
+            print("Try 1")
+            resolve(new_path, marketplace_urls)
+            print("tried")
         except Resolver404:
             try:
+                print("try 2")
                 # The slashes are not being appended before getting here
                 resolve(u"{0}/".format(path), marketplace_urls)
-                print("try 2")
             except Resolver404:
                 print("break 1")
-                return redirect(redirect_path)
+                pass
+                # return redirect(redirect_path)
+
+        print("--- 2nd Try block ---")
         try:
-            store = Store.objects.get(title=pieces[0])
             print("try 3")
+            store = Store.objects.get(title=pieces[0])
             print(store)
             # if short_url:
             #     store = Store.objects.get(title=short_url)
@@ -56,6 +78,8 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
             #     store = Store.objects.get(title=pieces[0])
         except Store.DoesNotExist:
             print("break 2")
+            msg = "Store not found. shop our products."
+            messages.success(request, msg)
             return redirect(redirect_path)
 
         request.domain = store
