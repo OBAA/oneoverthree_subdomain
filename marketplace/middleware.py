@@ -47,7 +47,7 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
             #     print("tried")
             #     if match:
             #         # print(match.url_name, match.kwargs, match.namespace)
-            #         return HttpResponseRedirect("{0}://{1}{2}".format(scheme, domain, new_path))
+            #         return HttpResponseRedirect("{0}://{1}{2}".format(scheme, settings.DEFAULT_SITE_DOMAIN, new_path))
             #
             # except Resolver404:
             #     try:
@@ -56,7 +56,8 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
             #         match = resolve(u"{0}/".format(path), marketplace_urls)
             #         if match:
             #             # print(match.url_name, match.kwargs, match.namespace)
-            #             return HttpResponseRedirect("{0}://{1}{2}".format(scheme, domain, new_path))
+            #             return HttpResponseRedirect("{0}://{1}{2}".format(
+            #                 scheme, settings.DEFAULT_SITE_DOMAIN, new_path))
             #     except Resolver404:
             #         print("break 1")
             #         # pass
@@ -79,5 +80,5 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
                 return redirect(redirect_path)
             if store:
                 request.domain = store
-                return HttpResponseRedirect("{0}://{1}{2}".format(scheme, domain, new_path))
+                return HttpResponseRedirect("{0}://{1}{2}".format(scheme, settings.DEFAULT_SITE_DOMAIN, new_path))
 
