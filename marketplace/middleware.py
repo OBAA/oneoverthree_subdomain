@@ -19,7 +19,7 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
     def process_request(self, request):
         scheme = "http" if not request.is_secure() else "https"
         path = request.get_full_path()
-        domain = request.META['HOST']
+        domain = request.META['HTTP_HOST']
         # short_url = request.META.get("HTTP_X_CUSTOMURL")
         pieces = domain.split('.')
         redirect_path = "http://{0}{1}".format(
