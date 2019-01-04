@@ -26,7 +26,7 @@ SECRET_KEY = get_secret_setting('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.1over3.store', '46.101.17.31']
+ALLOWED_HOSTS = ['*.1over3.store', '1over3.store', '46.101.17.31']
 
 # Application definition
 INSTALLED_APPS = [

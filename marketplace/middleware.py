@@ -37,19 +37,25 @@ class StoreSubdomainMiddleware(MiddlewareMixin):
         try:
             print("Tried")
             resolve(path, marketplace_urls)
+            print("try 1")
         except Resolver404:
             try:
                 # The slashes are not being appended before getting here
                 resolve(u"{0}/".format(path), marketplace_urls)
+                print("try 2")
             except Resolver404:
+                print("break 1")
                 return redirect(redirect_path)
         try:
             store = Store.objects.get(title=pieces[0])
+            print("try 3")
+            print(store)
             # if short_url:
             #     store = Store.objects.get(title=short_url)
             # else:
             #     store = Store.objects.get(title=pieces[0])
         except Store.DoesNotExist:
+            print("break 2")
             return redirect(redirect_path)
 
         request.domain = store
