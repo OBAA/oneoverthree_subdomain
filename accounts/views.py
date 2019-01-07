@@ -47,6 +47,7 @@ class AccountEmailActivateView(FormMixin, View):
     key = None
 
     def get(self, request, key=None, *args, **kwargs):
+        request = self.request
         self.key = key
         if key is not None:
             qs = EmailActivation.objects.filter(key__iexact=key)
