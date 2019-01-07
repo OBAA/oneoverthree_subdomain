@@ -17,12 +17,15 @@ from .models import CouponCode, UsedCoupon
 
 # Paystack
 site_id = getattr(settings, "SITE_ID")
-test_paystack = getattr(settings, "PAYSTACK_SECRET_TEST_KEY")
-test_paystack_pk = getattr(settings, "PAYSTACK_PUB_TEST_KEY")
+if site_id == 1:
+    test_paystack = getattr(settings, "PAYSTACK_SECRET_TEST_KEY")
+    test_paystack_pk = getattr(settings, "PAYSTACK_PUB_TEST_KEY")
 
-live_paystack_secret = getattr(settings, "PAYSTACK_SECRET_LIVE_KEY")
-live_paystack_pk = getattr(settings, "PAYSTACK_PUB_LIVE_KEY")
-
+    live_paystack_secret = getattr(settings, "PAYSTACK_SECRET_LIVE_KEY")
+    live_paystack_pk = getattr(settings, "PAYSTACK_PUB_LIVE_KEY")
+else:
+    test_paystack = getattr(settings, "PAYSTACK_SECRET_TEST_KEY")
+    test_paystack_pk = getattr(settings, "PAYSTACK_PUB_TEST_KEY")
 
 # Create your views here.
 def cart_detail_api_view(request):

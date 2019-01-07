@@ -45,12 +45,12 @@ def checkout_complete_api_view(request):
     order_obj = Order.objects.get_by_order_id(order_id)
     cart_total = order_obj.total - order_obj.shipping_total
     products = []
-    order_items = OrderItem.objects.get_items(order_obj)
+    order_items = OrderItem.objects.get_by_order_id(order_id)
     for item in order_items:
         products.append({
-            'sku': item['sku'],
-            'quantity': item['quantity'],
-            'price': item['price'],
+            'sku': item.sku,
+            'quantity': item.quantity,
+            'price': item.price,
         })
 
     json_data = {

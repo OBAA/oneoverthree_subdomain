@@ -168,11 +168,11 @@ class StoreRegisterView(CreateView):
 
         store = form.save(commit=False)
 
-        # Resize product images
-        if not store_slider_form.errors:
-            store_slider_form.save(store=store)  # Not yet committed
-        if not store_header_form.errors:
-            store_header_form.save(store=store)  # Not yet committed
+        # # Resize product images
+        # if not store_slider_form.errors:
+        #     store_slider_form.save(store=store)  # Not yet committed
+        # if not store_header_form.errors:
+        #     store_header_form.save(store=store)  # Not yet committed
 
         store.user = user
         store.save()

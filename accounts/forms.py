@@ -63,6 +63,8 @@ class UserAdminCreationForm(forms.ModelForm):
         """
 
         mobile_number = self.cleaned_data.get("mobile_number", None)
+        if User.objects.filter(mobile_number=mobile_number).count() > 0:
+            raise forms.ValidationError('This mobile number is already in use.')
         try:
             mobile = phonenumbers.parse(mobile_number, None)
         except phonenumbers.phonenumberutil.NumberParseException:
@@ -216,12 +218,6 @@ class RegisterForm(forms.ModelForm):
     password1 = forms.CharField(label='Password', widget=forms.PasswordInput)
     password2 = forms.CharField(label='Password confirmation', widget=forms.PasswordInput)
 
-    # User image crop Form
-    # x = forms.FloatField(widget=forms.HiddenInput())
-    # y = forms.FloatField(widget=forms.HiddenInput())
-    # width = forms.FloatField(widget=forms.HiddenInput())
-    # height = forms.FloatField(widget=forms.HiddenInput())
-
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'mobile_number')
@@ -317,14 +313,14 @@ class StoreRegisterForm(forms.ModelForm):
         for field in iter(self.fields):
             if field is 'seller_type':
                 self.fields[field].help_text = "  Store type  **"
-                self.fields[field].widget.attrs.update({
-                    'class': 'js-example-basic-single',
-                    'style': "border: 1px solid #e6e6e6; border-radius: 10px; width: auto; height: 30px;"
-                })
                 # self.fields[field].widget.attrs.update({
                 #     'class': 'js-example-basic-single',
-                #     'style': "border: 1px solid #e6e6e6; border-radius: 2px; width: 360px; height: 40px;"
+                #     'style': "border: 1px solid #e6e6e6; border-radius: 10px; width: auto; height: 30px;"
                 # })
+                self.fields[field].widget.attrs.update({
+                    'class': 'js-example-basic-single',
+                    'style': "border: 1px solid #e6e6e6; border-radius: 10px; width: 90px; height: 30px;"
+                })
 
             else:
                 self.fields[field].widget.attrs.update({

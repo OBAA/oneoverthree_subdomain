@@ -28,22 +28,15 @@
 
         <div class="col-10 size13 bo4 m-b-12 mx-auto">
             <div class="row">
-                <div class="col-6">
+                <div class="col-7">
                     <span class="col-12 s-text8 mt-0 p-b-5">{{ form.seller_type.help_text }}</span>
                 </div>
-                <div class="col-6 mt-1">
+                <div class="col-5 mt-1 pl-0">
                     {{ form.seller_type }}
                 </div>
             </div>
             <span class=" p-t-5 p-b-5">{{ form.seller_type.errors }}</span>
         </div>
-
-
-        <!--<span class="col-12 s-text8 mt-0 p-b-5">{{ form.seller_type.help_text }}</span>-->
-        <!--<div class="m-b-25 mx-auto">-->
-            <!--<span class=" p-t-5 p-b-5">{{ form.seller_type.errors }}</span>-->
-            <!--{{ form.seller_type }}-->
-        <!--</div>-->
 
         <div class="col-10 size13 bo4 m-b-12 mx-auto">
             <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" placeholder=" First & Last name" maxlength="120" id="id_full_name">-->
@@ -71,20 +64,6 @@
             <span class="s-text8 p-t-5 p-b-5">{{ user_form.mobile_number.errors }}</span>
             {{ user_form.mobile_number }}
             <span class="s-text8 p-t-5 p-b-5">{{ user_form.mobile_number.help_text }}</span>
-        </div>
-
-        <div class="col-10 size13 bo4 m-b-12 mx-auto">
-            <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="password" name="password1" placeholder=" Password" required="" id="id_password1">-->
-            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password1.errors }}</span>
-            {{ user_form.password1 }}
-            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password1.help_text }}</span>
-        </div>
-
-        <div class="col-10 size13 bo4 m-b-12 mx-auto">
-            <!--<input class="sizefull s-text7 p-l-15 p-r-15" type="password" name="password2" placeholder="Confirm password" required="" id="id_password2">-->
-            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password2.errors }}</span>
-            {{ user_form.password2 }}
-            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password2.help_text }}</span>
         </div>
 
 
@@ -123,16 +102,6 @@
         </div>
     </div>
 
-
-    <!--<div class="w-full text-center p-t-27 p-b-239">-->
-        <!--<span class="txt1">-->
-            <!--Forgot-->
-        <!--</span>-->
-
-        <!--<a href="#" class="txt2">-->
-            <!--User name / password?-->
-        <!--</a>-->
-    <!--</div>-->
     <div class="w-full text-center">
         <a href="{% url 'login' %}" class="txt2">
             Sign in

@@ -126,8 +126,10 @@ class CategoryView(DetailView):
     def get_queryset(self, *args, **kwargs):
         category = self.get_object()
         categories = category.get_descendants(include_self=True)  # Gets Category descendants list
-        product_list = Product.objects.all().filter(
-            category__in=categories, store__title='1OVER3')
+        product_list = Product.objects.filter(category__in=categories).filter(
+            Q(store__title='1OVER3') |
+            Q(store__featured=True)
+        )
         return product_list
 
     def get_paginated(self):
@@ -171,9 +173,9 @@ class TagListView(ListView):
     def get_queryset(self, *args, **kwargs):
         slug = self.kwargs.get('slug')
         page = self.request.GET.get('page', 1)
-        product_list = Product.objects.all().filter(
-            tags__title__contains=slug,
-            store='1OVER3',
+        product_list = Product.objects.filter(tags__title__contains=slug).filter(
+            Q(store__title='1OVER3') |
+            Q(store__featured=True)
         )
         paginator = Paginator(product_list, 2)
         try:

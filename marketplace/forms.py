@@ -13,7 +13,7 @@ class StoreRegisterForm(forms.ModelForm):
         fields = (
             'title', 'seller_type', 'description',
             'instagram', 'twitter', 'whatsapp',
-            'background_image_a', 'background_image_b',
+            # 'background_image_a', 'background_image_b',
         )
 
     def __init__(self, *args, **kwargs):
@@ -31,10 +31,6 @@ class StoreRegisterForm(forms.ModelForm):
                     'class': 'sizefull s-text7 p-l-15 p-r-15',
                 })
 
-    # def clean(self):
-        # print(self.data)
-        # print(self.cleaned_data)
-
     def save(self, commit=False, *args, **kwargs):
         store = super(StoreRegisterForm, self).save(commit=False)
         if commit:
@@ -43,6 +39,7 @@ class StoreRegisterForm(forms.ModelForm):
 
 
 class StoreSliderUploadForm(forms.Form):
+    slider_image = forms.ImageField(widget=forms.ClearableFileInput(), required=False)
     x_1 = forms.FloatField(widget=forms.HiddenInput())
     y_1 = forms.FloatField(widget=forms.HiddenInput())
     width_1 = forms.FloatField(widget=forms.HiddenInput())
@@ -52,7 +49,7 @@ class StoreSliderUploadForm(forms.Form):
         data = self.data
         store = kwargs.get('store')
 
-        store_slider_image = store.background_image_a
+        store_slider_image = store.slider_image
         ext = str(store_slider_image).split('.', 1)[1]
 
         x = float(data.get('x_1'))
@@ -65,24 +62,29 @@ class StoreSliderUploadForm(forms.Form):
             ext = 'JPEG' if ext.lower() == 'jpg' else ext.upper()
             image = Image.open(store_slider_image)
             cropped_image = image.crop((x, y, w+x, h+y))
-            resized_image = cropped_image.resize((1500, 500), Image.ANTIALIAS)
+            resized_image = cropped_image.resize((1921, 998), Image.ANTIALIAS)
             resized_image.save(buffer, ext, quality=100)
             img_content = ContentFile(buffer.getvalue(), store_slider_image.name)
 
-            store.background_image_a.save(store_slider_image.name, img_content, save=False)
+            store.slider_image.save(store_slider_image.name, img_content, save=False)
 
 
-class StoreHeaderUploadForm(forms.Form):
+class StoreHeaderUploadForm(forms.ModelForm):
+    header_image = forms.ImageField(widget=forms.ClearableFileInput(), required=False)
     x_2 = forms.FloatField(widget=forms.HiddenInput())
     y_2 = forms.FloatField(widget=forms.HiddenInput())
     width_2 = forms.FloatField(widget=forms.HiddenInput())
     height_2 = forms.FloatField(widget=forms.HiddenInput())
 
+    class Meta:
+        model = Store
+        fields = ('header_image', )
+
     def save(self, *args, **kwargs):
         data = self.data
         store = kwargs.get('store')
 
-        store_header_image = store.background_image_b
+        store_header_image = store.header_image
         ext = str(store_header_image).split('.', 1)[1]
 
         x = float(data.get('x_2'))
@@ -99,6 +101,6 @@ class StoreHeaderUploadForm(forms.Form):
             resized_image.save(buffer, ext, quality=100)
             img_content = ContentFile(buffer.getvalue(), store_header_image.name)
 
-            store.background_image_b.save(store_header_image.name, img_content, save=False)
+            store.header_image.save(store_header_image.name, img_content, save=False)
 
 

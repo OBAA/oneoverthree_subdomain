@@ -7,8 +7,12 @@ from accounts.models import GuestEmail
 from paystackapi.paystack import Paystack, Customer
 
 
-# Paystack secret key
-paystack = getattr(settings, "PAYSTACK_SECRET_LIVE_KEY")
+# PayStack secret key
+site_id = getattr(settings, "SITE_ID")
+if site_id == 1:
+    paystack = getattr(settings, "PAYSTACK_SECRET_LIVE_KEY")
+else:
+    paystack = getattr(settings, "PAYSTACK_SECRET_TEST_KEY")
 
 # Create your models here.
 
@@ -24,6 +28,12 @@ class BillingProfileManager(models.Manager):
         if user.is_authenticated():
             'logged in user; remember payment details'
             obj, created = self.model.objects.get_or_create(user=user, email=user.email)
+            if not obj.first_name:
+                obj.first_name = user.first_name
+            if not obj.last_name:
+                obj.last_name = user.last_name
+            if not obj.mobile_number:
+                obj.mobile_number = user.mobile_number
         elif guest_email_id is not None:
             'guest user;auto-reloads payment info'
             guest_email_obj = GuestEmail.objects.get(id=guest_email_id)
@@ -70,9 +80,8 @@ def billing_profile_created_receiver_paystack(sender, instance, *args, **kwargs)
         customer_api_data = customer['data']
         customer_id = customer_api_data.get('customer_code')
         instance.customer_id_paystack = customer_id
-        # print(customer)
-        print(customer['message'])
-        print(customer_id)
+        # print(customer['message'])
+        # print(customer_id)
 
 
 pre_save.connect(billing_profile_created_receiver_paystack, sender=BillingProfile)

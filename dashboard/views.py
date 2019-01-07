@@ -5,10 +5,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect, Http404
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, RedirectView, UpdateView
+from django.views.generic import CreateView, DetailView, RedirectView, UpdateView, TemplateView
 
 from dashboard.models import Dashboard
-from marketplace.models import Store
+# from marketplace.models import Store
+from marketplace.forms import StoreHeaderUploadForm, StoreSliderUploadForm
 from orders.models import OrderItem
 from store.models import Product, Variation
 from store.forms import (
@@ -89,7 +90,7 @@ class AddProductView(LoginRequiredMixin, CreateView):
 class UpdateProductFormView(LoginRequiredMixin, UpdateView):
     form_class = UpdateProductForm
     template_name = "dashboard/update-product.html"
-    success_url = '/account/dashboard/'
+    success_url = '/account/dashboard/product-list/'
 
     def get_object(self, queryset=None):
         request = self.request
@@ -236,29 +237,21 @@ class DeleteProductView(LoginRequiredMixin, RedirectView):
             messages.success(request, "Product successfully deleted.")
         else:
             messages.error(request, "Something went wrong.")
-        return HttpResponseRedirect(reverse("account:dashboard:home"))
+        return HttpResponseRedirect(reverse("account:dashboard:products"))
 
 
-class DashboardHomeView(LoginRequiredMixin, DetailView):
-    template_name = 'dashboard/home.html'
+class DashboardProductListView(LoginRequiredMixin, DetailView):
+    template_name = 'dashboard/product_list.html'
 
     def get_context_data(self, *args, **kwargs):
-        store = self.get_object()
         paginator, products = self.get_paginated()
-        context = super(DashboardHomeView, self).get_context_data(**kwargs)
+        context = super(DashboardProductListView, self).get_context_data(**kwargs)
         context['products'] = products
         context['paginator'] = paginator
-        context['add_product'] = AddProductForm()
         context['image_a'] = ImageAUploadForm()
         context['image_b'] = ImageBUploadForm()
         context['image_c'] = ImageCUploadForm()
         context['variations'] = ProductVariationFormSet()
-        context['marketplace'] = Store.objects.all()
-        context['object_list'] = OrderItem.objects.all().filter(store=store)
-        context['pending'] = Dashboard.objects.pending_orders(store)
-        context['processing'] = Dashboard.objects.processing_orders(store)
-        context['completed'] = Dashboard.objects.completed_orders(store)
-        context['dashboard'] = Dashboard.objects.get_dashboard(store)
         return context
 
     def get_paginated(self):
@@ -292,6 +285,96 @@ class DashboardHomeView(LoginRequiredMixin, DetailView):
             return store
 
 
+class DashboardOrdersView(LoginRequiredMixin, DetailView):
+    template_name = 'dashboard/order_list.html'
+
+    def get_context_data(self, *args, **kwargs):
+        store = self.get_object()
+        context = super(DashboardOrdersView, self).get_context_data(**kwargs)
+        context['pending_orders'] = Dashboard.objects.pending_orders(store)
+        context['processing_orders'] = Dashboard.objects.processing_orders(store)
+        context['completed_orders'] = Dashboard.objects.completed_orders(store)
+        return context
+
+    def get_object(self, *args, **kwargs):
+        user = self.request.user
+        # return user.store
+        try:
+            store = user.store
+        except ObjectDoesNotExist:
+            raise Http404("Access restricted to authorized users ONLY.")
+        except Dashboard.MultipleObjectsReturned:
+            qs = Dashboard.objects.filter(user=user)
+            store = qs.first()
+        except:
+            raise Http404("Nothing Here. Sorry")
+        if store:
+            Dashboard.objects.all_time_sales(store)
+            return store
+
+
+class DashboardHomeView(LoginRequiredMixin, DetailView):
+    template_name = 'dashboard/home.html'
+
+    def get_context_data(self, *args, **kwargs):
+        store = self.get_object()
+        context = super(DashboardHomeView, self).get_context_data(**kwargs)
+        context['store_slider_form'] = StoreSliderUploadForm()
+        context['store_header_form'] = StoreHeaderUploadForm()
+        context['store'] = store
+        context['dashboard'] = Dashboard.objects.get_dashboard(store)
+        return context
+
+    def get_object(self, *args, **kwargs):
+        user = self.request.user
+        # return user.store
+        try:
+            store = user.store
+        except ObjectDoesNotExist:
+            raise Http404("Access restricted to authorized users ONLY.")
+        except Dashboard.MultipleObjectsReturned:
+            qs = Dashboard.objects.filter(user=user)
+            store = qs.first()
+        except:
+            raise Http404("Nothing Here. Sorry")
+        if store:
+            Dashboard.objects.all_time_sales(store)
+            return store
+
+
+class StoreImageUploadView(LoginRequiredMixin, RedirectView):
+    def post(self, request, *args, **kwargs):
+        store = self.get_object()
+        store_slider_form = StoreSliderUploadForm(request.POST, request.FILES)
+        store_header_form = StoreHeaderUploadForm(request.POST, request.FILES)
+
+        # Resize product images
+        if not store_slider_form.errors:
+            store.slider_image = request.FILES.get('slider_image')
+            store_slider_form.save(store=store)  # Not yet committed
+        if not store_header_form.errors:
+            store.header_image = request.FILES.get('header_image')
+            store_header_form.save(store=store)  # Not yet committed
+        store.save()
+        return HttpResponseRedirect(reverse("account:dashboard:home"))
+
+    def get_object(self, *args, **kwargs):
+        user = self.request.user
+        # return user.store
+        try:
+            store = user.store
+        except ObjectDoesNotExist:
+            raise Http404("Access restricted to authorized users ONLY.")
+        except Dashboard.MultipleObjectsReturned:
+            qs = Dashboard.objects.filter(user=user)
+            store = qs.first()
+        except:
+            raise Http404("Nothing Here. Sorry")
+        if store:
+            Dashboard.objects.all_time_sales(store)
+            return store
+
+
 class OrderProcessingView(RedirectView):
     def post(self, request, *args, **kwargs):
         data = request.POST
@@ -300,7 +383,7 @@ class OrderProcessingView(RedirectView):
             order_item = OrderItem.objects.get_by_id(id=pending_id)
             order_item.status = 'processing'
             order_item.save()
-        return HttpResponseRedirect(reverse("account:dashboard:home"))
+        return HttpResponseRedirect(reverse("account:dashboard:orders"))
 
 
 class OrderShippedView(RedirectView):
@@ -337,5 +420,5 @@ class OrderShippedView(RedirectView):
         #     )
         #     return sent_mail
 
-        return HttpResponseRedirect(reverse("account:dashboard:home"))
+        return HttpResponseRedirect(reverse("account:dashboard:orders"))
 
