@@ -8,8 +8,7 @@ from django.urls import reverse
 from django.views.generic import CreateView, DetailView, RedirectView, UpdateView, TemplateView
 
 from dashboard.models import Dashboard
-# from marketplace.models import Store
-from marketplace.forms import StoreHeaderUploadForm, StoreSliderUploadForm
+from dashboard.forms import StoreHeaderUploadForm, StoreSliderUploadForm
 from orders.models import OrderItem
 from store.models import Product, Variation
 from store.forms import (
@@ -348,14 +347,25 @@ class StoreImageUploadView(LoginRequiredMixin, RedirectView):
         store_slider_form = StoreSliderUploadForm(request.POST, request.FILES)
         store_header_form = StoreHeaderUploadForm(request.POST, request.FILES)
 
+        msg = msg1 = msg2 = None
+
         # Resize product images
         if not store_slider_form.errors:
             store.slider_image = request.FILES.get('slider_image')
             store_slider_form.save(store=store)  # Not yet committed
+            msg1 = "Store slider image updated successfully."
+            msg = msg1
         if not store_header_form.errors:
             store.header_image = request.FILES.get('header_image')
             store_header_form.save(store=store)  # Not yet committed
+            msg2 = "Store header image updated successfully."
+            msg = msg2
         store.save()
+
+        if msg1 and msg2:
+            msg = "Store updated successfully."
+        messages.success(request, msg)
+
         return HttpResponseRedirect(reverse("account:dashboard:home"))
 
     def get_object(self, *args, **kwargs):

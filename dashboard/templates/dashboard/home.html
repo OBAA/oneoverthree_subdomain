@@ -192,8 +192,8 @@
                                 </h4>
 
                                 <div class="row">
-                                    <span class="col-4 col-md-12 s-text6">Upload image</span>
-                                    <div class="col-6 col-md-12 upload-btn-wrapper s-text7">
+                                    <span class="col-3 col-md-12 s-text6">Upload image</span>
+                                    <div class="col-8 col-md-12 upload-btn-wrapper s-text7">
                                         <p class="upload">Upload a file</p>
                                         {{ store_slider_form.slider_image }}
                                     </div>
@@ -228,8 +228,8 @@
                                 </h4>
 
                                 <div class="row">
-                                    <span class="col-4 col-md-12 s-text6">Upload image</span>
-                                    <div class="col-6 col-md-12 upload-btn-wrapper s-text7">
+                                    <span class="col-3 col-md-12 s-text6">Upload image</span>
+                                    <div class="col-8 col-md-12 upload-btn-wrapper s-text7">
                                         <p class="upload">Upload a file</p>
                                         {{ store_header_form.header_image }}
                                     </div>
@@ -426,94 +426,93 @@
         var cropBoxData;
         var canvasData;
         $("#modalCrop").on("shown.bs.modal", function () {
-            $("#modalCrop").on("shown.bs.modal", function () {
-                // $image.cropper({
-                //     viewMode: 1,
-                //     aspectRatio: 2 / 1,
-                //     minCropBoxWidth: 240,
-                //     minCropBoxHeight: 120,
-                //     ready: function () {
-                //         $image.cropper("setCanvasData", canvasData);
-                //         $image.cropper("setCropBoxData", cropBoxData);
-                //     }
-                // });
-                if ($("#js-crop").attr("class") === "btn btn-primary js-crop-slider-image"){
-                    $image.cropper({
-                        viewMode: 1,
-                        aspectRatio: 2/1,
-                        minCropBoxWidth: 240,
-                        minCropBoxHeight: 120,
-                        ready: function () {
-                            $image.cropper("setCanvasData", canvasData);
-                            $image.cropper("setCropBoxData", cropBoxData);
-                        }
-                    });
-                } else {
-                    $image.cropper({
-                        viewMode: 1,
-                        aspectRatio: 2/1,
-                        minCropBoxWidth: 240,
-                        minCropBoxHeight: 120,
-                        ready: function () {
-                            $image.cropper("setCanvasData", canvasData);
-                            $image.cropper("setCropBoxData", cropBoxData);
-                        }
-                    });
+            $image.cropper({
+                viewMode: 1,
+                aspectRatio: 2/1,
+                minCropBoxWidth: 240,
+                minCropBoxHeight: 120,
+                ready: function () {
+                    $image.cropper("setCanvasData", canvasData);
+                    $image.cropper("setCropBoxData", cropBoxData);
                 }
-            }).on("hidden.bs.modal", function () {
-                cropBoxData = $image.cropper("getCropBoxData");
-                canvasData = $image.cropper("getCanvasData");
-                $image.cropper("destroy");
             });
+        }).on("hidden.bs.modal", function () {
+            cropBoxData = $image.cropper("getCropBoxData");
+            canvasData = $image.cropper("getCanvasData");
+            $image.cropper("destroy");
+        });
 
-            // Enable zoom in button
-            $(".js-zoom-in").click(function () {
-                $image.cropper("zoom", 0.1);
-            });
+        // Enable zoom in button
+        $(".js-zoom-in").click(function () {
+            $image.cropper("zoom", 0.1);
+        });
 
-            // Enable zoom out button
-            $(".js-zoom-out").click(function () {
-                $image.cropper("zoom", -0.1);
-            });
+        // Enable zoom out button
+        $(".js-zoom-out").click(function () {
+            $image.cropper("zoom", -0.1);
+        });
 
-            /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
+             // if ($("#js-crop").attr("class") === "btn btn-primary js-crop-slider-image"){
+             //        $image.cropper({
+             //            viewMode: 1,
+             //            aspectRatio: 2/1,
+             //            minCropBoxWidth: 240,
+             //            minCropBoxHeight: 120,
+             //            ready: function () {
+             //                $image.cropper("setCanvasData", canvasData);
+             //                $image.cropper("setCropBoxData", cropBoxData);
+             //            }
+             //        });
+             //    } else {
+             //        $image.cropper({
+             //            viewMode: 1,
+             //            aspectRatio: 2/1,
+             //            minCropBoxWidth: 240,
+             //            minCropBoxHeight: 120,
+             //            ready: function () {
+             //                $image.cropper("setCanvasData", canvasData);
+        //                $image.cropper("setCropBoxData", cropBoxData);
+        //            }
+        //        });
+        //    }
 
-            // Crops image file A
-            $(document).on('click', '.js-crop-slider-image', function () {
-                var cropData = $image.cropper("getData");
-                $("#id_x_1").val(cropData["x"]);
-                $("#id_y_1").val(cropData["y"]);
-                $("#id_height_1").val(cropData["height"]);
-                $("#id_width_1").val(cropData["width"]);
+        /* SCRIPT TO COLLECT THE DATA AND POST TO THE SERVER */
 
-                console.log("a");
-                console.log($(cropData));
-                console.log($(cropData["x"]));
-                console.log($(cropData["y"]));
-                console.log($(cropData["height"]));
-                console.log($(cropData["width"]));
+        // Crops image file A
+        $(document).on('click', '.js-crop-slider-image', function () {
+            var cropData = $image.cropper("getData");
+            $("#id_x_1").val(cropData["x"]);
+            $("#id_y_1").val(cropData["y"]);
+            $("#id_height_1").val(cropData["height"]);
+            $("#id_width_1").val(cropData["width"]);
 
-                $("#modalCrop").modal("hide");
-            });
+            console.log("a");
+            console.log($(cropData));
+            console.log($(cropData["x"]));
+            console.log($(cropData["y"]));
+            console.log($(cropData["height"]));
+            console.log($(cropData["width"]));
 
-            // Crops image file B
-            $(document).on('click', '.js-crop-header-image', function () {
-                var cropData = $image.cropper("getData");
-                $("#id_x_2").val(cropData["x"]);
-                $("#id_y_2").val(cropData["y"]);
-                $("#id_height_2").val(cropData["height"]);
-                $("#id_width_2").val(cropData["width"]);
+            $("#modalCrop").modal("hide");
+        });
 
-                console.log("b");
-                console.log($(cropData));
-                console.log($(cropData["x"]));
-                console.log($(cropData["y"]));
-                console.log($(cropData["height"]));
-                console.log($(cropData["width"]));
+        // Crops image file B
+        $(document).on('click', '.js-crop-header-image', function () {
+            var cropData = $image.cropper("getData");
+            $("#id_x_2").val(cropData["x"]);
+            $("#id_y_2").val(cropData["y"]);
+            $("#id_height_2").val(cropData["height"]);
+            $("#id_width_2").val(cropData["width"]);
 
-                $("#modalCrop").modal("hide");
-            });
-        })
+            console.log("b");
+            console.log($(cropData));
+            console.log($(cropData["x"]));
+            console.log($(cropData["y"]));
+            console.log($(cropData["height"]));
+            console.log($(cropData["width"]));
+
+            $("#modalCrop").modal("hide");
+        });
     });
 </script>
 
