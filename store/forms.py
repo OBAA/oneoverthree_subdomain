@@ -39,9 +39,6 @@ class UpdateProductForm(forms.ModelForm):
                     'class': 'form-control',
                 })
 
-        # Help Text
-        self.fields['employees'].help_text = 'Overwritten if product has variants'
-
     def save(self, commit=True):
         product = super(UpdateProductForm, self).save(commit=False)
         if commit:
