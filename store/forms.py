@@ -39,6 +39,9 @@ class UpdateProductForm(forms.ModelForm):
                     'class': 'form-control',
                 })
 
+        # Help Text
+        self.fields['employees'].help_text = 'Overwritten if product has variants'
+
     def save(self, commit=True):
         product = super(UpdateProductForm, self).save(commit=False)
         if commit:
@@ -55,17 +58,24 @@ class AddProductForm(forms.ModelForm):
             'image_a', 'image_b', 'image_c',
             'stock', 'featured'
         )
-        labels = {"featured": "Set as featured"}
 
     def __init__(self, *args, **kwargs):
         super(AddProductForm, self).__init__(*args, **kwargs)
+        self.fields['tags'].widget.attrs.update({'class': 'js-example-basic-multiple'})
         for field in iter(self.fields):
             if field in ('featured', 'has_variants'):
                 pass
+            elif field in ('category', 'product_type'):
+                self.fields[field].widget.attrs.update({
+                    'class': 'size13 bo4 py-0 m-text18',
+                })
+
             else:
                 self.fields[field].widget.attrs.update({
-                    'class': 'form-control'
+                    'class': 'form-control m-text18'
                 })
+        # Help Text
+        self.fields['stock'].help_text = 'Overwritten if product has variants'
 
     def clean(self):
         print(self.data)

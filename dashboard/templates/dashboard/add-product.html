@@ -30,97 +30,107 @@
                                 <input type="hidden" name="store" value="{{ user.store.id }}">
 
                                 <!--title-->
-                                <div class="row m-b-12 mx-auto">
-                                    <label class="col-3"><p>Title: </p></label>
-                                    <div class="col-8 size13 bo4 ">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.title.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Title: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.title.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto">
                                         {{ form.title }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.title.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.title.help_text }}</span>
                                 </div>
 
                                 <!--price-->
-                                <div class="row m-b-18 mx-auto">
-                                    <label class="col-3"><p>Price: </p></label>
-                                    <div class="col-8 size13 bo4 ">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.price.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Price: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.base_price.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto">
                                         {{ form.base_price }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.price.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.base_price.help_text }}</span>
                                 </div>
 
                                 <!--product_type-->
-                                <div class="row m-b-12 mx-auto">
-                                    <label class="col-4"><p>Type: </p></label>
-                                    <div class="col-8">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.product_type.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Product Type: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.product_type.errors }}</span>
+                                    <div class="col-11 mx-auto">
                                         {{ form.product_type }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.product_type.help_text }}</span>
                                     </div>
+                                    <span class="s-text17 p-t-5 p-b-5 mx-auto">{{ form.product_type.help_text }}</span>
                                 </div>
 
                                 <!--category-->
-                                <div class="row m-b-12 mx-auto">
-                                    <label class="col-4"><p>Category: </p></label>
-                                    <div class="col-8">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.category.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Category: </span>
+                                    <span class="s-text17 p-t-5 p-b-5 mx-auto">{{ form.category.errors }}</span>
+                                    <div class="col-11 mx-auto">
                                         {{ form.category }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.category.help_text }}</span>
                                     </div>
+                                    <span class="s-text17 p-t-5 p-b-5 mx-auto">{{ form.category.help_text }}</span>
+                                </div>
+
+                                <!--stock-->
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Stock: </span>
+                                    <span class="s-text17 p-t-5 p-b-5 mx-auto">{{ form.stock.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto">
+                                        {{ form.stock }}
+                                    </div>
+                                    <span class="s-text17 p-t-5 p-b-5 mx-auto">{{ form.stock.help_text }}</span>
                                 </div>
 
                                 <!--brand-->
                                 {% if dashboard.store.seller_type == 'brand' %}
-                                <input type="hidden" name="brand" value="{{ dashboard.store.title }}">
+                                <input type="hidden" name="brand" value="{{ store.title }}">
                                 {% else %}
-                                <div class="row m-b-12 mx-auto">
-                                    <label class="col-3"><p>Brand: </p></label>
-                                    <div class="col-8 size13 bo4 ">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.brand.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Brand: </span>
+                                    <span class="s-text17 p-t-5 p-b-5 mx-auto">{{ form.brand.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto">
                                         {{ form.brand }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.brand.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.brand.help_text }}</span>
                                 </div>
                                 {% endif %}
 
                                 <!--description-->
-                                <div class="row m-b-18 mx-auto">
-                                    <div class="col-12">
-                                        <span class="p-t-5 p-b-5"><p>Description: </p></span>
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.description.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Description: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.description.errors }}</span>
+                                    <div class="col-12 mx-auto">
                                         {{ form.description }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.description.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.description.help_text }}</span>
                                 </div>
 
                                 <!--extra_description-->
-                                <div class="row m-b-18 mx-auto">
-                                    <div class="col-12">
-                                        <span class="p-t-5 p-b-5"><p>Extra Description: </p></span>
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.extra_description.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Extra Description: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.extra_description.errors }}</span>
+                                    <div class="col-12 mx-auto">
                                         {{ form.extra_description }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.extra_description.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.extra_description.help_text }}</span>
                                 </div>
 
                                 <!--tags-->
-                                <div class="row m-b-18 mx-auto">
-                                    <div class="col-12">
-                                        <span class="p-t-5 p-b-5"><p>Tags: </p></span>
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.tags.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Tags: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.tags.errors }}</span>
+                                    <div class="col-11 mx-auto">
                                         {{ form.tags }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.tags.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.tags.help_text }}</span>
                                 </div>
 
                                 <!--image_a-->
-                                <div class="row m-b-45 mx-auto">
-                                    <span class="col-4"><p>Image A: </p></span>
-                                    <div class="col-11 size13 bo4 mx-auto">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_a.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Image A: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.image_a.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto ">
                                         {{ form.image_a }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_a.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.image_a.help_text }}</span>
                                     {{ image_a.x_1 }}
                                     {{ image_a.y_1 }}
                                     {{ image_a.height_1 }}
@@ -128,13 +138,13 @@
                                 </div>
 
                                 <!--image_b-->
-                                <div class="row m-b-45 mx-auto">
-                                    <span class="col-4"><p>Image B: </p></span>
-                                    <div class="col-11 size13 bo4 mx-auto">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_b.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Image B: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.image_b.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto">
                                         {{ form.image_b }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_b.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.image_b.help_text }}</span>
                                     {{ image_b.x_2 }}
                                     {{ image_b.y_2 }}
                                     {{ image_b.height_2 }}
@@ -142,13 +152,13 @@
                                 </div>
 
                                 <!--image_c-->
-                                <div class="row m-b-45 mx-auto">
-                                    <span class="col-4"><p>Image C: </p></span>
-                                    <div class="col-11 size13 bo4 mx-auto">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_c.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Image C: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.image_c.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto">
                                         {{ form.image_c }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.image_c.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.image_c.help_text }}</span>
                                     {{ image_c.x_3 }}
                                     {{ image_c.y_3 }}
                                     {{ image_c.height_3 }}
@@ -156,26 +166,25 @@
                                 </div>
 
                                 <!--stock-->
-                                <div class="row m-b-45 mx-auto">
-                                    <label class="col-3"><p>Stock: </p></label>
-                                    <div class="col-8 size13 bo4 ">
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.stock.errors }}</span>
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Stock: </span>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.stock.errors }}</span>
+                                    <div class="col-10 size13 bo4 mx-auto">
                                         {{ form.stock }}
-                                        <span class="s-text8 p-t-5 p-b-5">{{ form.stock.help_text }}</span>
                                     </div>
+                                    <span class="col-12 s-text17 p-t-5 p-b-5 mx-auto">{{ form.stock.help_text }}</span>
                                 </div>
 
                                 <!--featured-->
-                                <div class="col-12 m-b-18 mx-auto">
-                                    <label><p>Set as featured: </p></label>
-                                    {{ form.featured }}
+                                <div class="row m-t-15">
+                                    <span class="col-12 s-text7">Add to featured products: {{ form.featured }}</span>
                                 </div>
                                 {{ form.featured.errors }}
                                 {% endwith %}
                             </div>
 
                             <!--Product Variations-->
-                            <div class="col-11 col-lg-5 mx-auto">
+                            <div class="col-11 col-lg-5 m-t-25 mx-auto">
                                 {{ variations.management_form }}
 
                                 {% for variation in variations %}
@@ -183,23 +192,26 @@
                                     <div class="card-body">
                                         <h5 class="s-text18">Add Variant</h5>
 
-                                        <div class="row m-b-12 mx-auto">
-                                            <p class="col-6">Size: </p>
-                                            <div class="col-12">
-                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.size.errors }}</span>
+                                        <div class="row  mx-auto">
+                                            <div class="col-6">
+                                                <span class="s-text7">Size: </span>
                                                 {{ variation.size }}
-                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.size.help_text }}</span>
                                             </div>
+
+                                            <div class="col-6">
+                                                <span class="s-text7">Stock: </span>
+                                                {{ variation.quantity }}
+                                            </div>
+
+                                            <!--Size form info(s)-->
+                                            <span class="s-text8 p-t-5">{{ variation.size.errors }}</span>
+                                            <span class="s-text8 p-t-5">{{ variation.size.help_text }}</span>
+
+                                            <!--Quantity form info(s)-->
+                                            <span class="s-text8 p-t-5">{{ variation.quantity.errors }}</span>
+                                            <span class="s-text8 p-t-5">{{ variation.quantity.help_text }}</span>
                                         </div>
 
-                                        <div class="row m-b-12 mx-auto">
-                                            <p class="col-6">Stock: </p>
-                                            <div class="col-12">
-                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.quantity.errors }}</span>
-                                                {{ variation.quantity }}
-                                                <span class="s-text8 p-t-5 p-b-5">{{ variation.quantity.help_text }}</span>
-                                            </div>
-                                        </div>
                                         <!--<div class="input-group-append">-->
                                         <!--<button class="btn btn-success add-form-row">+</button>-->
                                         <!--</div>-->

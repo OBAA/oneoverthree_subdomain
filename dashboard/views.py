@@ -26,12 +26,12 @@ class AddProductView(LoginRequiredMixin, CreateView):
     success_url = '/account/dashboard/'
 
     def get_context_data(self, *args, **kwargs):
-        request = self.request
         context = super(AddProductView, self).get_context_data(**kwargs)
         context['add_product'] = AddProductForm()
         context['image_a'] = ImageAUploadForm()
         context['image_b'] = ImageBUploadForm()
         context['image_c'] = ImageCUploadForm()
+        context['store'] = self.get_object()
         context['variations'] = ProductVariationFormSet()
         return context
 
@@ -55,6 +55,8 @@ class AddProductView(LoginRequiredMixin, CreateView):
 
         product.save()
         form.save_m2m()
+
+        product.has_variants = False
 
         # Check Variation Form
         for variation_form in variation_formset:
@@ -84,6 +86,22 @@ class AddProductView(LoginRequiredMixin, CreateView):
         request = self.request
         messages.error(request, "Operation failed try again later.")
         return super(AddProductView, self).form_invalid(form)
+
+    def get_object(self, *args, **kwargs):
+        user = self.request.user
+        # return user.store
+        try:
+            store = user.store
+        except ObjectDoesNotExist:
+            raise Http404("Access restricted to authorized users ONLY.")
+        except Dashboard.MultipleObjectsReturned:
+            qs = Dashboard.objects.filter(user=user)
+            store = qs.first()
+        except:
+            raise Http404("Nothing Here. Sorry")
+        if store:
+            Dashboard.objects.all_time_sales(store)
+            return store
 
 
 class UpdateProductFormView(LoginRequiredMixin, UpdateView):

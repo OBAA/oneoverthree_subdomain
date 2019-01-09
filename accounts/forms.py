@@ -313,10 +313,6 @@ class StoreRegisterForm(forms.ModelForm):
         for field in iter(self.fields):
             if field is 'seller_type':
                 self.fields[field].help_text = "  Store type  **"
-                # self.fields[field].widget.attrs.update({
-                #     'class': 'js-example-basic-single',
-                #     'style': "border: 1px solid #e6e6e6; border-radius: 10px; width: auto; height: 30px;"
-                # })
                 self.fields[field].widget.attrs.update({
                     'class': 'js-example-basic-single',
                     'style': "border: 1px solid #e6e6e6; border-radius: 10px; width: 90px; height: 30px;"
