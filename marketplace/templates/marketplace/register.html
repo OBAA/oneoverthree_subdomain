@@ -91,6 +91,18 @@
             {{ form.whatsapp }}
             <span class="s-text8 p-t-5 p-b-5">{{ form.whatsapp.help_text }}</span>
         </div>
+
+        <div class="col-10 size13 bo4 m-b-25 mx-auto">
+            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password1.errors }}</span>
+            {{ user_form.password1 }}
+            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password1.help_text }}</span>
+        </div>
+
+        <div class="col-10 size13 bo4 m-b-25 mx-auto">
+            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password2.errors }}</span>
+            {{ user_form.password2 }}
+            <span class="s-text8 p-t-5 p-b-5">{{ user_form.password2.help_text }}</span>
+        </div>
     </div>
 
     <div class="container-login100-form-btn">

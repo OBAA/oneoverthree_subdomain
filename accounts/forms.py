@@ -234,6 +234,11 @@ class RegisterForm(forms.ModelForm):
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update({'class': 'sizefull s-text7 p-l-15 p-r-15'})
 
+    def clean(self):
+        print(self.data)
+        print(self.errors)
+        print(self.cleaned_data)
+
     def clean_password2(self):
         # Check that the two password entries match
         password1 = self.cleaned_data.get("password1")
