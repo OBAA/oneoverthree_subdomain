@@ -7,7 +7,7 @@
         {% else %}
         <h1 class='my-5 py-5'>Re-activate your email below.</h1>
         {% endif %}
-        <form method='POST' action="">
+        <form method='post' action="{% url 'account:resend-activation' %}">
             {% csrf_token %}
             <p>{{ form.non_field_errors.as_text }}</p>
 
@@ -16,16 +16,14 @@
             {{ hidden_field }}
             {% endfor %}
 
-            <div class="col-10 size13 bo4 m-b-12 mx-auto">
+            <div class="col-10 col-sm-6 col-lg-4 size13 bo4 m-b-12 mx-auto">
                 <input class="sizefull s-text7 p-l-15 p-r-15" type="email" name="email" placeholder=" Email" maxlength="120" required="" id="id_email">
             </div>
             <div class="size14 trans-0-4 m-b-10 mx-auto">
                 <!-- Button -->
-                <input class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit" value="Resend Activation">
+                <input class="flex-c-m sizefull bg1 bo-rad-23 hov1 s-text1 trans-0-4" type="submit">
             </div>
         </form>
     </div>
 </div>
 {% endblock %}
-
-s

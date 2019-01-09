@@ -37,7 +37,7 @@ class AccountDetailsView(DetailView):
         billing_profile, billing_profile_created = BillingProfile.objects.new_or_get(request)
         return billing_profile
 
-    def get_object(self):
+    def get_object(self, *args, **kwargs):
         return self.request.user
 
 
@@ -47,7 +47,6 @@ class AccountEmailActivateView(FormMixin, View):
     key = None
 
     def get(self, request, key=None, *args, **kwargs):
-        # request = self.request
         self.key = key
         if key is not None:
             qs = EmailActivation.objects.filter(key__iexact=key)
@@ -56,7 +55,7 @@ class AccountEmailActivateView(FormMixin, View):
                 obj = qs.first()
                 obj.activate()
                 obj.send_activated_email()
-                msg = """
+                msg = """   
                         Congratulations, Your email has been confirmed. Please login.
                                             """
                 messages.success(request, msg)
@@ -70,15 +69,18 @@ class AccountEmailActivateView(FormMixin, View):
                     """.format(link=reset_link)
                     messages.success(request, mark_safe(msg))
                     return redirect("login")
-        context = {'form': self.get_form(), 'key': key}
+        context = {'form': ReactivateEmailForm(request.POST, request=request), 'key': key}
         return render(request, 'registration/activation-error.html', context)
 
     def post(self, request, *args, **kwargs):
         # Create form to receive an email
-        form = self.get_form()
+        form = ReactivateEmailForm(request.POST, request=request)
+        print(form.data)
         if form.is_valid():
             return self.form_valid(form)
         else:
+            print("Form invalid")
+            print(form.errors)
             return self.form_invalid(form)
 
     def form_valid(self, form):
@@ -96,6 +98,11 @@ class AccountEmailActivateView(FormMixin, View):
         return super(AccountEmailActivateView, self).form_valid(form)
 
     def form_invalid(self, form):
+        request = self.request
+        msg = """
+        Something went wrong. Please try again later.
+                """
+        messages.error(request, mark_safe(msg))
         context = {'form': form, 'key': self.key}
         return render(self.request, 'registration/activation-error.html', context)
 

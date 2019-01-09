@@ -20,8 +20,8 @@ User = get_user_model()
 class ReactivateEmailForm(forms.Form):
     email = forms.EmailField()
 
-    def __init__(self, request, *args, **kwargs):
-        self.request = request
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super(ReactivateEmailForm, self).__init__(*args, **kwargs)
 
     def clean_email(self):
@@ -187,16 +187,17 @@ class LoginForm(forms.Form):
                 msg1 = "Please check your email to confirm your account. " \
                        "Do you need us to " + reconfirm_msg + "?"
                 msg2 = "Please go here to " + reconfirm_msg + " confirmation email."
+                msg3 = "Email confirmation required"
                 # Not active, check email activation
                 confirm_email = EmailActivation.objects.filter(email=email)
                 is_confirmable = confirm_email.confirmable().exists()
                 if is_confirmable:
                     messages.success(request, mark_safe(msg1))
-                    raise forms.ValidationError("Email confirmation required")
+                    raise forms.ValidationError(msg3)
                 email_confirm_exists = EmailActivation.objects.email_exists(email).exists()
                 if email_confirm_exists:
                     messages.success(request, mark_safe(msg2))
-                    raise forms.ValidationError(mark_safe(msg2))
+                    raise forms.ValidationError(mark_safe(msg3))
                 if not is_confirmable or not email_confirm_exists:
                     raise forms.ValidationError("This user is inactive.")
         user = authenticate(request, email=email, password=password)
