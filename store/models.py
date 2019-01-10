@@ -167,7 +167,7 @@ class Product(models.Model):
         if self.store.slug == "1over3":
             return reverse("store:detail", kwargs={'slug1': str(self.category).lower(), 'slug2': self.slug})
         else:
-            return reverse("marketplace:product-detail", kwargs={'slug1': str(self.store).lower(), 'slug2': self.slug})
+            return reverse("marketplace:product-detail", kwargs={'slug1': self.store.slug, 'slug2': self.slug})
 
     @property
     def name(self):

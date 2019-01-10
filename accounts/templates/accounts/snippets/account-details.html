@@ -43,16 +43,23 @@
                                 {% endfor %}
 
                                 <div class="col-10">
-                                    <span for="id_full_name"><p>Full name:</p></span>
+                                    <span for="id_full_name"><p>First name:</p></span>
                                 </div>
                                 <div class="col-10 size13 bo4 m-b-12 mx-auto">
-                                    <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" placeholder="First and last name." maxlength="120" id="id_full_name">
+                                    <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="first_name" placeholder="First name." maxlength="120" id="id_first_name">
+                                </div>
+
+                                <div class="col-10">
+                                    <span for="id_full_name"><p>Last name:</p></span>
+                                </div>
+                                <div class="col-10 size13 bo4 m-b-12 mx-auto">
+                                    <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="last_name" placeholder="Last name." maxlength="120" id="id_last_name">
                                 </div>
                                 <div class="col-10">
                                     <span for="id_full_name"><p>Email:</p></span>
                                 </div>
                                 <div class="col-10 size13 bo4 m-b-42 mx-auto">
-                                    <input class="sizefull s-text7 p-l-15 p-r-15" type="text" name="full_name" value="{{ request.user.email }}" disabled="disabled">
+                                    <input class="sizefull s-text7 p-l-15 p-r-15" type="text" value="{{ request.user.email }}" disabled="disabled">
                                     <span class="txt1">Cannot change email</span>
                                 </div>
 

@@ -122,8 +122,10 @@ class User(AbstractBaseUser):
         return True
 
     def get_user_details(self):
+        first_name = self.first_name
+        last_name = self.last_name
         return "{full_name}\n{email}\n{mobile_num}".format(
-            full_name=self.full_name,
+            full_name=str(first_name + " " + last_name),
             email=self.email,
             mobile_num=self.mobile_number,
         )
