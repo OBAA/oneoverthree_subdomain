@@ -23,7 +23,7 @@ class AddProductView(LoginRequiredMixin, CreateView):
     form_class = AddProductForm
     model = Product
     template_name = "dashboard/add-product.html"
-    success_url = '/account/dashboard/'
+    success_url = '/account/dashboard/product-list/'
 
     def get_context_data(self, *args, **kwargs):
         context = super(AddProductView, self).get_context_data(**kwargs)

@@ -14,15 +14,18 @@ class TagListView(ListView):
     def get_context_data(self, *args, **kwargs):
         paginator, products = self.get_paginated()
         context = super(TagListView, self).get_context_data(**kwargs)
-        context['brand_list'] = Store.objects.brands().exclude(slug='marketplace')
+        context['brand_list'] = Store.objects.brands().exclude(slug='1over3')
         context['object_list'] = products
         context['paginator'] = paginator
+        context['platform'] = "The Marketplace"
         context['slug'] = self.kwargs.get('slug')
         return context
 
     def get_queryset(self, *args, **kwargs):
         slug = self.kwargs.get('slug')
-        product_list = Product.objects.all().filter(tags__slug__contains=slug)
+        product_list = Product.objects.all().filter(tags__slug__contains=slug).exclude(
+            store__slug='1over3'
+        )
         return product_list
 
     def get_paginated(self):
@@ -45,7 +48,7 @@ class StoreDetailView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(StoreDetailView, self).get_context_data(**kwargs)
         paginator, products = self.get_paginated()
-        context['brand_list'] = Store.objects.all().exclude(slug='marketplace')
+        context['brand_list'] = Store.objects.all().exclude(slug='1over3')
         context['object_list'] = products
         context['paginator'] = paginator
         context['new_in'] = self.get_queryset().filter(new_in=True)
@@ -81,7 +84,8 @@ class MarketPlaceView(TemplateView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(MarketPlaceView, self).get_context_data(**kwargs)
-        context['marketplace'] = Store.objects.all()
+        context['marketplace'] = Store.objects.all().exclude(slug='1over3')
+        context['platform'] = "marketplace"
         context['tags'] = Tag.objects.all()
         return context
 

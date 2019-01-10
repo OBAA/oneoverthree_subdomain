@@ -67,14 +67,6 @@ def category_pre_save_receiver(sender, instance, *args, **kwargs):
 pre_save.connect(category_pre_save_receiver, sender=Category)
 
 
-PRODUCT_WEIGHT = (
-    # (KG, DISPALY),
-    ('0.5', 'Accessory'),
-    ('0.7', 'Clothing'),
-    ('1', 'Shoe'),
-    ('1', 'Bag'),
-)
-
 DISCOUNT_RATES = [(i*5, str(i*5)) for i in range(0, 12)]
 
 
@@ -125,7 +117,10 @@ class ProductManager(models.Manager):
             return qs.first()
         return None
 
-    def search(self, query):
+    def search_store(self, query, store_slug):
+        return self.get_queryset().search(query).filter(store__slug=store_slug)
+
+    def search_site(self, query):
         return self.get_queryset().search(query)
 
 
@@ -169,7 +164,10 @@ class Product(models.Model):
         ordering = ['pk']
 
     def get_absolute_url(self):
-        return reverse("store:detail", kwargs={'slug1': self.store, 'slug2': self.slug})
+        if self.store.slug == "1over3":
+            return reverse("store:detail", kwargs={'slug1': str(self.category).lower(), 'slug2': self.slug})
+        else:
+            return reverse("marketplace:product-detail", kwargs={'slug1': str(self.store).lower(), 'slug2': self.slug})
 
     @property
     def name(self):

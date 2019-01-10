@@ -37,15 +37,15 @@
                 </div>
             </li>
 
-            <!--<li class="item-menu-mobile">-->
-                <!--<a href="index.html">Home</a>-->
-                <!--<ul class="sub-menu">-->
-                    <!--<li><a href="index.html">Homepage V1</a></li>-->
-                    <!--<li><a href="home-02.html">Homepage V2</a></li>-->
-                    <!--<li><a href="home-03.html">Homepage V3</a></li>-->
-                <!--</ul>-->
-                <!--<i class="arrow-main-menu fa fa-angle-right" aria-hidden="true"></i>-->
-            <!--</li>-->
+            <li class="item-topbar-mobile p-l-10 p-r-10 py-4">
+                <form method="GET" action='{% url "search:query" %}' class="search-form pos-relative bo11 of-hidden">
+                    <input class="s-text7 size16 p-l-23 p-r-50" type="text" name="q" value='{{ request.GET.q }}' placeholder="Search Site...">
+
+                    <button class="flex-c-m size5 ab-r-m color1 color0-hov trans-0-4">
+                        <i class="fs-13 fa fa-search" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </li>
 
             <!--Menu-->
             <li class="navigation-menu-mobile">

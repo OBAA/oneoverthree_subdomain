@@ -9,6 +9,6 @@ urlpatterns = [
     url(r'^update-product/$', views.UpdateProductView.as_view(), name='update-product'),
     url(r'^product-review/$', views.ProductReviewFormView.as_view(), name='product-review'),
     url(r'^(?P<slug>[\w-]+)/$', views.CategoryView.as_view(), name='categories'),
-    # url(r'^category/(?P<slug>[\w-]+)/$', views.TagListView.as_view(), name='tags'),
+    url(r'^category/(?P<slug>[\w-]+)/$', views.TagListView.as_view(), name='tags'),
     url(r'^(?P<slug1>[\w-]+)/(?P<slug2>[\w-]+)/$', views.ProductDetailSlugView.as_view(), name='detail'),
 ]

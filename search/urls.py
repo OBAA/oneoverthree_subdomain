@@ -1,11 +1,10 @@
 from django.conf.urls import url
 
 from .views import (
-    SearchProductView,
+    ProductSearchView, StoreSearchView
     )
 
 urlpatterns = [
-    url(r'^$', SearchProductView.as_view(), name='query'),
-
+    url(r'^$', ProductSearchView.as_view(), name='query'),
+    url(r'^$', StoreSearchView.as_view(), name='store-query'),
 ]
-

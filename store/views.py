@@ -41,7 +41,6 @@ class ProductDetailSlugView(ObjectViewedMixin, DetailView):  # ObjectViewedMixin
         obj = self.get_object()
         context = super(ProductDetailSlugView, self).get_context_data(**kwargs)
         context['form'] = CartUpdateForm()
-        # context['review'] = ProductReviewForm()
         context['reviews'] = ProductReview.objects.filter(product=obj)
         context['sizes'] = SizeVariationForm(obj)
         context['item'] = Cart(self.request)
@@ -127,7 +126,7 @@ class CategoryView(DetailView):
         category = self.get_object()
         categories = category.get_descendants(include_self=True)  # Gets Category descendants list
         product_list = Product.objects.filter(category__in=categories).filter(
-            Q(store__title='1OVER3') |
+            Q(store__slug='1over3') |
             Q(store__featured=True)
         )
         return product_list
@@ -168,13 +167,15 @@ class TagListView(ListView):
         context['brand_list'] = Store.objects.all()
         context['object_list'] = products
         context['paginator'] = paginator
+        context['platform'] = "Store"
+        context['slug'] = self.kwargs.get('slug')
         return context
 
     def get_queryset(self, *args, **kwargs):
         slug = self.kwargs.get('slug')
         page = self.request.GET.get('page', 1)
         product_list = Product.objects.filter(tags__title__contains=slug).filter(
-            Q(store__title='1OVER3') |
+            Q(store__slug='1over3') |
             Q(store__featured=True)
         )
         paginator = Paginator(product_list, 2)
@@ -202,7 +203,7 @@ class StoreHomeView(ListView):
 
     def get_queryset(self, *args, **kwargs):
         return Product.objects.all().filter(
-            Q(store__title='1OVER3') |
+            Q(store__slug='1over3') |
             Q(store__featured=True)
         ).order_by('sku')
 
@@ -233,7 +234,6 @@ class UserProductHistoryView(LoginRequiredMixin, ListView):
     def get_queryset(self, *args, **kwargs):
         request = self.request
         views = request.user.objectviewed_set.by_model(Product, model_queryset=False)
-
         return views
 
 

@@ -220,6 +220,7 @@ class UsedCoupon(models.Model):
     billing_profile = models.ForeignKey(BillingProfile)
     # user = models.ForeignKey(User)
     coupon_used = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = UsedCouponManager()
 

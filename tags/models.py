@@ -24,9 +24,17 @@ def upload_image_path(instance, filename):
     return f"tags/{new_filename}/{final_filename}"
 
 
+PLATFORM = (
+    # (KG, DISPALY),
+    ('store', 'Store'),
+    ('marketplace', 'Marketplace'),
+)
+
+
 class Tag(models.Model):
     title       = models.CharField(max_length=120)
     slug        = models.SlugField(blank=True)
+    platform    = models.CharField(max_length=120, choices=PLATFORM, default="store")
     background_image = models.ImageField(upload_to=upload_image_path, blank=True, null=True)
     timestamp   = models.DateTimeField(auto_now_add=True)
     ordering       = models.IntegerField(blank=True)
@@ -39,11 +47,14 @@ class Tag(models.Model):
     def __str__(self):
         return self.title
 
-    # def get_absolute_url(self):
-    #     return reverse('store:tags', kwargs={'slug': self.slug})
-
     def get_absolute_url(self):
-        return reverse('marketplace:category', kwargs={'slug': self.slug})
+        if self.platform == "store":
+            return reverse('store:tags', kwargs={'slug': self.slug})
+        else:
+            return reverse('marketplace:category', kwargs={'slug': self.slug})
+
+    # def get_marketplace_absolute_url(self):
+
 
 
 def tag_pre_save_receiver(sender, instance, *args, **kwargs):

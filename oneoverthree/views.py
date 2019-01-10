@@ -20,6 +20,7 @@ class StoreHomeView(ListView):
         context = super(StoreHomeView, self).get_context_data(**kwargs)
         context['marketplace'] = Store.objects.all().exclude(slug='marketplace')
         context['featured'] = self.get_queryset().filter(featured=True)
+        context['platform'] = "store"
         context['tags'] = Tag.objects.all()
         return context
 
