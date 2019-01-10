@@ -125,7 +125,7 @@ class User(AbstractBaseUser):
         return "{full_name}\n{email}\n{mobile_num}".format(
             full_name=self.full_name,
             email=self.email,
-            mobile_num=self.mobile_num,
+            mobile_num=self.mobile_number,
         )
 
     @property
