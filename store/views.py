@@ -174,7 +174,7 @@ class TagListView(ListView):
     def get_queryset(self, *args, **kwargs):
         slug = self.kwargs.get('slug')
         page = self.request.GET.get('page', 1)
-        product_list = Product.objects.filter(tags__title__contains=slug).filter(
+        product_list = Product.objects.filter(tags__slug__contains=slug).filter(
             Q(store__slug='1over3') |
             Q(store__featured=True)
         )
