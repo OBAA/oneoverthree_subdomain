@@ -178,7 +178,7 @@ class TagListView(ListView):
             Q(store__slug='1over3') |
             Q(store__featured=True)
         )
-        paginator = Paginator(product_list, 2)
+        paginator = Paginator(product_list, 12)
         try:
             products = paginator.page(page)
         except PageNotAnInteger:
@@ -193,7 +193,7 @@ class StoreHomeView(ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(StoreHomeView, self).get_context_data(**kwargs)
-        context['marketplace'] = Store.objects.all().exclude(slug='marketplace')
+        context['marketplace'] = Store.objects.all().exclude(slug='1over3')
         context['tags'] = Tag.objects.all()
         paginator, products = self.get_paginated()
         context['object_list'] = products
